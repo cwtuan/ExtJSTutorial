@@ -1,0 +1,143 @@
+/* notify bar */
+/* http://ahlearns.wordpress.com/2011/12/16/ext-js-4-notification-bar/ */
+.notifybar {
+	border: 0px !important;
+	margin: 0px !important;
+	padding: 0px 0px 0px 0px;
+}
+
+.notifybar-success,.x-nlg .notifybar-success {
+	background-color: #D1EED1 !important;
+	background-image: none !important;
+}
+
+.notifybar-error,.x-nlg .notifybar-error {
+	background-color: #FDDFDE !important;
+	background-image: none !important;
+}
+
+.notifybar-warning,.x-nlg .notifybar-warning {
+	background-color: #F7C527 !important;
+	background-image: none !important;
+}
+
+.x-grid-row-expander {
+	cursor: pointer;
+}
+
+.cursorPointer {
+	cursor: pointer;
+}
+
+.nopadding .x-grid-cell-inner {
+	padding: 0px 0px 0px 0px;
+	white-space: nowrap;
+}
+
+.ui-autocomplete-input {
+	border: none;
+}
+
+.ui-autocomplete a {
+	font-weight: normal;
+}
+
+.ui-menu .ui-menu-item a.ui-state-hover,.ui-menu .ui-menu-item a.ui-state-active {
+	font-weight: bold !important;
+}
+
+/* For multiple whitespace */
+.x-grid-cell-treecolumn .x-grid-cell-inner {
+	white-space: pre;
+}
+
+/* For multiple whitespace */
+.x-panel-header-text {
+	white-space: pre;
+}
+
+/* For multiple whitespace */
+label.x-component {
+	white-space: pre;
+}
+
+/* For multiple line row and multiple whitespace */
+.x-grid-cell-inner {
+	padding: 3px 3px 0px 3px;
+	white-space: nowrap;
+}
+
+/*Alvita :for progress bar column */
+.x-fit-cell .x-grid-cell-inner {
+	padding: 0px 0px 0px 0px;
+	white-space: nowrap;
+}
+
+​ /* For multiple line row expander and multiple whitespace */                        
+.x-grid-rowbody p {
+	white-space: pre-wrap;
+}
+
+.container {
+	width: 100% !important;
+	padding-left: 20px !important;
+}
+
+li.active {
+	background-color: white;
+	color: black;
+}
+
+.x-form-readonly {
+	opacity: 0.5;
+}
+
+.x-grid-checkheader {
+	width: 13px;
+	height: 13px;
+	background-image: url('../extjs/resources/themes/images/default/form/checkbox.gif');
+	background-repeat: no-repeat;
+	background-color: transparent;
+	overflow: hidden;
+	padding: 0;
+	border: 0;
+	display: block;
+	margin: auto;
+}
+
+.x-grid-checkheader-checked {
+	background-position: 0 -13px;
+}
+
+.x-grid-checkheader-disabled {
+	background-position: -39px 0;
+}
+
+/*summary row*/
+.x-grid-row-summary {
+	color: #EB5307;
+	background-color: #FFFFD4;
+}
+
+/*toolbar */
+.x-toolbar-light {
+	background-image: none;
+	background-color: #687E98;
+}
+
+.x-body {
+	background-image: url('images/bg_body.png');
+	/*fit*/
+	/* background-size: 100%; */
+	background-repeat: repeat-x;
+}
+
+.x-toolbar .notifybar-text {
+	white-space: normal !important;
+	font-size: 14px;
+}
+
+.form-error-state {
+	padding-left: 10px;
+	color: #FF3300;
+}

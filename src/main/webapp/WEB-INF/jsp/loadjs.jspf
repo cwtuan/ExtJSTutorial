@@ -1,0 +1,29 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+
+
+
+<script type="text/javascript" src="all-classes.js?timestamp=2014-01-07-11-32-32-53"></script>
+
+
+<script type="text/javascript">
+	 
+
+	// loadjs_dev requires is for dev. app.js requires is for product
+	Ext.require([	'Ecfa.Const', 'Ecfa.event.App', 'Ecfa.Config', 'Ecfa.ExtFix', 'Ecfa.ExtOverride', 'Ecfa.ExtSetting', 'Ecfa.util.Restful', 'Ecfa.locale.Converter',
+	    			'Ecfa.ux.proxy.NestedRest', 'Ecfa.reader.RestTaskGrid', 'Ext.util.Cookies' ]);
+
+	Ext.onReady(function() {
+
+		// i18n for ExtJS		  		
+ 		loadJS("ext/locale/ext-lang-" + Locale.getLanguage() + ".js");
+		// fix bug in ExtJS
+		Ecfa.ExtFix.init(Ecfa.Config);
+		// override default behavior in ExtJS
+		Ecfa.ExtOverride.init(Ecfa.Config);
+		// setup ExtJS
+		Ecfa.ExtSetting.init(Ecfa.Config);
+		console.timeEnd('Load ExtJS');
+
+	});
+</script>
+

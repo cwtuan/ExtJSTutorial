@@ -1,0 +1,100 @@
+Ext.define('Ecfa.view.project.UserGrid', {
+	extend : 'Ext.grid.Panel',
+	alias : 'widget.projectUserGrid',
+	project : null,
+	requires : [ 'Ecfa.view.project.action.DeleteUserAction', 'Ecfa.view.project.action.EditUserAction', 'Ecfa.view.project.action.AddUserAction' ],
+	title : Locale.getMsg('view.project.user.members'),
+	icon : 'css/images/user_16x16.png',
+	selType : 'checkboxmodel',
+	selModel : {
+		mode : 'MULTI'
+	},
+	viewConfig : {
+		preserveSelectionOnRefresh : false
+	},
+	initComponent : function() {
+		var me = this;
+
+		me.store = Ext.create('Ecfa.store.project.User');
+
+		me.columns = [ {
+			header : Locale.getMsg('view.auth.user.id'),
+			dataIndex : 'id',
+			flex : 1
+		}, {
+			header : Locale.getMsg('view.project.user.role'),
+			dataIndex : 'role',
+			flex : 2,
+			renderer : Ecfa.locale.Converter.getProjectRole
+		} ];
+
+		me.tbar = [ Ext.create('Ecfa.view.project.action.AddUserAction', {
+			itemId : 'addProjectUserAction',
+			panel : me
+		}), Ext.create('Ecfa.view.project.action.DeleteUserAction', {
+			itemId : 'deleteProjectUserAction',
+			panel : me
+		}), Ext.create('Ecfa.view.project.action.EditUserAction', {
+			itemId : 'editProjectUserAction',
+			panel : me
+		}), {
+			itemId : 'refreshBtn',
+			icon : 'css/images/refresh.png',
+			text : Locale.getMsg('view.common.refresh'),
+			handler : function() {
+				me.store.reload();
+			}
+		} ];
+
+		me.on({
+
+			selectionchange : function(selectionModel, records, index) {
+				me.switchBtnStatus();
+			}
+		});
+
+		me.callParent(arguments);
+
+		Ecfa.event.User.on({
+			destroy : function(userIds) {
+				console.log('destroy User', userIds);
+				Ext.Array.each(userIds, function(userId) {
+					me.store.remove(me.store.getById(userId));
+				});
+			},
+			create : function(userData) {
+				console.log('create User', userData);
+				me.store.add(userData);
+			},
+			update : function(userData) {
+				console.log('update', userData);
+				me.store.remove(me.store.getById(userData.id));
+				me.store.add(userData);
+			}
+		});
+	},
+
+	load : function(projectRecord) {
+
+		var me = this;
+
+		// 1. set title
+		me.setTitle(Locale.getMsg('view.project.user.members') + ' (' + projectRecord.get('name') + ')');
+
+		// 2. load users
+		me.store.load({
+			ids : [ projectRecord.getId() ]
+		});
+		me.project = projectRecord;
+
+		// 3. determine button disability
+		me.switchBtnStatus();
+	},
+	switchBtnStatus : function() {
+		var me = this;
+		me.down('#addProjectUserAction').switchStatus(me.project);
+		me.down('#deleteProjectUserAction').switchStatus(me.project);
+		me.down('#editProjectUserAction').switchStatus(me.project);
+	}
+
+});
