@@ -1,7 +1,7 @@
 /**
  * Serie class for general range series type
  *
- * See {@link Ecfa.ux.chart.Highcharts.Serie} class for more info
+ * See {@link MyApp.ux.chart.Highcharts.Serie} class for more info
  *
  * This is the base class for dealing range series type. RangeSerie offers
  * sorted and unsorted ways of specifying range data. If it is desired to
@@ -17,8 +17,8 @@
  *         type: 'columnrange'
  *     }]
  */
-Ext.define('Ecfa.ux.chart.Highcharts.RangeSerie', {
-	extend : 'Ecfa.ux.chart.Highcharts.Serie',
+Ext.define('MyApp.ux.chart.Highcharts.RangeSerie', {
+	extend : 'MyApp.ux.chart.Highcharts.Serie',
 
   /***
    * @cfg {String}

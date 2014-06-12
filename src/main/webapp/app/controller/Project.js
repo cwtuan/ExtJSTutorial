@@ -1,8 +1,5 @@
-Ext.define('Ecfa.controller.Project', {
+Ext.define('MyApp.controller.Project', {
 	extend : 'Ext.app.Controller',
-	// // TODO necessary?
-	// stores : [ 'project.Project' ],
-	// models : [ 'project.Project' ],
 	refs : [ {
 		ref : 'projectUserGrid',
 		selector : 'projectUserGrid'

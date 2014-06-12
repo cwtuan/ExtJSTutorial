@@ -1,6 +1,6 @@
 // TODO 如果沒有token，顯示default(Jobs)
 
-Ext.define('Ecfa.view.MainToolbar', {
+Ext.define('MyApp.view.MainToolbar', {
 	extend : 'Ext.toolbar.Toolbar',
 	// excludeItemId : [ 'notification' ],
 	actions : [],

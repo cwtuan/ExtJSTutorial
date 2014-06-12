@@ -29,10 +29,10 @@
  *         'series2': [ [25,10,87],[2,75,59],[11,54,8],[86,55,93] .... ] ],
  *      }]
  * 
- * See {@link Ecfa.ux.chart.Highcharts.Serie} class for more info
+ * See {@link MyApp.ux.chart.Highcharts.Serie} class for more info
  */
-Ext.define('Ecfa.ux.chart.Highcharts.BubbleSerie', {
-	  extend : 'Ecfa.ux.chart.Highcharts.Serie',
+Ext.define('MyApp.ux.chart.Highcharts.BubbleSerie', {
+	  extend : 'MyApp.ux.chart.Highcharts.Serie',
 	  alternateClassName: [ 'highcharts.bubble' ],
 	  type : 'bubble',
     

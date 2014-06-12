@@ -18,7 +18,7 @@
  * @constructor
  * @param {Object} config The config object
  */
-Ext.define('Ecfa.ux.wizard.CardLayout', {
+Ext.define('MyApp.ux.wizard.CardLayout', {
 	
 	extend: 'Ext.layout.container.Card',
 

@@ -2,11 +2,11 @@
 
 <script type="text/javascript">
 	Ext.onReady(function() {
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
 				// var loadMask = new Ext.LoadMask(Ext.getBody());
 				// loadMask.show();
-				Ext.create('Ecfa.view.Viewport');
+				Ext.create('MyApp.view.Viewport');
 				// loadMask.hide();
 				}
 		});

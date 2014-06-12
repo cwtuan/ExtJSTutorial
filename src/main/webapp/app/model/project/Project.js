@@ -1,4 +1,4 @@
-Ext.define('Ecfa.model.project.Project', {
+Ext.define('MyApp.model.project.Project', {
 	extend : 'Ext.data.Model',
 	idProperty : 'id',
 	fields : [ {

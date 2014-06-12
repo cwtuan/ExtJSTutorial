@@ -39,7 +39,7 @@
 		var check_id = /^[a-z0-9_-]{1,50}$/;
 		var check_first = /^[a-z]{1}$/;
 
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
 
 				var submitOptions = {
@@ -65,7 +65,7 @@
 					failure : function(form, action) {
 						console.log("register failed", action.result)
 						win.down('#formErrorState').setVisible(true);
-						win.down('#formErrorState').setError(Ecfa.locale.Converter.getErrorMsg(Locale.getMsg('view.auth.user.create.failure'), action.result));//action.result.mesg);//Locale.getMsg('view.auth.account.create.failure'));
+						win.down('#formErrorState').setError(MyApp.locale.Converter.getErrorMsg(Locale.getMsg('view.auth.user.create.failure'), action.result));//action.result.mesg);//Locale.getMsg('view.auth.account.create.failure'));
 						win.down('#submit_account').setDisabled(false);
 					}
 				};

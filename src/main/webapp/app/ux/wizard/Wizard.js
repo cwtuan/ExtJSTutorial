@@ -1,6 +1,6 @@
-Ext.define('Ecfa.ux.wizard.Wizard', {
+Ext.define('MyApp.ux.wizard.Wizard', {
     extend: 'Ext.window.Window',
-    //layout: 'Ecfa.ux.wizard.CardLayout',
+    //layout: 'MyApp.ux.wizard.CardLayout',
     layout: 'fit',
     loadMaskConfig: {
         'default': '',
@@ -153,7 +153,7 @@ Ext.define('Ecfa.ux.wizard.Wizard', {
 
         if (c.sideConfig && c.sideConfig.position == 'right') { sregion = 'east'; } else { sregion = 'west'; }
         if (c.headConfig && c.headConfig.position == 'bottom') { hregion = 'south'; } else { hregion = 'north'; }
-		//Ext.create('Ecfa.ux.wizard.CardLayout')
+		//Ext.create('MyApp.ux.wizard.CardLayout')
         Ext.applyIf(this.cardPanelConfig, { region: 'center', items: (this.cards || [{}]), layout: 'card', border: false, activeItem: 0, baseCls: 'ux-wizard-cardpanel' });
         Ext.applyIf(this.sideConfig, { region: sregion, width: 150, layout: 'fit', xtype: 'wizardheader', headerPosition: 'side', steps: this.cards.length, hidden: !(c.sideConfig) });
         Ext.applyIf(this.headConfig, { region: hregion, height: 150, layout: 'fit', xtype: 'wizardheader', headerPosition: 'top', steps: this.cards.length, hidden: !(c.headConfig) });
@@ -359,9 +359,9 @@ Ext.define('Ecfa.ux.wizard.Wizard', {
             steps: this.cards.length
         });
 
-        this.headPanel = Ext.create('Ecfa.ux.wizard.Header', this.headConfig);
+        this.headPanel = Ext.create('MyApp.ux.wizard.Header', this.headConfig);
 
-        this.sidePanel = Ext.create('Ecfa.ux.wizard.Header', this.sideConfig);
+        this.sidePanel = Ext.create('MyApp.ux.wizard.Header', this.sideConfig);
 
         Ext.apply(cardPanelConfig, {
             layout: 'card', // new Ext.ux.wizard.CardLayout(),

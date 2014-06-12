@@ -1,28 +1,29 @@
-Ext.define('Ecfa.view.Viewport', {
+Ext.define('MyApp.view.Viewport', {
 	extend : 'Ext.container.Viewport',
 	renderTo : Ext.getBody(),
 
 	requires : [
 
 	// Utils
-	'Ecfa.Session', 'Ecfa.util.Format', 'Ecfa.util.Validator', 'Ecfa.util.Restful', 'Ecfa.locale.Converter', 'Ext.util.Cookies',
-	// 'Ecfa.util.JsonWriter',
+	'MyApp.Session', 'MyApp.util.Format', 'MyApp.util.Validator', 'MyApp.util.Restful', 'MyApp.locale.Converter',
+			'Ext.util.Cookies',
+			// 'MyApp.util.JsonWriter',
 
-	// events
-	'Ecfa.event.Session', 'Ecfa.event.Project', 'Ecfa.event.User',
+			// events
+			'MyApp.event.Session', 'MyApp.event.Project', 'MyApp.event.User',
 
-	// actions
-	'Ecfa.action.Action',
+			// actions
+			'MyApp.action.Action',
 
-	// views ux
-	'Ecfa.ux.image.ImageViewer', 'Ecfa.ux.image.MultiImageViewer', 'Ecfa.ux.button.LinkButton', 'Ecfa.ux.toolbar.NotifyBar', 'Ecfa.ux.IFrame',
-			'Ecfa.ux.grid.column.ComponentColumn',
+			// views ux
+			'MyApp.ux.image.ImageViewer', 'MyApp.ux.image.MultiImageViewer', 'MyApp.ux.button.LinkButton',
+			'MyApp.ux.toolbar.NotifyBar', 'MyApp.ux.IFrame', 'MyApp.ux.grid.column.ComponentColumn',
 
 			// views
-			'Ecfa.view.project.ProjectView',
+			'MyApp.view.project.ProjectView',
 
 			// win
-			'Ecfa.view.about.OpenSourceLicenseWin'
+			'MyApp.view.about.OpenSourceLicenseWin'
 
 	],
 	id : 'viewport',
@@ -34,7 +35,7 @@ Ext.define('Ecfa.view.Viewport', {
 	initComponent : function() {
 		var me = this;
 
-		Ecfa.Session.getSession();
+		MyApp.Session.getSession();
 
 		var menuItems = [];
 
@@ -90,15 +91,16 @@ Ext.define('Ecfa.view.Viewport', {
 		viewItems.push({
 			itemId : 'projectView',
 			xtype : 'projectView'
-		});	
+		});
 
 		// put menus and views to viewport
+
 		me.items = [ {
 			itemId : 'mainCards',
 			xtype : 'panel',
 			region : 'center',
 			layout : 'card',
-			tbar : Ext.create('Ecfa.view.MainToolbar', {
+			tbar : Ext.create('MyApp.view.MainToolbar', {
 				itemId : 'mainToolbar',
 				items : menuItems
 			}),
@@ -116,7 +118,7 @@ Ext.define('Ecfa.view.Viewport', {
 			}
 		});
 
-		Ecfa.event.Session.on('read', function(user) {
+		MyApp.event.Session.on('read', function(user) {
 			me.down('#accountmenu').setText(user.id);
 		});
 

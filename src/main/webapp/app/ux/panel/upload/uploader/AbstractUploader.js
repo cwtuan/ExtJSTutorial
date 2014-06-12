@@ -5,7 +5,7 @@
  * used as a base object for all uploader objects.
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.uploader.AbstractUploader', {
+Ext.define('MyApp.ux.panel.upload.uploader.AbstractUploader', {
     mixins : {
         observable : 'Ext.util.Observable'
     },
@@ -110,7 +110,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.AbstractUploader', {
      * Upload a single item (file). 
      * **Implement in subclass**
      * 
-     * @param {Ecfa.ux.panel.upload.Item} item
+     * @param {MyApp.ux.panel.upload.Item} item
      */
     uploadItem : function(item) {
     },

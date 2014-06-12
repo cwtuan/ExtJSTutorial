@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 
-
+<script src="js/locale-2013-12-11.js"></script>
 
 <!-- <x-compile> -->
 <!-- <x-bootstrap> -->
@@ -8,6 +8,8 @@
 <script src="bootstrap.js"></script>
 <!-- </x-bootstrap> -->
 
+
+<script src="js/locale-2013-12-11.js"></script>
 <script src="js/fakeconsole-0.6.min.js"></script>
 <script src="js/utility-2013-08-22.js"></script>
 <script src="app/app.js"></script>
@@ -18,19 +20,19 @@
 	 
 
 	// loadjs_dev requires is for dev. app.js requires is for product
-	Ext.require([	'Ecfa.Const', 'Ecfa.event.App', 'Ecfa.Config', 'Ecfa.ExtFix', 'Ecfa.ExtOverride', 'Ecfa.ExtSetting', 'Ecfa.util.Restful', 'Ecfa.locale.Converter',
-	    			'Ecfa.ux.proxy.NestedRest', 'Ecfa.reader.RestTaskGrid', 'Ext.util.Cookies' ]);
+	Ext.require([	'MyApp.Const', 'MyApp.event.App', 'MyApp.Config', 'MyApp.ExtFix', 'MyApp.ExtOverride', 'MyApp.ExtSetting', 'MyApp.util.Restful', 'MyApp.locale.Converter',
+	    			'MyApp.ux.proxy.NestedRest', 'MyApp.reader.RestTaskGrid', 'Ext.util.Cookies' ]);
 
 	Ext.onReady(function() {
 
 		// i18n for ExtJS		  		
  		loadJS("ext/locale/ext-lang-" + Locale.getLanguage() + ".js");
 		// fix bug in ExtJS
-		Ecfa.ExtFix.init(Ecfa.Config);
+		MyApp.ExtFix.init(MyApp.Config);
 		// override default behavior in ExtJS
-		Ecfa.ExtOverride.init(Ecfa.Config);
+		MyApp.ExtOverride.init(MyApp.Config);
 		// setup ExtJS
-		Ecfa.ExtSetting.init(Ecfa.Config);
+		MyApp.ExtSetting.init(MyApp.Config);
 		console.timeEnd('Load ExtJS');
 
 	});

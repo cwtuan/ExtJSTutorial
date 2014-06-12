@@ -1,4 +1,4 @@
-package com.cht.model.user;
+package extjstutorial.model.user;
 
 public enum Role {
 	ADMIN, MEMBER

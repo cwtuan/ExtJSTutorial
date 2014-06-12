@@ -1,5 +1,5 @@
-Ext.define('Ecfa.ux.panel.upload.uploader.DummyUploader', {
-    extend : 'Ecfa.ux.panel.upload.uploader.AbstractUploader',
+Ext.define('MyApp.ux.panel.upload.uploader.DummyUploader', {
+    extend : 'MyApp.ux.panel.upload.uploader.AbstractUploader',
 
     delay : 1000,
 

@@ -15,7 +15,7 @@
       "source": "app.js.tpl.merge",
       "version": "ca9cfeb9d3913435880b586ce4603fc886054b52",
       "parameters": {
-        "appName": "Ecfa",
+        "appName": "MyApp",
         "frameworkPath": "ext",
         "appModels": "queue.Job",
         "appControllers": "Main,Queue",
@@ -36,11 +36,11 @@
         "appControllers": "",
         "appViews": "",
         "uniqueId": "2d3ca422-880d-4af0-9935-23e246c3bf49",
-        "appName": "Ecfa",
+        "appName": "MyApp",
         "controllerName": "Main",
         "viewName": "Main",
         "themeName": "default",
-        "name": "Ecfa",
+        "name": "MyApp",
         "library": "all",
         "appStores": ""
       }
@@ -58,11 +58,11 @@
         "appControllers": "",
         "appViews": "",
         "uniqueId": "2d3ca422-880d-4af0-9935-23e246c3bf49",
-        "appName": "Ecfa",
+        "appName": "MyApp",
         "controllerName": "Main",
         "viewName": "Main",
         "themeName": "default",
-        "name": "Ecfa",
+        "name": "MyApp",
         "library": "all",
         "appStores": ""
       }

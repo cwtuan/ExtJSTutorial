@@ -1,7 +1,7 @@
 /**
  * Serie class for Funnel series type
  *
- * See {@link Ecfa.ux.chart.Highcharts.Serie} class for more info
+ * See {@link MyApp.ux.chart.Highcharts.Serie} class for more info
  *
  * Example of series config:
  *
@@ -15,8 +15,8 @@
  * **Note**: You must load Highcharts module http://code.highcharts.com/modules/funnel.js in 
  * your HTML file, otherwise you get unknown series type error 
  */
-Ext.define('Ecfa.ux.chart.Highcharts.FunnelSerie', {
-	  extend : 'Ecfa.ux.chart.Highcharts.WaterfallSerie',
+Ext.define('MyApp.ux.chart.Highcharts.FunnelSerie', {
+	  extend : 'MyApp.ux.chart.Highcharts.WaterfallSerie',
 	  alternateClassName: [ 'highcharts.funnel' ],
 	  type : 'funnel',
 

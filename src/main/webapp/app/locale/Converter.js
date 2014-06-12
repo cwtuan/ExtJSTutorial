@@ -2,9 +2,9 @@
  * Convert locale key to value
  * 
  */
-Ext.define('Ecfa.locale.Converter', {
+Ext.define('MyApp.locale.Converter', {
 	singleton : true,
-	alternateClassName : [ 'Ecfa.Converter' ],
+	alternateClassName : [ 'MyApp.Converter' ],
 	yes_no : function(value) {
 		return value ? Locale.getMsg('view.yes') : Locale.getMsg('view.no');
 	},

@@ -33,7 +33,7 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
 				var me = this;
 
@@ -47,20 +47,20 @@
 				console.log('callbackPage', '${map.callbackPage}');
 
 				// determine message according to map.action
-				if ('${map.action}' === Ecfa.Const.Invitation.Action.INVITATION_NOT_EXIST) {
+				if ('${map.action}' === MyApp.Const.Invitation.Action.INVITATION_NOT_EXIST) {
 					me.html = Locale.getMsg('view.project.user.invite.page.action.invitation_not_exist');
-				} else if ('${map.action}' === Ecfa.Const.Invitation.Action.ABLE_TO_ACCEPT) {
+				} else if ('${map.action}' === MyApp.Const.Invitation.Action.ABLE_TO_ACCEPT) {
 					me.html = Locale.getMsg('view.project.user.invite.page.action.able_to_accept', '${map.projectName}', '${map.createUserId}',
-							Ecfa.locale.Converter.getProjectRole('${map.role}'));
-				} else if ('${map.action}' === Ecfa.Const.Invitation.Action.NEED_SIGNOUT) {
+							MyApp.locale.Converter.getProjectRole('${map.role}'));
+				} else if ('${map.action}' === MyApp.Const.Invitation.Action.NEED_SIGNOUT) {
 					me.html = Locale.getMsg('view.project.user.invite.page.action.need_signout', '${map.projectName}', '${map.createUserId}',
 							'${map.inviteEmail}', '${map.currentUserEmail}');
-				} else if ('${map.action}' === Ecfa.Const.Invitation.Action.NEED_SIGNIN) {
+				} else if ('${map.action}' === MyApp.Const.Invitation.Action.NEED_SIGNIN) {
 					me.html = Locale.getMsg('view.project.user.invite.page.action.need_signin', '${map.projectName}', '${map.createUserId}',
 							'${map.callbackPage}', '${map.inviteEmail}');
-				} else if ('${map.action}' === Ecfa.Const.Invitation.Action.EXPIRED) {
+				} else if ('${map.action}' === MyApp.Const.Invitation.Action.EXPIRED) {
 					me.html = Locale.getMsg('view.project.user.invite.page.action.expired', '${map.projectName}', '${map.createUserId}');
-				} else if ('${map.action}' === Ecfa.Const.Invitation.Action.ALREADY_ACCEPTED) {
+				} else if ('${map.action}' === MyApp.Const.Invitation.Action.ALREADY_ACCEPTED) {
 					me.html = Locale.getMsg('view.project.user.invite.page.action.already_accepted', '${map.projectName}', '${map.createUserId}');
 				} else {
 					throw 'undefined action: ' + '${map.action}';
@@ -130,7 +130,7 @@
 											'->',
 											{
 												xtype : 'button',
-												disabled : '${map.action}' !== Ecfa.Const.Invitation.Action.ABLE_TO_ACCEPT,
+												disabled : '${map.action}' !== MyApp.Const.Invitation.Action.ABLE_TO_ACCEPT,
 												height : 35,
 												text : Locale.getMsg('view.project.user.invite.accept'),
 												itemId : 'submit',
@@ -141,7 +141,7 @@
 													this.setDisabled(true);
 													win.down('#message').clearMessage();
 
-													Ecfa.Restful.PUT('rest/invitations/' + '${map.invitationOid}' + '?action=accept', [], {
+													MyApp.Restful.PUT('rest/invitations/' + '${map.invitationOid}' + '?action=accept', [], {
 														success : function(jsonResp) {
 															win.down('#message').setMessage(true,
 																	Locale.getMsg('view.project.user.invite.accept.redirect', '3'));
@@ -150,7 +150,7 @@
 														failure : function(jsonResp) {
 															win.down('#message').setMessage(
 																	false,
-																	Ecfa.locale.Converter.getErrorMsg(Locale.getMsg('view.project.user.invite.accept.error'),
+																	MyApp.locale.Converter.getErrorMsg(Locale.getMsg('view.project.user.invite.accept.error'),
 																			jsonResp));
 															win.down('#submit').setDisabled(false);
 														}

@@ -1,4 +1,4 @@
-Ext.define('Ecfa.Session', {
+Ext.define('MyApp.Session', {
 	singleton : true,
 	user : null,
 	constructor : function() {
@@ -12,7 +12,7 @@ Ext.define('Ecfa.Session', {
 			// async : false,
 			success : function(response) {
 				me.user = Ext.decode(response.responseText);
-				Ecfa.event.Session.fireEvent('read', me.user);
+				MyApp.event.Session.fireEvent('read', me.user);
 			},
 			failure : function() {
 			}

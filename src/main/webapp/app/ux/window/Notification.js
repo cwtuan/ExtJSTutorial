@@ -12,7 +12,7 @@
  *	Last changed date: 2012-08-12
  */
 
-Ext.define('Ecfa.ux.window.Notification', {
+Ext.define('MyApp.ux.window.Notification', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.uxNotification',
 

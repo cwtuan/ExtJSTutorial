@@ -1,8 +1,8 @@
 /**
  * Abstract uploader with features common for all XHR based uploaders.
  */
-Ext.define('Ecfa.ux.panel.upload.uploader.AbstractXhrUploader', {
-    extend : 'Ecfa.ux.panel.upload.uploader.AbstractUploader',
+Ext.define('MyApp.ux.panel.upload.uploader.AbstractXhrUploader', {
+    extend : 'MyApp.ux.panel.upload.uploader.AbstractUploader',
 
     onUploadSuccess : function(response, options, item) {
         var info = {

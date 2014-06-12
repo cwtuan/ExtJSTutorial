@@ -1,8 +1,8 @@
 // FIXME  not work in resetPassword.jsp
 
-Ext.define('Ecfa.util.Validator', {
+Ext.define('MyApp.util.Validator', {
 	singleton : true,
-	alternateClassName : [ 'Ecfa.Validator' ],
+	alternateClassName : [ 'MyApp.Validator' ],
 	// constructor : function() {
 	// },
 	noSpecialChar : function(value) {

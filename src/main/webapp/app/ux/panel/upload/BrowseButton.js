@@ -1,8 +1,8 @@
 /**
  * A "browse" button for selecting multiple files for upload. It's a wrapper. File field is defined in AssetPanel
  */
-Ext.define('Ecfa.ux.panel.upload.BrowseButton', {
-	extend : 'Ecfa.action.Action',
+Ext.define('MyApp.ux.panel.upload.BrowseButton', {
+	extend : 'MyApp.action.Action',
 	icon : 'css/images/arrow_up_16x16.png',
 	text : Locale.getMsg('view.transfer.browse'),
 	uploadFieldId : null,
@@ -30,7 +30,7 @@ Ext.define('Ecfa.ux.panel.upload.BrowseButton', {
 
 		// FIXME why somethies foder is null
 		if (folder) {
-			var isValidFolder = Ecfa.Validator.resourceFolder(folder);
+			var isValidFolder = MyApp.Validator.resourceFolder(folder);
 			if (isValidFolder === true) {
 				me.enable();
 				me.setTooltip(Locale.getMsg('view.transfer.browse.tooltip'));

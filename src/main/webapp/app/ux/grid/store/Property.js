@@ -1,6 +1,6 @@
-Ext.define('Ecfa.ux.grid.store.Property', {
+Ext.define('MyApp.ux.grid.store.Property', {
 	extend : 'Ext.data.Store',
-	requires : [ 'Ecfa.ux.grid.model.Property' ],
+	requires : [ 'MyApp.ux.grid.model.Property' ],
 	constructor : function(config) {
 
 		var me = this;
@@ -40,7 +40,7 @@ Ext.define('Ecfa.ux.grid.store.Property', {
 			if (p.hidden === true || (Ext.isFunction(p.hidden) && p.hidden(value, record)))
 				continue;
 
-			newrecords.push(Ext.create('Ecfa.ux.grid.model.Property', {
+			newrecords.push(Ext.create('MyApp.ux.grid.model.Property', {
 				name : p.name,
 				value : p.renderer ? p.renderer(value, record) : value,
 				tooltipMessage : p.tooltipMessage

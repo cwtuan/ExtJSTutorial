@@ -1,7 +1,7 @@
-Ext.define('Ecfa.view.project.action.AddUserAction', {
-	extend : 'Ecfa.action.Action',
+Ext.define('MyApp.view.project.action.AddUserAction', {
+	extend : 'MyApp.action.Action',
 	icon : 'css/images/add_16x16.png',
-	requires : [ 'Ecfa.view.project.AddUserWin' ],
+	requires : [ 'MyApp.view.project.AddUserWin' ],
 	text : Locale.getMsg('view.common.add'),
 	project : null,
 	panel : null,
@@ -21,7 +21,7 @@ Ext.define('Ecfa.view.project.action.AddUserAction', {
 
 		// me.project = projectRecord;
 
-		var result = Ecfa.Validator.notProject1(projectRecord);
+		var result = MyApp.Validator.notProject1(projectRecord);
 
 		// TODO determine it at ecfa action
 		if (result !== true) {

@@ -1,8 +1,9 @@
-Ext.define('Ecfa.view.project.UserGrid', {
+Ext.define('MyApp.view.project.UserGrid', {
 	extend : 'Ext.grid.Panel',
 	alias : 'widget.projectUserGrid',
 	project : null,
-	requires : [ 'Ecfa.view.project.action.DeleteUserAction', 'Ecfa.view.project.action.EditUserAction', 'Ecfa.view.project.action.AddUserAction' ],
+	requires : [ 'MyApp.view.project.action.DeleteUserAction', 'MyApp.view.project.action.EditUserAction',
+			'MyApp.view.project.action.AddUserAction' ],
 	title : Locale.getMsg('view.project.user.members'),
 	icon : 'css/images/user_16x16.png',
 	selType : 'checkboxmodel',
@@ -15,7 +16,7 @@ Ext.define('Ecfa.view.project.UserGrid', {
 	initComponent : function() {
 		var me = this;
 
-		me.store = Ext.create('Ecfa.store.project.User');
+		me.store = Ext.create('MyApp.store.project.User');
 
 		me.columns = [ {
 			header : Locale.getMsg('view.auth.user.id'),
@@ -25,16 +26,16 @@ Ext.define('Ecfa.view.project.UserGrid', {
 			header : Locale.getMsg('view.project.user.role'),
 			dataIndex : 'role',
 			flex : 2,
-			renderer : Ecfa.locale.Converter.getProjectRole
+			renderer : MyApp.locale.Converter.getProjectRole
 		} ];
 
-		me.tbar = [ Ext.create('Ecfa.view.project.action.AddUserAction', {
+		me.tbar = [ Ext.create('MyApp.view.project.action.AddUserAction', {
 			itemId : 'addProjectUserAction',
 			panel : me
-		}), Ext.create('Ecfa.view.project.action.DeleteUserAction', {
+		}), Ext.create('MyApp.view.project.action.DeleteUserAction', {
 			itemId : 'deleteProjectUserAction',
 			panel : me
-		}), Ext.create('Ecfa.view.project.action.EditUserAction', {
+		}), Ext.create('MyApp.view.project.action.EditUserAction', {
 			itemId : 'editProjectUserAction',
 			panel : me
 		}), {
@@ -55,7 +56,7 @@ Ext.define('Ecfa.view.project.UserGrid', {
 
 		me.callParent(arguments);
 
-		Ecfa.event.User.on({
+		MyApp.event.User.on({
 			destroy : function(userIds) {
 				console.log('destroy User', userIds);
 				Ext.Array.each(userIds, function(userId) {
@@ -63,8 +64,8 @@ Ext.define('Ecfa.view.project.UserGrid', {
 				});
 			},
 			create : function(userData) {
-				console.log('create User', userData);
-				me.store.add(userData);
+				// console.log('create User', userData);
+				 me.store.add(userData);
 			},
 			update : function(userData) {
 				console.log('update', userData);

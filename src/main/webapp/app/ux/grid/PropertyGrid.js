@@ -1,7 +1,7 @@
 // developed by Virtuoso team
-Ext.define('Ecfa.ux.grid.PropertyGrid', {
+Ext.define('MyApp.ux.grid.PropertyGrid', {
 	extend : 'Ext.grid.Panel',
-	requires : [ 'Ecfa.ux.grid.store.Property' ],
+	requires : [ 'MyApp.ux.grid.store.Property' ],
 	hideHeaders : true,
 	columns : [ {
 		dataIndex : 'name',
@@ -24,7 +24,7 @@ Ext.define('Ecfa.ux.grid.PropertyGrid', {
 	disableSelection : true,
 	initComponent : function() {
 		var me = this;
-		me.store = Ext.create('Ecfa.ux.grid.store.Property', {
+		me.store = Ext.create('MyApp.ux.grid.store.Property', {
 			model : me.model,
 			properties : me.properties
 		});

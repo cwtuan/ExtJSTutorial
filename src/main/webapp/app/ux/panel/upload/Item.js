@@ -3,7 +3,7 @@
  * 
  * It is a simple object wrapping the native file API object.
  */
-Ext.define('Ecfa.ux.panel.upload.Item', {
+Ext.define('MyApp.ux.panel.upload.Item', {
 	mixins : {
 		observable : 'Ext.util.Observable'
 	},

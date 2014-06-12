@@ -21,7 +21,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  
 **/
-Ext.define('Ecfa.ux.image.ImageViewer', {
+Ext.define('MyApp.ux.image.ImageViewer', {
     extend: 'Ext.container.Container',
 
     layout: {

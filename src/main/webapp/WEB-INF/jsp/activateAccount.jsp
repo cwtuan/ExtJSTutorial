@@ -23,7 +23,7 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
 
 				var submitOptions = {

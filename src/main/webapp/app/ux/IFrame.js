@@ -2,7 +2,7 @@
  * Add by Alvita 2013.8.7
  * iframe for download, and the exception handler with Message Box
  * */
-Ext.define('Ecfa.ux.IFrame', {
+Ext.define('MyApp.ux.IFrame', {
     extend: 'Ext.Component',
 
     alias: 'widget.ecfaiframe',

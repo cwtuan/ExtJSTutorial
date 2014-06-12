@@ -2,11 +2,11 @@
  * Uploader implementation - with the Connection object in ExtJS 4
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
-    extend : 'Ecfa.ux.panel.upload.uploader.AbstractUploader',
+Ext.define('MyApp.ux.panel.upload.uploader.ExtJsUploader', {
+    extend : 'MyApp.ux.panel.upload.uploader.AbstractUploader',
 
     requires : [
-        'Ecfa.ux.panel.upload.data.Connection'
+        'MyApp.ux.panel.upload.data.Connection'
     ],
 
     /**
@@ -21,7 +21,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
      * 
      * Initializes and returns the connection object.
      * 
-     * @return {Ecfa.ux.panel.upload.data.Connection}
+     * @return {MyApp.ux.panel.upload.data.Connection}
      */
     initConnection : function() {
         var url = this.url;
@@ -29,7 +29,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
             url = Ext.urlAppend(url, Ext.urlEncode(this.params));
         }
 
-        var conn = Ext.create('Ecfa.ux.panel.upload.data.Connection', {
+        var conn = Ext.create('MyApp.ux.panel.upload.data.Connection', {
             disableCaching : true,
             method : this.method,
             url : url,
@@ -44,9 +44,9 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
     },
 
     /**
-     * Implements {@link Ecfa.ux.panel.upload.uploader.AbstractUploader#uploadItem}
+     * Implements {@link MyApp.ux.panel.upload.uploader.AbstractUploader#uploadItem}
      * 
-     * @param {Ecfa.ux.panel.upload.Item} item
+     * @param {MyApp.ux.panel.upload.Item} item
      */
     uploadItem : function(item) {
         var file = item.getFileApiObject();
@@ -76,7 +76,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
     },
 
     /**
-     * Implements {@link Ecfa.ux.panel.upload.uploader.AbstractUploader#abortUpload}
+     * Implements {@link MyApp.ux.panel.upload.uploader.AbstractUploader#abortUpload}
      */
     abortUpload : function() {
         if (this.conn) {

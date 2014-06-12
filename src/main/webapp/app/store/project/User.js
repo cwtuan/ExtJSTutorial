@@ -1,17 +1,17 @@
-Ext.define('Ecfa.store.project.User', {
+Ext.define('MyApp.store.project.User', {
 	extend : 'Ext.data.Store',
-	model : 'Ecfa.model.project.User',
+	model : 'MyApp.model.project.User',
 	sorters : [ 
 //	            {
 //		sorterFn : function(o1, o2) {
 //			var getRank = function(o) {
 //				var projectRole = o.get('projectRole');
 //
-//				if (projectRole === Ecfa.Const.Project.Role.OWNER) {
+//				if (projectRole === MyApp.Const.Project.Role.OWNER) {
 //					return 1;
-//				} else if (projectRole === Ecfa.Const.Project.Role.ADMIN) {
+//				} else if (projectRole === MyApp.Const.Project.Role.ADMIN) {
 //					return 2;
-//				} else if (projectRole === Ecfa.Const.Project.Role.MEMBER) {
+//				} else if (projectRole === MyApp.Const.Project.Role.MEMBER) {
 //					return 3;
 //				} else {
 //					throw 'no such projectRole: ' + projectRole;

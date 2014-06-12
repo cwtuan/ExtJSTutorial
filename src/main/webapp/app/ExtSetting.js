@@ -1,6 +1,6 @@
 Ext
 		.define(
-				'Ecfa.ExtSetting',
+				'MyApp.ExtSetting',
 				{
 					singleton : true,
 					init : function(config) {
@@ -24,14 +24,14 @@ Ext
 						// init stateful component
 						// Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider', {
 						// expires: new Date(new Date().getTime()+15552000000), // 180 days
-						// path: 'Ecfa'
+						// path: 'MyApp'
 						// }));
 						// Ext.define('Ext.setting.grid.Panel', {
 						// override : 'Ext.grid.Panel',
 						// initComponent : function() {
 						// var me = this;
 						// var className = Ext.getClassName(me);
-						// if(className != null && className.indexOf('Ecfa') != -1 && className !== 'Ecfa.view.queue.task.FilterTaskGrid') {
+						// if(className != null && className.indexOf('MyApp') != -1 && className !== 'MyApp.view.queue.task.FilterTaskGrid') {
 						// me.stateful = true;
 						// me.stateId = className;
 						// }
@@ -54,7 +54,7 @@ Ext
 								// retry failed request
 								// FIXME don't retry when timeout
 								// if (response.status === 0) {
-								// Ext.getCmp('notifybar').showError(Locale.getMsg('view.common.noInternet'), Ecfa.Config.NO_INTERNET_RETRY_PERIOD);
+								// Ext.getCmp('notifybar').showError(Locale.getMsg('view.common.noInternet'), MyApp.Config.NO_INTERNET_RETRY_PERIOD);
 								// Ext.Ajax.request(options);
 								// }
 

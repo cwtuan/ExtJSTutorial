@@ -12,7 +12,7 @@
       "source": "{modelFileName}.js.tpl.merge",
       "version": "1b19f18f08e348a94bb0b08222b919f6c89a1c6b",
       "parameters": {
-        "appName": "Ecfa",
+        "appName": "MyApp",
         "modelFileName": "Job",
         "name": "Job",
         "fields": "id:int:null"
@@ -22,7 +22,7 @@
       "source": "app.js.tpl.merge",
       "version": "ca9cfeb9d3913435880b586ce4603fc886054b52",
       "parameters": {
-        "appName": "Ecfa",
+        "appName": "MyApp",
         "frameworkPath": "../ext",
         "appModels": "Job",
         "appControllers": "",

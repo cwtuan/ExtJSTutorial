@@ -1,13 +1,14 @@
-Ext.define('Ecfa.view.project.ProjectView', {
+Ext.define('MyApp.view.project.ProjectView', {
 	extend : 'Ext.panel.Panel',
 	alias : 'widget.projectView',
 	border : false,
 //	margins : '0 0 0 0',
-	requires : [ 'Ecfa.view.project.ProjectGrid', 'Ecfa.view.project.UserGrid' ],
+	requires : [ 'MyApp.view.project.ProjectGrid', 'MyApp.view.project.UserGrid' ],
 	layout : 'border',
 
 	initComponent : function() {
 		var me = this;
+		
 
 		me.items = [ {
 			xtype : 'projectGrid',

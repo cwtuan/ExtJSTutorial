@@ -1,13 +1,13 @@
 /**
  * The grid displaying the list of uploaded files (queue).
  * 
- * @class Ecfa.ux.panel.upload.ItemGridPanel
+ * @class MyApp.ux.panel.upload.ItemGridPanel
  * @extends Ext.grid.Panel
  */
-Ext.define('Ecfa.ux.panel.upload.ItemGridPanel', {
+Ext.define('MyApp.ux.panel.upload.ItemGridPanel', {
 	extend : 'Ext.grid.Panel',
 
-	requires : [ 'Ext.selection.CheckboxModel', 'Ecfa.ux.panel.upload.Store' ],
+	requires : [ 'Ext.selection.CheckboxModel', 'MyApp.ux.panel.upload.Store' ],
 
 	layout : 'fit',
 	border : 0,
@@ -41,7 +41,7 @@ Ext.define('Ecfa.ux.panel.upload.ItemGridPanel', {
 		}
 
 		Ext.apply(this, {
-			store : Ext.create('Ecfa.ux.panel.upload.Store'),
+			store : Ext.create('MyApp.ux.panel.upload.Store'),
 			selModel : Ext.create('Ext.selection.CheckboxModel', {
 				checkOnly : true
 			}),

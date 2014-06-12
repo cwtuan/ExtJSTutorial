@@ -4,10 +4,10 @@
  * Copyright(c) 2011-2013 Skirtle's Den
  * License: http://skirtlesden.com/ux/component-column
  */
-Ext.define('Ecfa.ux.grid.column.ComponentColumn', {
+Ext.define('MyApp.ux.grid.column.ComponentColumn', {
 	alias : 'widget.componentcolumn',
 	extend : 'Ext.grid.column.Column',
-	requires : [ 'Ecfa.ux.template.CTemplate' ],
+	requires : [ 'MyApp.ux.template.CTemplate' ],
 
 	// Whether or not to automatically resize the components when the column resizes
 	autoWidthComponents : true,
@@ -114,7 +114,7 @@ Ext.define('Ecfa.ux.grid.column.ComponentColumn', {
 	},
 
 	createTemplate : function(tpl) {
-		return tpl && tpl.isTemplate ? tpl : Ext.create('Ecfa.ux.template.CTemplate', tpl || [ '{', this.dataIndex, '}' ]);
+		return tpl && tpl.isTemplate ? tpl : Ext.create('MyApp.ux.template.CTemplate', tpl || [ '{', this.dataIndex, '}' ]);
 	},
 
 	destroyChild : function(child) {

@@ -25,7 +25,7 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
 				var submitOptions = {
 					url : 'resendActivateLink',
@@ -37,13 +37,13 @@
 						setTimeout("window.location = './';", 3000);
 					},
 					failure : function(form, action) {
-						console.log('failure', Ecfa.locale.Converter.getErrorMsg('', action.result));
+						console.log('failure', MyApp.locale.Converter.getErrorMsg('', action.result));
 						if (form.isDirty()) {
 							//win.down('#message').setMessage(false, action.result.msg);
 							win.down('#submit').setDisabled(false);
 						}
 						win.down('#message').setVisible(true);
-						win.down('#message').setMessage(false, Ecfa.locale.Converter.getErrorMsg('', action.result));
+						win.down('#message').setMessage(false, MyApp.locale.Converter.getErrorMsg('', action.result));
 					}
 				};
 

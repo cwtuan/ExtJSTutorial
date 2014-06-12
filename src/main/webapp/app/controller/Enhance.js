@@ -1,4 +1,4 @@
-Ext.define('Ecfa.controller.Enhance', {
+Ext.define('MyApp.controller.Enhance', {
 	extend : 'Ext.app.Controller',
 	requires : [],
 	stores : [],

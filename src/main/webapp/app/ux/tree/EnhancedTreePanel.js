@@ -5,7 +5,7 @@
  * 3. new method such as collapseRootChildren(..), findNode(...), etc.
  */
 
-Ext.define('Ecfa.ux.tree.EnhancedTreePanel', {
+Ext.define('MyApp.ux.tree.EnhancedTreePanel', {
 	extend : 'Ext.tree.Panel',
 
 	// requires : [ 'Ext.ux.NodeDisabled' ],
@@ -49,7 +49,7 @@ Ext.define('Ecfa.ux.tree.EnhancedTreePanel', {
 			upperNodeId = lowerNodeId;
 		}
 
-		var folders = lowerNodeId.replace(upperNodeId, '').split(Ecfa.Const.Folder.SEPARATOR);
+		var folders = lowerNodeId.replace(upperNodeId, '').split(MyApp.Const.Folder.SEPARATOR);
 		folders.shift(); // pop the first ''
 		console.log('folders', folders);
 		this._doNodeReloadAndExpand(upperNodeId, folders);
@@ -345,7 +345,7 @@ Ext.define('Ecfa.ux.tree.EnhancedTreePanel', {
 
 		var me = this;
 		var newNode;
-		var folders = path.split(Ecfa.Const.Folder.SEPARATOR);
+		var folders = path.split(MyApp.Const.Folder.SEPARATOR);
 		folders.shift(); // remove the empty folder
 		path = '';
 

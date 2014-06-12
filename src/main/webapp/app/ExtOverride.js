@@ -1,8 +1,9 @@
 // To provide more function or override default behavior for ExtJS 4.1
 // Must load ExtJS before this
-Ext.define('Ecfa.ExtOverride', {
+Ext.define('MyApp.ExtOverride', {
 	singleton : true,
-	init : function(vosConfig) {
+	init : function(vosConfig) {},
+	_init : function(vosConfig) {
 		// Part 1. Helpers or new methods
 
 		// 1.1 clearDirty: clear the isDirty state in the form. The new value of
@@ -272,14 +273,14 @@ Ext.define('Ecfa.ExtOverride', {
 		Ext.define('Ext.enhance.String', {
 			override : 'Ext.String',
 			filenameAppend : function(path, name) {
-				return (path.endsWith(Ecfa.Const.Folder.SEPARATOR)) ? path + name : path + Ecfa.Const.Folder.SEPARATOR + name;
+				return (path.endsWith(MyApp.Const.Folder.SEPARATOR)) ? path + name : path + MyApp.Const.Folder.SEPARATOR + name;
 			},
 			// filenameNormlizion
 
 			// Ex: filenameFolder('/xx/yy') -> '/xx'
 			filenameFolder : function(fullPath) {
 				// TODO 正規化
-				var path = fullPath.split(Ecfa.Const.Folder.SEPARATOR);
+				var path = fullPath.split(MyApp.Const.Folder.SEPARATOR);
 				path.pop();
 				var result = '';
 				Ext.Array.forEach(path, function(p) {
@@ -673,7 +674,7 @@ Ext.define('Ecfa.ExtOverride', {
 			onFileChange : function() {
 				this.lastValue = null; // force change event to get fired even
 				// if the user selects a file with the same name
-				Ext.form.field.File.superclass.setValue.call(this, Ecfa.Format.fullFileNameFromPath(this.fileInputEl.dom.value));
+				Ext.form.field.File.superclass.setValue.call(this, MyApp.Format.fullFileNameFromPath(this.fileInputEl.dom.value));
 			}
 		});
 
@@ -799,8 +800,8 @@ Ext.define('Ecfa.ExtOverride', {
 		// });
 
 		// 2.11 nopadding for all ComponentColumn
-		Ext.define('Ecfa.enhance.ux.grid.column.ComponentColumn', {
-			override : 'Ecfa.ux.grid.column.ComponentColumn',
+		Ext.define('MyApp.enhance.ux.grid.column.ComponentColumn', {
+			override : 'MyApp.ux.grid.column.ComponentColumn',
 			tdCls : 'nopadding'
 		});
 

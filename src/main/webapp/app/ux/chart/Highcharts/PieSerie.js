@@ -108,8 +108,8 @@
  * you can create an extra field in your store for the color code and use the 
  * *colorField* option to map the field.
  */
-Ext.define('Ecfa.ux.chart.Highcharts.PieSerie', {
-    extend : 'Ecfa.ux.chart.Highcharts.Serie',
+Ext.define('MyApp.ux.chart.Highcharts.PieSerie', {
+    extend : 'MyApp.ux.chart.Highcharts.Serie',
     alternateClassName: [ 'highcharts.pie' ],
     type : 'pie',
 
@@ -210,7 +210,7 @@ Ext.define('Ecfa.ux.chart.Highcharts.PieSerie', {
      */
     getData : function(record, seriesData) {
 
-        var _this = (Ecfa.ux.chart.Highcharts.sencha.product == 't') ? this.config : this;
+        var _this = (MyApp.ux.chart.Highcharts.sencha.product == 't') ? this.config : this;
 
         // Summed up the category among the series data
         if(this.totalDataField) {

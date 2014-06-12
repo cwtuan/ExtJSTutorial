@@ -1,4 +1,4 @@
-﻿Ext.define('Ecfa.view.about.OpenSourceLicenseWin', {
+﻿Ext.define('MyApp.view.about.OpenSourceLicenseWin', {
 	extend : 'Ext.window.Window',
 	alias : 'widget.openSourceLicenseWin',
 	modal : true,

@@ -19,7 +19,7 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 		console.log("alreadyActivateAccount : valid=", '${model.valid}');
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
 				var me = this;
 

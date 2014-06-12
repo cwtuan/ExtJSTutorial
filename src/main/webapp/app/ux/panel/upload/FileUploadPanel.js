@@ -5,26 +5,26 @@
  * 
  * In the most basic case you need just to set the upload URL:
  * 
- * @example var uploadPanel = Ext.create('Ecfa.ux.panel.upload.FileUploadPanel', { uploaderOptions: { url: '/api/upload' } });
+ * @example var uploadPanel = Ext.create('MyApp.ux.panel.upload.FileUploadPanel', { uploaderOptions: { url: '/api/upload' } });
  * 
  * It uses the default ExtJsUploader to perform the actual upload. If you want to use another uploade, for example the FormDataUploader, you can pass the name
  * of the class:
  * 
- * @example var uploadPanel = Ext.create('Ecfa.ux.panel.upload.FileUploadPanel', { uploader: 'Ecfa.ux.panel.upload.uploader.FormDataUploader', uploaderOptions: {
+ * @example var uploadPanel = Ext.create('MyApp.ux.panel.upload.FileUploadPanel', { uploader: 'MyApp.ux.panel.upload.uploader.FormDataUploader', uploaderOptions: {
  *          url: '/api/upload', timeout: 120*1000 } });
  * 
  * Or event an instance of the uploader:
  * 
- * @example var formDataUploader = Ext.create('Ecfa.ux.panel.upload.uploader.FormDataUploader', { url: '/api/upload' });
+ * @example var formDataUploader = Ext.create('MyApp.ux.panel.upload.uploader.FormDataUploader', { url: '/api/upload' });
  * 
- * var uploadPanel = Ext.create('Ecfa.ux.panel.upload.FileUploadPanel', { uploader: formDataUploader });
+ * var uploadPanel = Ext.create('MyApp.ux.panel.upload.FileUploadPanel', { uploader: formDataUploader });
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
+Ext.define('MyApp.ux.panel.upload.FileUploadPanel', {
 	extend : 'Ext.panel.Panel',
 	alias : 'widget.fileUploadPanel', // tony
-	requires : [ 'Ecfa.ux.panel.upload.ItemGridPanel', 'Ecfa.ux.panel.upload.Manager', 'Ecfa.ux.panel.upload.StatusBar', 'Ecfa.ux.panel.upload.BrowseButton',
-			'Ecfa.ux.panel.upload.Queue', 'Ecfa.ux.panel.upload.uploader.ExtJsUploader', 'Ecfa.ux.panel.upload.uploader.FormDataUploader' ],
+	requires : [ 'MyApp.ux.panel.upload.ItemGridPanel', 'MyApp.ux.panel.upload.Manager', 'MyApp.ux.panel.upload.StatusBar', 'MyApp.ux.panel.upload.BrowseButton',
+			'MyApp.ux.panel.upload.Queue', 'MyApp.ux.panel.upload.uploader.ExtJsUploader', 'MyApp.ux.panel.upload.uploader.FormDataUploader' ],
 	title : Locale.getMsg('view.transfer.upload.queued'),
 	enableBrowse : false,
 	projectOid : null, // @deprecated
@@ -38,8 +38,8 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 		 * 
 		 * The name of the uploader class or the uploader object itself. If not set, the default uploader will be used.
 		 */
-		// uploader : 'Ecfa.ux.panel.upload.uploader.ExtJsUploader',
-		uploader : 'Ecfa.ux.panel.upload.uploader.FormDataUploader',
+		// uploader : 'MyApp.ux.panel.upload.uploader.ExtJsUploader',
+		uploader : 'MyApp.ux.panel.upload.uploader.FormDataUploader',
 
 		/**
 		 * @cfg {Object}
@@ -67,7 +67,7 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 		 * @cfg {Object}
 		 * 
 		 * Params passed to the uploader object and sent along with the request. It depends on the implementation of the uploader object, for example if the
-		 * {@link Ecfa.ux.panel.upload.uploader.ExtJsUploader} is used, the params are sent as GET params.
+		 * {@link MyApp.ux.panel.upload.uploader.ExtJsUploader} is used, the params are sent as GET params.
 		 */
 		uploadParams : {},
 
@@ -109,31 +109,31 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 	},
 
 	/**
-	 * @property {Ecfa.ux.panel.upload.Queue}
+	 * @property {MyApp.ux.panel.upload.Queue}
 	 * @private
 	 */
 	queue : null,
 
 	/**
-	 * @property {Ecfa.ux.panel.upload.ItemGridPanel}
+	 * @property {MyApp.ux.panel.upload.ItemGridPanel}
 	 * @private
 	 */
 	grid : null,
 
 	/**
-	 * @property {Ecfa.ux.panel.upload.Manager}
+	 * @property {MyApp.ux.panel.upload.Manager}
 	 * @private
 	 */
 	uploadManager : null,
 
 	/**
-	 * @property {Ecfa.ux.panel.upload.StatusBar}
+	 * @property {MyApp.ux.panel.upload.StatusBar}
 	 * @private
 	 */
 	statusBar : null,
 
 	/**
-	 * @property {Ecfa.ux.panel.upload.BrowseButton}
+	 * @property {MyApp.ux.panel.upload.BrowseButton}
 	 * @private
 	 */
 	browseButton : null,
@@ -159,11 +159,11 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 			 * 
 			 * Fired when all files has been processed.
 			 * 
-			 * @param {Ecfa.ux.panel.upload.FileUploadPanel}
+			 * @param {MyApp.ux.panel.upload.FileUploadPanel}
 			 *            panel
-			 * @param {Ecfa.ux.panel.upload.Manager}
+			 * @param {MyApp.ux.panel.upload.Manager}
 			 *            manager
-			 * @param {Ecfa.ux.panel.upload.Item[]}
+			 * @param {MyApp.ux.panel.upload.Item[]}
 			 *            items
 			 * @param {number}
 			 *            errorCount
@@ -173,7 +173,7 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 
 		this.queue = this.initQueue();
 
-		this.grid = Ext.create('Ecfa.ux.panel.upload.ItemGridPanel', {
+		this.grid = Ext.create('MyApp.ux.panel.upload.ItemGridPanel', {
 			queue : this.queue,
 			textFilename : this.textFilename,
 			textSize : this.textSize,
@@ -188,7 +188,7 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 		this.uploadManager.on('itemuploadsuccess', this.onItemUploadSuccess, this);
 		this.uploadManager.on('itemuploadfailure', this.onItemUploadFailure, this);
 
-		this.statusBar = Ext.create('Ecfa.ux.panel.upload.StatusBar', {
+		this.statusBar = Ext.create('MyApp.ux.panel.upload.StatusBar', {
 			dock : 'bottom',
 			selectionMessageText : this.selectionMessageText,
 			uploadMessageText : this.uploadMessageText,
@@ -235,7 +235,7 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 			}
 		});
 
-		Ecfa.event.Folder.on({
+		MyApp.event.Folder.on({
 			selected : function(args) {
 
 				// console.log('fileupload args', args, 'me.containerId', me.containerId);
@@ -262,7 +262,7 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 			timeout : this.uploadTimeout
 		});
 
-		var uploadManager = Ext.create('Ecfa.ux.panel.upload.Manager', {
+		var uploadManager = Ext.create('MyApp.ux.panel.upload.Manager', {
 			uploader : this.uploader,
 			uploaderOptions : uploaderOptions,
 			synchronous : this.getSynchronous(),
@@ -289,7 +289,7 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 
 		// simple uploader win
 		if (me.enableBrowse) { // tony
-			this.browseButton = Ext.create('Ecfa.ux.panel.upload.BrowseButton', {
+			this.browseButton = Ext.create('MyApp.ux.panel.upload.BrowseButton', {
 				itemId : 'browseButton',
 				uploadFieldId : 'upload-field-at-win',
 				name : 'file', // tony: for server side's fileUploadBean
@@ -346,10 +346,10 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 	 * 
 	 * Initializes and returns the queue object.
 	 * 
-	 * @return {Ecfa.ux.panel.upload.Queue}
+	 * @return {MyApp.ux.panel.upload.Queue}
 	 */
 	initQueue : function() {
-		var queue = Ext.create('Ecfa.ux.panel.upload.Queue');
+		var queue = Ext.create('MyApp.ux.panel.upload.Queue');
 		// console.log('queue', queue);
 
 		queue.on('queuechange', this.onQueueChange, this);
@@ -389,7 +389,7 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 	 * 
 	 * Executes after files has been selected for upload through the "Browse" button. Updates the upload queue with the new files.
 	 * 
-	 * @param {Ecfa.ux.panel.upload.BrowseButton}
+	 * @param {MyApp.ux.panel.upload.BrowseButton}
 	 *            input
 	 * @param {FileList}
 	 *            files
@@ -412,7 +412,7 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 	 * 
 	 * Executes if there is a change in the queue. Updates the related components (grid, toolbar).
 	 * 
-	 * @param {Ecfa.ux.panel.upload.Queue}
+	 * @param {MyApp.ux.panel.upload.Queue}
 	 *            queue
 	 */
 	onQueueChange : function(queue) {
@@ -463,11 +463,11 @@ Ext.define('Ecfa.ux.panel.upload.FileUploadPanel', {
 
 	onItemUploadSuccess : function(manager, item, info) {
 		// tony
-		Ecfa.event.File.fireEvent('created', {
+		MyApp.event.File.fireEvent('created', {
 			name : item.fileApiObject.name,
 			folder : item.remoteFolder,
 			path : item.remoteFolder + '/' + item.fileApiObject.name,
-			type : Ecfa.Const.File.Type.IS_FILE,
+			type : MyApp.Const.File.Type.IS_FILE,
 			size : item.fileApiObject.size,
 			modifyTime : (new Date().getTime())
 		});

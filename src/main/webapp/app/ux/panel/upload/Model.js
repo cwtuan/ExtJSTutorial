@@ -1,7 +1,7 @@
 // TODO use file.js model
 
 
-Ext.define('Ecfa.ux.panel.upload.Model', {
+Ext.define('MyApp.ux.panel.upload.Model', {
 	extend : 'Ext.data.Model',
 	idProperty : 'path',
 	fields : [ {

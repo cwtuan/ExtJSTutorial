@@ -1,5 +1,5 @@
-Ext.define('Ecfa.ux.grid.column.ModelColumn', {
-	extend : 'Ecfa.ux.grid.column.ComponentColumn',
+Ext.define('MyApp.ux.grid.column.ModelColumn', {
+	extend : 'MyApp.ux.grid.column.ComponentColumn',
 	alias : 'widget.ModelColumn',
 	link : true,
 	initComponent : function() {
@@ -16,7 +16,7 @@ Ext.define('Ecfa.ux.grid.column.ModelColumn', {
 	},
 	onModelClick : function(record) {
 		var me = this;
-		Ecfa.event.Model.fireEvent('select', {
+		MyApp.event.Model.fireEvent('select', {
 			id : Ext.isEmpty(me.modelField) ? record.get('id') : record.get(me.modelField + 'Id')
 		});
 	},

@@ -1,6 +1,6 @@
-Ext.define('Ecfa.event.User', {
+Ext.define('MyApp.event.User', {
     extend : 'Ext.util.Observable',
-    mixins:['Ecfa.event.ModelEvent'],
+    mixins:['MyApp.event.ModelEvent'],
     singleton : true,
     constructor : function() {
         this.callParent(arguments);

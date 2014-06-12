@@ -1,4 +1,4 @@
-Ext.define('Ecfa.model.project.User', {
+Ext.define('MyApp.model.project.User', {
 	extend : 'Ext.data.Model',
 	idProperty : 'id',
 	fields : [ {
@@ -10,7 +10,7 @@ Ext.define('Ecfa.model.project.User', {
 	} ],
 	proxy : {
 		type : 'nestedRest',
-		url : 'rest/projects/{0}/users',
+		url : 'rest/projects/{0}/users/',
 		reader : {
 			type : 'restTaskGrid'
 		}

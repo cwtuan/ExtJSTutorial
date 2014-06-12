@@ -7,7 +7,7 @@
 //		}
 //}
 
-Ext.define('Ecfa.ux.button.ImgButton', {
+Ext.define('MyApp.ux.button.ImgButton', {
 	extend : 'Ext.Img',
 	alias : 'widget.imgButton',
 	enableKeyEvents : true,

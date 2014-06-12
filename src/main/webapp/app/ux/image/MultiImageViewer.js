@@ -20,8 +20,8 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-Ext.define('Ecfa.ux.image.MultiImageViewer', {
-    extend: 'Ecfa.ux.image.ImageViewer',
+Ext.define('MyApp.ux.image.MultiImageViewer', {
+    extend: 'MyApp.ux.image.ImageViewer',
     alias : 'widget.multiImageViewer',
     requires: ['Ext.XTemplate'],
 

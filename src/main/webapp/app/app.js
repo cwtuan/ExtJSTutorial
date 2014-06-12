@@ -13,12 +13,12 @@
 // DO NOT DELETE - this directive is required for Sencha Cmd packages to work.
 //@require @packageOverrides
 Ext.application({
-	name : 'Ecfa',
+	name : 'MyApp',
 	requires : [
 	// loadjs_dev "requires" is for localhost/dev.
 	// App.js "requires" is for localhost/ (product mode)
-	'Ecfa.Const', 'Ecfa.event.App', 'Ecfa.Config', 'Ecfa.ExtFix', 'Ecfa.ExtOverride', 'Ecfa.ExtSetting', 'Ecfa.util.Restful', 'Ecfa.locale.Converter',
-			'Ecfa.ux.proxy.NestedRest', 'Ecfa.reader.RestTaskGrid', 'Ext.util.Cookies'],
+	'MyApp.Const', 'MyApp.event.App', 'MyApp.Config', 'MyApp.ExtFix', 'MyApp.ExtOverride', 'MyApp.ExtSetting', 'MyApp.util.Restful', 'MyApp.locale.Converter',
+			'MyApp.ux.proxy.NestedRest', 'MyApp.reader.RestTaskGrid', 'Ext.util.Cookies'],
 
 	views : [ 'Viewport' ],
 	controllers : [ 'Enhance', 'Project'],
@@ -30,6 +30,6 @@ Ext.application({
 	launch : function() {
 		var me = this;
 		console.info('Ext.application launch');
-		Ecfa.event.App.fireEvent('created');
+		MyApp.event.App.fireEvent('created');
 	}
 });

@@ -1,7 +1,7 @@
 /**
  * Serie class for water fall series type
  *
- * See {@link Ecfa.ux.chart.Highcharts.Serie} class for more info
+ * See {@link MyApp.ux.chart.Highcharts.Serie} class for more info
  *
  * The following is the config example converted from the original 
  * [Highcharts waterfall demo][1]
@@ -32,8 +32,8 @@
  *     ]}
  *
  */
-Ext.define('Ecfa.ux.chart.Highcharts.WaterfallSerie', {
-	  extend : 'Ecfa.ux.chart.Highcharts.Serie',
+Ext.define('MyApp.ux.chart.Highcharts.WaterfallSerie', {
+	  extend : 'MyApp.ux.chart.Highcharts.Serie',
 	  alternateClassName: [ 'highcharts.waterfall' ],
 	  type : 'waterfall',
 

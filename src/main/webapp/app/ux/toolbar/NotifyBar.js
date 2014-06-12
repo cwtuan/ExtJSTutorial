@@ -18,7 +18,7 @@
 
 // TODO dont close success msg when mouseover
 // TODO close error msg by default and dont close it when mouseover
-Ext.define('Ecfa.ux.toolbar.NotifyBar', {
+Ext.define('MyApp.ux.toolbar.NotifyBar', {
 	extend : 'Ext.toolbar.Toolbar',
 	alias : 'widget.notifybar',
 	requires : [ 'Ext.toolbar.*' ],

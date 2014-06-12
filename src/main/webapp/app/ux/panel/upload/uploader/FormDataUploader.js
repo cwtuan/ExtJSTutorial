@@ -2,10 +2,10 @@
  * Uploader implementation which uses a FormData object to send files through XHR requests.
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.uploader.FormDataUploader', {
-	extend : 'Ecfa.ux.panel.upload.uploader.AbstractXhrUploader',
+Ext.define('MyApp.ux.panel.upload.uploader.FormDataUploader', {
+	extend : 'MyApp.ux.panel.upload.uploader.AbstractXhrUploader',
 
-	requires : [ 'Ecfa.ux.panel.upload.data.Connection' ],
+	requires : [ 'MyApp.ux.panel.upload.data.Connection' ],
 
 	method : 'POST',
 	xhr : null,
@@ -65,7 +65,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.FormDataUploader', {
 	},
 
 	/**
-	 * Implements {@link Ecfa.ux.panel.upload.uploader.AbstractUploader#abortUpload}
+	 * Implements {@link MyApp.ux.panel.upload.uploader.AbstractUploader#abortUpload}
 	 */
 	abortUpload : function() {
 		console.log('abortUpload', this);

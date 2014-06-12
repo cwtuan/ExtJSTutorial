@@ -1,4 +1,4 @@
-﻿Ext.define('Ecfa.view.project.AddUserWin', {
+﻿Ext.define('MyApp.view.project.AddUserWin', {
 	extend : 'Ext.window.Window',
 	alias : 'widget.addUserWin',
 	panel : null,
@@ -30,17 +30,18 @@
 				maxLength : 50,
 				allowBlank : false,
 				// validator : function(value){return true;}
-				validator : Ecfa.Validator.noSpecialChar
+				validator : MyApp.Validator.noSpecialChar
 			}, {
 				xtype : 'combo',
 				fieldLabel : Locale.getMsg('view.project.user.role'),
+				tooltip : Locale.getMsg('view.project.user.role.tooltip'),
 				name : 'role',
 				itemId : 'role',
 				allowBlank : false,
 				queryMode : 'local',
 				displayField : 'display',
 				valueField : 'value',
-				store : Ext.create('Ecfa.store.project.ProjectRole')
+				store : Ext.create('MyApp.store.project.ProjectRole')
 			} ],
 
 			buttons : [ {
@@ -56,14 +57,15 @@
 
 					var url = me.panel.store.getBaseUrl(); // getBaseUrl is implemented in ExtOverride.js
 
-					Ecfa.Restful.request({
+					MyApp.Restful.request({
 						url : url, // userData is not extjs model, we need to specify the url
 						record : userData,
 						method : 'POST',
-						eventType : Ecfa.event.User,
+						eventType : MyApp.event.User,
 						failureSubject : Locale.getMsg('view.project.user.add.failure', userData.id, project.get('name')),
 						successSubject : Locale.getMsg('view.project.user.add.success', userData.id, project.get('name')),
 						success : function(jsonResp) {
+							console.log('jsonResp',jsonResp);
 						},
 						failure : function(jsonResp) {
 						},

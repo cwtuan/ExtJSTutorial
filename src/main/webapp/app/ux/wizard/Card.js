@@ -16,7 +16,7 @@
  * @constructor
  * @param {Object} config The config object
  */
-Ext.define('Ecfa.ux.wizard.Card', {
+Ext.define('MyApp.ux.wizard.Card', {
     extend: 'Ext.form.Panel',
     cardTitle: '',
     cls: 'ux-wiz-card',

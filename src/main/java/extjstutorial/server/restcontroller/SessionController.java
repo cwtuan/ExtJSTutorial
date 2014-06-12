@@ -1,4 +1,4 @@
-package com.cht.server.restcontroller;
+package extjstutorial.server.restcontroller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,15 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cht.model.user.Role;
-import com.cht.model.user.UserModel;
+import extjstutorial.model.user.Role;
+import extjstutorial.model.user.UserModel;
 
-/**
- * APIs about sign in/out and query data of current signed-in user
- */
 @Controller
-// @IgnoreAccessControl
-public class SessionController extends BaseController {
+public class SessionController {
 
 	@RequestMapping(value = "rest/session", method = RequestMethod.GET)
 	@ResponseBody
@@ -64,7 +60,9 @@ public class SessionController extends BaseController {
 	}
 
 	@RequestMapping("/signin")
-	public ModelAndView signinPage(@RequestParam(required = false) String redirectPage, HttpSession session) {
+	public ModelAndView signinPage(
+			@RequestParam(required = false) String redirectPage,
+			HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (isLogined(session)) {
 			return new ModelAndView("index");

@@ -1,4 +1,4 @@
-﻿Ext.define('Ecfa.ux.form.MultiValueField', {//string array to string
+﻿Ext.define('MyApp.ux.form.MultiValueField', {//string array to string
 	extend: 'Ext.form.field.Text',
     alias: 'widget.multivaluefield',
     width: 0,

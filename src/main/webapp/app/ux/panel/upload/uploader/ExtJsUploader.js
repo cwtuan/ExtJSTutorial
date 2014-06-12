@@ -2,10 +2,10 @@
  * Uploader implementation - with the Connection object in ExtJS 4
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
-	extend : 'Ecfa.ux.panel.upload.uploader.AbstractXhrUploader',
+Ext.define('MyApp.ux.panel.upload.uploader.ExtJsUploader', {
+	extend : 'MyApp.ux.panel.upload.uploader.AbstractXhrUploader',
 
-	requires : [ 'Ecfa.ux.panel.upload.data.Connection' ],
+	requires : [ 'MyApp.ux.panel.upload.data.Connection' ],
 
 	config : {
 		/**
@@ -36,7 +36,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
 	 * 
 	 * Initializes and returns the connection object.
 	 * 
-	 * @return {Ecfa.ux.panel.upload.data.Connection}
+	 * @return {MyApp.ux.panel.upload.data.Connection}
 	 */
 	initConnection : function() {
 		var conn, url = this.url;
@@ -52,7 +52,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
 				url = Ext.urlAppend(url, Ext.urlEncode(this.params));
 			}
 
-			conn = Ext.create('Ecfa.ux.panel.upload.data.Connection', {
+			conn = Ext.create('MyApp.ux.panel.upload.data.Connection', {
 				disableCaching : true,
 				method : this.method,
 				url : url,
@@ -82,9 +82,9 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
 	},
 
 	/**
-	 * Implements {@link Ecfa.ux.panel.upload.uploader.AbstractUploader#uploadItem}
+	 * Implements {@link MyApp.ux.panel.upload.uploader.AbstractUploader#uploadItem}
 	 * 
-	 * @param {Ecfa.ux.panel.upload.Item}
+	 * @param {MyApp.ux.panel.upload.Item}
 	 *            item
 	 */
 	uploadItem : function(item) {
@@ -113,7 +113,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
 			scope : this,
 			headers : this.initHeaders(item),
 			rawData : file,
-			timeout : Ecfa.Const.JAVASCRIPT_MAX_NUMBER, // tony
+			timeout : MyApp.Const.JAVASCRIPT_MAX_NUMBER, // tony
 			success : Ext.Function.bind(this.onUploadSuccess, this, [ item ], true),
 			failure : Ext.Function.bind(this.onUploadFailure, this, [ item ], true),
 			progress : Ext.Function.bind(this.onUploadProgress, this, [ item ], true)
@@ -122,7 +122,7 @@ Ext.define('Ecfa.ux.panel.upload.uploader.ExtJsUploader', {
 	},
 
 	/**
-	 * Implements {@link Ecfa.ux.panel.upload.uploader.AbstractUploader#abortUpload}
+	 * Implements {@link MyApp.ux.panel.upload.uploader.AbstractUploader#abortUpload}
 	 */
 	abortUpload : function() {
 		if (this.conn) {

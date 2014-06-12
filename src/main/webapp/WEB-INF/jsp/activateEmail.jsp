@@ -19,7 +19,7 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 		console.log("alreadyActivateAccount : valid=", '${model.valid}');
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
 				var me = this;
 
@@ -58,7 +58,7 @@
 								if ('${model.error}' != '') {
 									var temp = new Object();
 									temp.error = '${model.error}';
-									var errorMsg = Ecfa.locale.Converter.getErrorMsg('', temp);
+									var errorMsg = MyApp.locale.Converter.getErrorMsg('', temp);
 									errorMsg = Locale.getMsg('view.auth.email.activate.fail', '3') + '<p>' + errorMsg + '</p>';
 									this.down('#message').setMessage(false, errorMsg);
 									setTimeout("window.location = './';", 3000);

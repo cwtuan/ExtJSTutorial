@@ -1,6 +1,6 @@
 /***
  * Serie class is the base class for all the series types. Users shouldn't use any of the 
- * series classes directly, they are created internally from Ecfa.ux.chart.Highcharts depending on the
+ * series classes directly, they are created internally from MyApp.ux.chart.Highcharts depending on the
  * series configuration.
  *
  * Serie class is a general class for series data representation. 
@@ -44,7 +44,7 @@
  *       ]
  *     }
  *
- * Then use {@link Ecfa.ux.chart.Highcharts.Serie#cfg-dataIndex} to map the series data array
+ * Then use {@link MyApp.ux.chart.Highcharts.Serie#cfg-dataIndex} to map the series data array
  *     series: [{
  *         name: 'Series A',
  *         dataIndex: 'series1'
@@ -56,8 +56,8 @@
  *         dataIndex: 'series3'
  *     }]
  */
-Ext.define('Ecfa.ux.chart.Highcharts.Serie', {
-    requires: [ 'Ecfa.ux.chart.Highcharts',
+Ext.define('MyApp.ux.chart.Highcharts.Serie', {
+    requires: [ 'MyApp.ux.chart.Highcharts',
                 'Ext.util.Observable'
               ],
     mixins: {
@@ -82,8 +82,8 @@ Ext.define('Ecfa.ux.chart.Highcharts.Serie', {
 
     /**
      * @readonly
-     * The {@link Ecfa.ux.chart.Highcharts} chart object owns this serie.
-     * @type Object/Ecfa.ux.chart.Highcharts
+     * The {@link MyApp.ux.chart.Highcharts} chart object owns this serie.
+     * @type Object/MyApp.ux.chart.Highcharts
      *
      * This can be useful with pointclick event when you need to use an Ext.Component.
      *     pointclick:{
@@ -256,7 +256,7 @@ Ext.define('Ecfa.ux.chart.Highcharts.Serie', {
             /**
              * @event pointclick
              * Fires when the point of the serie is clicked.
-             * @param {Ecfa.ux.chart.Highcharts.Serie}  serie the serie where is fired
+             * @param {MyApp.ux.chart.Highcharts.Serie}  serie the serie where is fired
              * @param {Object} point the point clicked
              * @param {Ext.data.Record} record the record associated to the point
              * @param {Object} evt the event param
@@ -265,7 +265,7 @@ Ext.define('Ecfa.ux.chart.Highcharts.Serie', {
         );
 
         // Sencha Touch initialises fields differently
-        if (Ecfa.ux.chart.Highcharts.sencha.product == 't') {
+        if (MyApp.ux.chart.Highcharts.sencha.product == 't') {
             config.xField && (this.xField = config.xField);
             config.yField && (this.yField = config.yField);
             config.dataIndex && (this.dataIndex = config.dataIndex);
@@ -324,7 +324,7 @@ Ext.define('Ecfa.ux.chart.Highcharts.Serie', {
         }
         
         // Sencha touch initiates the config field differently
-        if (Ecfa.ux.chart.Highcharts.sencha.product == 't') {
+        if (MyApp.ux.chart.Highcharts.sencha.product == 't') {
             chartConfig = this.chart.config.chartConfig;
             // If xField is part of this series configuration (which is not shared
             // by multiple series), then we don't need to populate

@@ -1,9 +1,6 @@
-package com.cht.model.project;
+package extjstutorial.model.project;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 

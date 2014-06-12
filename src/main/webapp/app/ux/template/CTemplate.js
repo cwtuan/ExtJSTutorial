@@ -4,7 +4,7 @@
  * Copyright(c) 2011-2013 Skirtle's Den
  * License: http://skirtlesden.com/ux/ctemplate
  */
-Ext.define('Ecfa.ux.template.CTemplate', {
+Ext.define('MyApp.ux.template.CTemplate', {
 	extend : 'Ext.XTemplate',
 
 	statics : {

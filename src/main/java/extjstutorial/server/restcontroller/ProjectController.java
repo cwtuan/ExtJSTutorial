@@ -1,4 +1,4 @@
-package com.cht.server.restcontroller;
+package extjstutorial.server.restcontroller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,16 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cht.exception.EcfaException;
-import com.cht.model.RestTask;
-import com.cht.model.project.ProjectModel;
-import com.cht.model.user.Role;
-import com.cht.model.user.UserModel;
-import com.cht.utility.constants.ErrorKey;
+import extjstutorial.exception.AppException;
+import extjstutorial.model.RestTask;
+import extjstutorial.model.project.ProjectModel;
+import extjstutorial.model.user.Role;
+import extjstutorial.model.user.UserModel;
+import extjstutorial.utility.constants.ErrorKey;
 
 @Controller
 @RequestMapping("rest/projects")
-public class ProjectController extends BaseController {
+public class ProjectController {
+
+	/* Projects */
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
@@ -55,17 +57,6 @@ public class ProjectController extends BaseController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/{projectId}/users")
-	@ResponseBody
-	public RestTask addUser(@PathVariable String projectId, @RequestBody UserModel user) {
-		try {
-			System.out.println(String.format("Adding user %s to project %s.", user.getId(), projectId));
-			return new RestTask(user);
-		} catch (Exception e) {
-			return new RestTask(user, e);
-		}
-	}
-
 	@RequestMapping(method = RequestMethod.PUT)
 	@ResponseBody
 	public RestTask updateProject(@RequestBody ProjectModel projectModel) {
@@ -75,51 +66,6 @@ public class ProjectController extends BaseController {
 		} catch (Exception e) {
 			return new RestTask(projectModel, e);
 		}
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "/{id}/users")
-	@ResponseBody
-	public RestTask getUsers(@PathVariable String id) throws Exception {
-		try {
-			// TODO service may thorw exception with ErrorKey
-			// throw new EcfaException(ErrorKey.FORBIDDEN);
-
-			List<UserModel> users = new ArrayList<UserModel>();
-			users.add(new UserModel("tony", Role.ADMIN));
-			users.add(new UserModel("alice", Role.MEMBER));
-			users.add(new UserModel("tom", Role.MEMBER));
-			return new RestTask(users);
-		} catch (Exception e) {
-			return new RestTask(null, e);
-		}
-	}
-
-	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/users")
-	@ResponseBody
-	public RestTask updateUser(@RequestBody UserModel user) {
-		try {
-			// TODO service may thorw exception without ErrorKey
-			// throw new Exception("whatever");
-			System.out.println("Updating a user:" + user);
-			return new RestTask(user);
-		} catch (Exception e) {
-			return new RestTask(user, e);
-		}
-	}
-
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{projectId}/users/")
-	@ResponseBody
-	public RestTask removeUsersFromProject(@RequestParam String[] id, @PathVariable String projectId) {
-		try {
-			for (String s : id) {
-				System.out.println("Removing user: " + s);
-			}
-			System.out.println("  >from project:" + projectId);
-			return new RestTask(id);
-		} catch (Exception e) {
-			return new RestTask(id, e);
-		}
-
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
@@ -142,6 +88,64 @@ public class ProjectController extends BaseController {
 		} catch (Exception e) {
 			return new RestTask(id, e);
 		}
+	}
+
+	/* Users */
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/users")
+	@ResponseBody
+	public RestTask getUsers(@PathVariable String id) throws Exception {
+		try {
+			// TODO service may thorw exception with ErrorKey
+//			throw new AppException(ErrorKey.FORBIDDEN);
+
+			 List<UserModel> users = new ArrayList<UserModel>();
+			 users.add(new UserModel("tony", Role.ADMIN));
+			 users.add(new UserModel("alice", Role.MEMBER));
+			 users.add(new UserModel("tom", Role.MEMBER));
+			 return new RestTask(users);
+		} catch (Exception e) {
+			return new RestTask(null, e);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/{projectId}/users")
+	@ResponseBody
+	public RestTask addUser(@PathVariable String projectId, @RequestBody UserModel user) {
+		try {
+			System.out.println(String.format("Adding user %s to project %s.", user.getId(), projectId));
+			return new RestTask(user);
+		} catch (Exception e) {
+			return new RestTask(user, e);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/{projectId}/users/{userId}")
+	@ResponseBody
+	public RestTask updateUser(@RequestBody UserModel user) {
+		try {
+			// TODO service may thorw exception without ErrorKey
+			throw new Exception("whatever");
+			// System.out.println("Updating a user:" + user);
+			// return new RestTask(user);
+		} catch (Exception e) {
+			return new RestTask(user, e);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{projectId}/users/")
+	@ResponseBody
+	public RestTask removeUsersFromProject(@RequestParam String[] id, @PathVariable String projectId) {
+		try {
+			for (String s : id) {
+				System.out.println("Removing user: " + s);
+			}
+			System.out.println("  >from project:" + projectId);
+			return new RestTask(id);
+		} catch (Exception e) {
+			return new RestTask(id, e);
+		}
+
 	}
 
 }

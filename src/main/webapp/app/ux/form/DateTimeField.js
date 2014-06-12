@@ -1,4 +1,4 @@
-﻿Ext.define('Ecfa.ux.form.DateTimeField', {
+﻿Ext.define('MyApp.ux.form.DateTimeField', {
 	extend : 'Ext.form.FieldSet',
 	alias : 'widget.dateTimeField',
 	timeIncrement : null,

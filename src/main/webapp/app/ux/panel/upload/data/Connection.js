@@ -1,7 +1,7 @@
 /**
  * Modified Ext.data.Connection object, adapted to be able to report progress.
  */
-Ext.define('Ecfa.ux.panel.upload.data.Connection', {
+Ext.define('MyApp.ux.panel.upload.data.Connection', {
     extend : 'Ext.data.Connection',
   
 

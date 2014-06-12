@@ -1,7 +1,7 @@
-Ext.define('Ecfa.view.project.action.EditUserAction', {
-	extend : 'Ecfa.action.Action',
+Ext.define('MyApp.view.project.action.EditUserAction', {
+	extend : 'MyApp.action.Action',
 	icon : 'css/images/edit_16x16.png',
-	requires : [ 'Ecfa.view.project.EditUserWin' ],
+	requires : [ 'MyApp.view.project.EditUserWin' ],
 	text : Locale.getMsg('view.common.edit'),
 	panel : null,
 	// TODO disableIfNoSelectionOrMoreThanOne:true,
@@ -17,7 +17,7 @@ Ext.define('Ecfa.view.project.action.EditUserAction', {
 			return;
 		}
 
-		var result = Ecfa.Validator.notProject1(projectRecord);
+		var result = MyApp.Validator.notProject1(projectRecord);
 
 		// TODO determine it at ecfa action
 		if (result !== true) {

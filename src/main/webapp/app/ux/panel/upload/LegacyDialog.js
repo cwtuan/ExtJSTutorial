@@ -4,7 +4,7 @@
  * Mostly, this will be the only object you need to interact with. Just initialize it and show it:
  * 
  *      @example
- *      var dialog = Ext.create('Ecfa.ux.panel.upload.Dialog', {
+ *      var dialog = Ext.create('MyApp.ux.panel.upload.Dialog', {
  *          dialogTitle: 'My Upload Widget',
  *          uploadUrl: 'upload.php'
  *      });
@@ -12,15 +12,15 @@
  *      dialog.show();
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.Dialog', {
+Ext.define('MyApp.ux.panel.upload.Dialog', {
     extend : 'Ext.window.Window',
 
     requires : [
-        'Ecfa.ux.panel.upload.ItemGridPanel',
-        'Ecfa.ux.panel.upload.Manager',
-        'Ecfa.ux.panel.upload.StatusBar',
-        'Ecfa.ux.panel.upload.BrowseButton',
-        'Ecfa.ux.panel.upload.Queue'
+        'MyApp.ux.panel.upload.ItemGridPanel',
+        'MyApp.ux.panel.upload.Manager',
+        'MyApp.ux.panel.upload.StatusBar',
+        'MyApp.ux.panel.upload.BrowseButton',
+        'MyApp.ux.panel.upload.Queue'
     ],
 
     /**
@@ -59,7 +59,7 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
          * @cfg {Object}
          * 
          * Params passed to the uploader object and sent along with the request. It depends on the implementation of the
-         * uploader object, for example if the {@link Ecfa.ux.panel.upload.uploader.ExtJsUploader} is used, the params are sent
+         * uploader object, for example if the {@link MyApp.ux.panel.upload.uploader.ExtJsUploader} is used, the params are sent
          * as GET params.
          */
         uploadParams : {},
@@ -103,27 +103,27 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
     },
 
     /**
-     * @property {Ecfa.ux.panel.upload.Queue}
+     * @property {MyApp.ux.panel.upload.Queue}
      */
     queue : null,
 
     /**
-     * @property {Ecfa.ux.panel.upload.ItemGridPanel}
+     * @property {MyApp.ux.panel.upload.ItemGridPanel}
      */
     grid : null,
 
     /**
-     * @property {Ecfa.ux.panel.upload.Manager}
+     * @property {MyApp.ux.panel.upload.Manager}
      */
     uploadManager : null,
 
     /**
-     * @property {Ecfa.ux.panel.upload.StatusBar}
+     * @property {MyApp.ux.panel.upload.StatusBar}
      */
     statusBar : null,
 
     /**
-     * @property {Ecfa.ux.panel.upload.BrowseButton}
+     * @property {MyApp.ux.panel.upload.BrowseButton}
      */
     browseButton : null,
 
@@ -147,9 +147,9 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
              * 
              * Fired when all files has been processed.
              * 
-             * @param {Ecfa.ux.panel.upload.Dialog} dialog
-             * @param {Ecfa.ux.panel.upload.Manager} manager
-             * @param {Ecfa.ux.panel.upload.Item[]} items
+             * @param {MyApp.ux.panel.upload.Dialog} dialog
+             * @param {MyApp.ux.panel.upload.Manager} manager
+             * @param {MyApp.ux.panel.upload.Item[]} items
              * @param {Number} errorCount
              */
             'uploadcomplete' : true
@@ -157,7 +157,7 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
 
         this.queue = this.initQueue();
 
-        this.grid = Ext.create('Ecfa.ux.panel.upload.ItemGridPanel', {
+        this.grid = Ext.create('MyApp.ux.panel.upload.ItemGridPanel', {
             queue : this.queue,
             textFilename : this.textFilename,
             textSize : this.textSize,
@@ -166,7 +166,7 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
             textProgress : this.textProgress
         });
 
-        this.uploadManager = Ext.create('Ecfa.ux.panel.upload.Manager', {
+        this.uploadManager = Ext.create('MyApp.ux.panel.upload.Manager', {
             url : this.uploadUrl,
             synchronous : this.synchronous,
             params : this.uploadParams,
@@ -178,7 +178,7 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
         this.uploadManager.on('itemuploadsuccess', this.onItemUploadSuccess, this);
         this.uploadManager.on('itemuploadfailure', this.onItemUploadFailure, this);
 
-        this.statusBar = Ext.create('Ecfa.ux.panel.upload.StatusBar', {
+        this.statusBar = Ext.create('MyApp.ux.panel.upload.StatusBar', {
             dock : 'bottom',
             selectionMessageText : this.selectionMessageText,
             uploadMessageText : this.uploadMessageText
@@ -234,7 +234,7 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
      */
     getTopToolbarConfig : function() {
 
-        this.browseButton = Ext.create('Ecfa.ux.panel.upload.BrowseButton', {
+        this.browseButton = Ext.create('MyApp.ux.panel.upload.BrowseButton', {
 //            id : 'button_browse',
             buttonText : this.buttonText
         });
@@ -287,10 +287,10 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
      * 
      * Initializes and returns the queue object.
      * 
-     * @return {Ecfa.ux.panel.upload.Queue}
+     * @return {MyApp.ux.panel.upload.Queue}
      */
     initQueue : function() {
-        var queue = Ext.create('Ecfa.ux.panel.upload.Queue');
+        var queue = Ext.create('MyApp.ux.panel.upload.Queue');
 
         queue.on('queuechange', this.onQueueChange, this);
 
@@ -324,7 +324,7 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
      * Executes after files has been selected for upload through the "Browse" button. Updates the upload queue with the
      * new files.
      * 
-     * @param {Ecfa.ux.panel.upload.BrowseButton} input
+     * @param {MyApp.ux.panel.upload.BrowseButton} input
      * @param {FileList} files
      */
     onFileSelection : function(input, files) {
@@ -338,7 +338,7 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
      * 
      * Executes if there is a change in the queue. Updates the related components (grid, toolbar).
      * 
-     * @param {Ecfa.ux.panel.upload.Queue} queue
+     * @param {MyApp.ux.panel.upload.Queue} queue
      */
     onQueueChange : function(queue) {
         this.updateStatusBar();

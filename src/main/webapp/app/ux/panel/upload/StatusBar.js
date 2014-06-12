@@ -1,10 +1,10 @@
 /**
  * Upload status bar.
  * 
- * @class Ecfa.ux.panel.upload.StatusBar
+ * @class MyApp.ux.panel.upload.StatusBar
  * @extends Ext.toolbar.Toolbar
  */
-Ext.define('Ecfa.ux.panel.upload.StatusBar', {
+Ext.define('MyApp.ux.panel.upload.StatusBar', {
 	extend : 'Ext.toolbar.Toolbar',
 
 	config : {

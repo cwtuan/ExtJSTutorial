@@ -3,10 +3,10 @@
  * 
  * Mostly, this may be the only object you need to interact with. Just initialize it and show it:
  * 
- * @example var dialog = Ext.create('Ecfa.ux.panel.upload.Dialog', { dialogTitle: 'My Upload Widget', uploadUrl: 'upload.php' }); dialog.show();
+ * @example var dialog = Ext.create('MyApp.ux.panel.upload.Dialog', { dialogTitle: 'My Upload Widget', uploadUrl: 'upload.php' }); dialog.show();
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.Dialog', {
+Ext.define('MyApp.ux.panel.upload.Dialog', {
 	extend : 'Ext.window.Window',
 
 	/**
@@ -47,7 +47,7 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
 		 * @cfg {Object}
 		 * 
 		 * Params passed to the uploader object and sent along with the request. It depends on the implementation of the uploader object, for example if the
-		 * {@link Ecfa.ux.panel.upload.uploader.ExtJsUploader} is used, the params are sent as GET params.
+		 * {@link MyApp.ux.panel.upload.uploader.ExtJsUploader} is used, the params are sent as GET params.
 		 */
 		uploadParams : {},
 
@@ -88,11 +88,11 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
 			 * 
 			 * Fired when all files has been processed.
 			 * 
-			 * @param {Ecfa.ux.panel.upload.Dialog}
+			 * @param {MyApp.ux.panel.upload.Dialog}
 			 *            dialog
-			 * @param {Ecfa.ux.panel.upload.Manager}
+			 * @param {MyApp.ux.panel.upload.Manager}
 			 *            manager
-			 * @param {Ecfa.ux.panel.upload.Item[]}
+			 * @param {MyApp.ux.panel.upload.Item[]}
 			 *            items
 			 * @param {Number}
 			 *            errorCount
@@ -101,13 +101,13 @@ Ext.define('Ecfa.ux.panel.upload.Dialog', {
 		});
 
 		if (!Ext.isObject(this.panel)) {
-			this.panel = Ext.create('Ecfa.ux.panel.upload.FileUploadPanel', {
+			this.panel = Ext.create('MyApp.ux.panel.upload.FileUploadPanel', {
 				synchronous : this.synchronous,
 				uploadUrl : this.uploadUrl,
 				uploadParams : this.uploadParams,
 				uploadExtraHeaders : this.uploadExtraHeaders,
 				uploadTimeout : this.uploadTimeout,
-				uploader : 'Ecfa.ux.panel.upload.uploader.FormDataUploader' // tony
+				uploader : 'MyApp.ux.panel.upload.uploader.FormDataUploader' // tony
 			});
 		}
 

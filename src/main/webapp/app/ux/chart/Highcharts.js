@@ -42,19 +42,19 @@
  *          fashion. The Highcharts component itself contains a *chartConfig* object which holds the existing native Highcharts configurations. At runtime,
  *          options inside *chartConfig* can be modified and call method *draw* which interally destroys and creates a new chart. As a result, the chart appears
  *          as a dynamic smooth update
- * @example var chart = new Ext.create('Ecfa.ux.chart.Highcharts', { .... }); chart.chartConfig.plotOptions.column.stacking = 'normal'; chart.draw(); # Mapping
+ * @example var chart = new Ext.create('MyApp.ux.chart.Highcharts', { .... }); chart.chartConfig.plotOptions.column.stacking = 'normal'; chart.draw(); # Mapping
  *          between JsonStore and series data The data mapping between JsonStore and chart series option is quite straightforward. Please refers to the desired
- *          {@link Ecfa.ux.chart.Highcharts.Serie} class and {@link Ecfa.ux.chart.Highcharts.Serie#method-getData} method for more details on data mapping. # Multiple
+ *          {@link MyApp.ux.chart.Highcharts.Serie} class and {@link MyApp.ux.chart.Highcharts.Serie#method-getData} method for more details on data mapping. # Multiple
  *          series with non-uniform datasets (Irregular data) For plotting multiple series that do not have the same number of data points, see
- *          {@link Ecfa.ux.chart.Highcharts.Serie} class and {@link Ecfa.ux.chart.Highcharts.Serie#cfg-dataIndex} configuration for more details on data mapping. # Using
+ *          {@link MyApp.ux.chart.Highcharts.Serie} class and {@link MyApp.ux.chart.Highcharts.Serie#cfg-dataIndex} configuration for more details on data mapping. # Using
  *          the extension without Store The extension can be created without necessary binding to a store. Suppose there are too many possible series that are
  *          not practical to be initiated as part of chart data. Instead, the chart component can be created without any datasets. However, the chart initial
- *          animation ({@link Ecfa.ux.chart.Highcharts#cfg-initAnimAfterLoad}) must be switched off, so that the extension won't defer plotting the chart waiting
+ *          animation ({@link MyApp.ux.chart.Highcharts#cfg-initAnimAfterLoad}) must be switched off, so that the extension won't defer plotting the chart waiting
  *          for data. xtype: 'highchart', initAnimAfterLoad: false, chartConfig : { chart : { // Show the empty chart - See Highcharts option showAxes: true,
- *          .... }, ... } Once the chart is displayed, the dynamic series can be displayed via {@link Ecfa.ux.chart.Highcharts#method-addSeries} method using the
+ *          .... }, ... } Once the chart is displayed, the dynamic series can be displayed via {@link MyApp.ux.chart.Highcharts#method-addSeries} method using the
  *          'data' field. This can further called by a separate store's load method triggered by some form of interactions from the UI.
  */
-Ext.define("Ecfa.ux.chart.Highcharts", {
+Ext.define("MyApp.ux.chart.Highcharts", {
 	extend : 'Ext.Component',
 	alias : [ 'widget.highchart' ],
 
@@ -126,7 +126,7 @@ Ext.define("Ecfa.ux.chart.Highcharts", {
 	resizable : true,
 
 	/**
-	 * @cfg {Number} updateDelay A delay to call {@link Ecfa.ux.chart.Highcharts#method-draw} method
+	 * @cfg {Number} updateDelay A delay to call {@link MyApp.ux.chart.Highcharts#method-draw} method
 	 */
 	updateDelay : 0,
 
@@ -237,12 +237,12 @@ Ext.define("Ecfa.ux.chart.Highcharts", {
 			// Clone Serie config for scope injection
 			var serie = Ext.clone(series[i]);
 			if (!serie.serieCls) {
-				cls = "Ecfa.ux.chart.Highcharts.Serie";// //////////////////////////////
+				cls = "MyApp.ux.chart.Highcharts.Serie";// //////////////////////////////
 				// if (serie.type != null || _this.defaultSerieType != null) {
 				// cls = serie.type || _this.chartConfig.chart.type || _this.chartConfig.chart.defaultSeriesType || _this.defaultSerieType;
 				// cls = "highcharts." + cls; // See alternateClassName
 				// } else {
-				// cls = "Ecfa.ux.chart.Highcharts.Serie";
+				// cls = "MyApp.ux.chart.Highcharts.Serie";
 				// }
 
 				serieObject = Ext.create(cls, serie);
@@ -835,7 +835,7 @@ Ext.define("Ecfa.ux.chart.Highcharts", {
 	},
 
 	/**
-	 * A function to delay the call to {@link Ecfa.ux.chart.Highcharts#method-draw} method
+	 * A function to delay the call to {@link MyApp.ux.chart.Highcharts#method-draw} method
 	 * 
 	 * @param {Number}
 	 *            delay Set a custom delay

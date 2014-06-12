@@ -9,8 +9,8 @@
 Ext.onReady(function() {
 		console.log('LINK REDIRECT..');
 			
-		// TODO tony: need to wait for Ecfa.event.App event?
-		Ecfa.event.App.on({
+		// TODO tony: need to wait for MyApp.event.App event?
+		MyApp.event.App.on({
 			created : function() {
 				
 				window.location = '${map.redirectPage}';//call real restAPI in QueueController for download

@@ -31,9 +31,9 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
-				Ext.require([ 'Ecfa.util.Validator' ]);
+				Ext.require([ 'MyApp.util.Validator' ]);
 
 				var invalidLink = '${model.id}' == '';
 				console.log('id', '${model.id}', invalidLink);
@@ -155,7 +155,7 @@
 							validator : function(value) {
 								if (value != '') {
 									var params = this.up('form').getValues();
-									if (!Ecfa.Validator.minPasswordLength(value)) {
+									if (!MyApp.Validator.minPasswordLength(value)) {
 										Locale.getMsg('view.auth.password.min.error');
 									} else if (params.password_repeat != params.password) {
 										return Locale.getMsg('view.auth.user.password.repeat.error');
@@ -217,10 +217,10 @@
 
 	// 		console.log("model id:",'${model.id}');
 
-	// 		Ecfa.event.App.on({
+	// 		MyApp.event.App.on({
 	// 			created : function() {
 
-	// 				Ext.require([ 'Ecfa.util.Validator' ]);
+	// 				Ext.require([ 'MyApp.util.Validator' ]);
 
 	// 				var submitOptions = {
 	// 					url : 'resetPassword',
@@ -337,7 +337,7 @@
 	// 											validator : function(value) {
 	// 												if (value != '') {
 	// 													var params = this.up('form').getValues();
-	// 													if (!Ecfa.Validator.minPasswordLength(value)) {
+	// 													if (!MyApp.Validator.minPasswordLength(value)) {
 	// 														Locale.getMsg('view.auth.password.min.error');
 	// 													} else if (params.password_repeat != params.password) {
 	// 														return Locale.getMsg('view.auth.user.password.repeat.error');

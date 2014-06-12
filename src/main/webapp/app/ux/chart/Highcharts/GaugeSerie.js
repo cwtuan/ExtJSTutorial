@@ -1,12 +1,12 @@
 /**
  * Serie class for gauge series type
  *
- * See {@link Ecfa.ux.chart.Highcharts.Serie} class for more info
+ * See {@link MyApp.ux.chart.Highcharts.Serie} class for more info
  *
  * Gauge series is a one dimensional series type, i.e only y-axis data
  */
-Ext.define('Ecfa.ux.chart.Highcharts.GaugeSerie', {
-	extend : 'Ecfa.ux.chart.Highcharts.Serie',
+Ext.define('MyApp.ux.chart.Highcharts.GaugeSerie', {
+	extend : 'MyApp.ux.chart.Highcharts.Serie',
 	alternateClassName: [ 'highcharts.gauge' ],
 	type : 'gauge'
 

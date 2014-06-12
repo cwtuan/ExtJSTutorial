@@ -1,4 +1,4 @@
-Ext.define('Ecfa.ux.panel.upload.Store', {
+Ext.define('MyApp.ux.panel.upload.Store', {
 	extend : 'Ext.data.Store',
-	model : 'Ecfa.ux.panel.upload.Model'
+	model : 'MyApp.ux.panel.upload.Model'
 });

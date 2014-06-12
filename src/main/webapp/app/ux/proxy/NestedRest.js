@@ -16,7 +16,7 @@
  * 
  */
 
-Ext.define('Ecfa.ux.proxy.NestedRest', {
+Ext.define('MyApp.ux.proxy.NestedRest', {
 	extend : 'Ext.data.proxy.Rest',
 	alias : 'proxy.nestedRest',
 	buildUrl : function(request) {

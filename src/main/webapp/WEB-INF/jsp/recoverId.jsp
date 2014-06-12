@@ -25,7 +25,7 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 
-		Ecfa.event.App.on({
+		MyApp.event.App.on({
 			created : function() {
 				var submitOptions = {
 					url : 'recoverId/sendMail',
@@ -45,7 +45,7 @@
 						}
 						//win.down('#message').setMessage(false, Locale.getMsg('view.auth.recoverId.' + action.result.msg, win.down('#email').getValue()))
 						win.down('#message').setVisible(true);
-						win.down('#message').setMessage(false, Ecfa.locale.Converter.getErrorMsg('', action.result));
+						win.down('#message').setMessage(false, MyApp.locale.Converter.getErrorMsg('', action.result));
 					}
 				};
 

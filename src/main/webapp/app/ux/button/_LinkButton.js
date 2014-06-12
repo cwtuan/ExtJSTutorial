@@ -1,4 +1,4 @@
-﻿Ext.define('Ecfa.ux.button._LinkButton', {
+﻿Ext.define('MyApp.ux.button._LinkButton', {
 	extend : 'Ext.Component',
 	alias : 'widget._linkButton',
 	childEls : [ 'btnEl' ],

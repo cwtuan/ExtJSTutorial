@@ -23,15 +23,10 @@
 		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd">
 
 
-	<context:component-scan base-package="com.cht.server.restcontroller" />
-
-
-
-
+	<context:component-scan base-package="extjstutorial.server.restcontroller" />
 	<mvc:annotation-driven />
 
 
-	<!-- http://stackoverflow.com/questions/11250333/contentnegotiatingviewresolver-to-display-two-content-type-to-same-view -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 	<bean

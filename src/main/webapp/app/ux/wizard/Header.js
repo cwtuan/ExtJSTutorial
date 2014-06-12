@@ -19,7 +19,7 @@
  * @constructor
  * @param {Object} config The config object
  */
-Ext.define('Ecfa.ux.wizard.Header', {
+Ext.define('MyApp.ux.wizard.Header', {
     extend: 'Ext.container.Container',
     alias: 'widget.wizardheader',
 

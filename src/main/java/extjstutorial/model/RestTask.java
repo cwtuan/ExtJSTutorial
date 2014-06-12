@@ -1,20 +1,14 @@
-package com.cht.model;
+package extjstutorial.model;
 
 import java.io.Serializable;
 
-// TODO Task -> RestTask
 public class RestTask implements Serializable {
-	/**
-	 * Auto-generated serial version UID
-	 */
+
 	private static final long serialVersionUID = 5649189052783655255L;
 	private Boolean success;
-	private String error; // should we need erroyKey for UI? or just success state?
-	private Object target; // TODO use AOP to store target
+	private String error;
+	private Object target;
 
-	/**
-	 * Used for HiRender Application only!
-	 */
 	public RestTask() {
 	}
 
@@ -31,24 +25,11 @@ public class RestTask implements Serializable {
 	}
 
 	/**
+	 * For failure rest task
 	 * 
-	 * 'failure'的task<BR/>
-	 * 建議使用 Task(Object target, Exception e)
 	 * @param target
-	 * @param errorKey
-	 */
-	public RestTask(Object target, String error) {
-		super();
-		this.success = false;
-		this.target = target;
-		this.error = error;
-	}
-
-	/**
-	 * 'failure'的task<BR/>
-	 * 只要給excpetion會自動抓e.getMessage塞到error
-	 * @param target
-	 * @param e Excpetion
+	 * @param e
+	 *            
 	 */
 	public RestTask(Object target, Exception e) {
 		super();

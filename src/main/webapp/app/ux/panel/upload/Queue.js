@@ -2,10 +2,10 @@
  * Data structure managing the upload file queue.
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.Queue', {
+Ext.define('MyApp.ux.panel.upload.Queue', {
 	extend : 'Ext.util.MixedCollection',
 
-	requires : [ 'Ecfa.ux.panel.upload.Item' ],
+	requires : [ 'MyApp.ux.panel.upload.Item' ],
 
 	/**
 	 * Constructor.
@@ -73,7 +73,7 @@ Ext.define('Ecfa.ux.panel.upload.Queue', {
 	/**
 	 * Returns all queued items.
 	 * 
-	 * @return {Ecfa.ux.panel.upload.Item[]}
+	 * @return {MyApp.ux.panel.upload.Item[]}
 	 */
 	getItems : function() {
 		return this.getRange();
@@ -82,7 +82,7 @@ Ext.define('Ecfa.ux.panel.upload.Queue', {
 	/**
 	 * Returns an array of items, that have already been uploaded.
 	 * 
-	 * @return {Ecfa.ux.panel.upload.Item[]}
+	 * @return {MyApp.ux.panel.upload.Item[]}
 	 */
 	getUploadedItems : function() {
 		var uploadedItems = [];
@@ -102,7 +102,7 @@ Ext.define('Ecfa.ux.panel.upload.Queue', {
 	/**
 	 * Returns the first "ready" item in the queue (with status STATUS_READY).
 	 * 
-	 * @return {Ecfa.ux.panel.upload.Item/null}
+	 * @return {MyApp.ux.panel.upload.Item/null}
 	 */
 	getFirstReadyItem : function() {
 		var items = this.getRange();
@@ -137,7 +137,7 @@ Ext.define('Ecfa.ux.panel.upload.Queue', {
 	/**
 	 * Removes items from the queue.
 	 * 
-	 * @param {Ecfa.ux.panel.upload.Item[]}
+	 * @param {MyApp.ux.panel.upload.Item[]}
 	 *            items
 	 */
 	removeItems : function(items) {
@@ -208,11 +208,11 @@ Ext.define('Ecfa.ux.panel.upload.Queue', {
 	 * 
 	 * @param {File}
 	 *            file
-	 * @return {Ecfa.ux.panel.upload.Item}
+	 * @return {MyApp.ux.panel.upload.Item}
 	 */
 	createItem : function(file, remoteFolder) { // tony
 
-		var item = Ext.create('Ecfa.ux.panel.upload.Item', {
+		var item = Ext.create('MyApp.ux.panel.upload.Item', {
 			fileApiObject : file,
 			remoteFolder : remoteFolder
 		// tony
@@ -226,7 +226,7 @@ Ext.define('Ecfa.ux.panel.upload.Queue', {
 	/**
 	 * A getKey() implementation to determine the key of an item in the collection.
 	 * 
-	 * @param {Ecfa.ux.panel.upload.Item}
+	 * @param {MyApp.ux.panel.upload.Item}
 	 *            item
 	 * @return {String}
 	 */
@@ -245,7 +245,7 @@ Ext.define('Ecfa.ux.panel.upload.Queue', {
 	/**
 	 * Returns true, if the item is the last item in the queue.
 	 * 
-	 * @param {Ecfa.ux.panel.upload.Item}
+	 * @param {MyApp.ux.panel.upload.Item}
 	 *            item
 	 * @return {boolean}
 	 */

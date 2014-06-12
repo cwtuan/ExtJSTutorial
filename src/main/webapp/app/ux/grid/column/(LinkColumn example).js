@@ -1,5 +1,5 @@
-Ext.define('Ecfa.ux.grid.column.VmLinkColumn', {
-	extend : 'Ecfa.ux.grid.column.ModelColumn',
+Ext.define('MyApp.ux.grid.column.VmLinkColumn', {
+	extend : 'MyApp.ux.grid.column.ModelColumn',
 	alias : 'widget.VmLinkColumn',
 	getIcon : function(record) {
 		var me = this;

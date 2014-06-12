@@ -1,5 +1,5 @@
-﻿Ext.define('Ecfa.ux.button.WinGridLinkButton', {
-	extend : 'Ecfa.ux.button.LinkButton',
+﻿Ext.define('MyApp.ux.button.WinGridLinkButton', {
+	extend : 'MyApp.ux.button.LinkButton',
 	alias : 'widget.winGridLinkButton',	
 	enableMouseover: true,
 	//grid : null,
@@ -19,7 +19,7 @@
 			if (!Ext.getCmp('gridwin')) {
 				//console.log('no gridwin');
 				
-				var win = Ext.create('Ecfa.view.usage.UframeWin',{
+				var win = Ext.create('MyApp.view.usage.UframeWin',{
 					missionOid : me.missionOid,
 					frameSeq : me.frameSeq,
 					x : me.getEl().getX() + 25,

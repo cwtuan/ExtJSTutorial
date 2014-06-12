@@ -2,13 +2,13 @@
  * The object is responsible for uploading the queue.
  * 
  */
-Ext.define('Ecfa.ux.panel.upload.Manager', {
+Ext.define('MyApp.ux.panel.upload.Manager', {
 	mixins : {
 		observable : 'Ext.util.Observable'
 	},
 	queue : null,
 
-	requires : [ 'Ecfa.ux.panel.upload.uploader.AbstractUploader' ],
+	requires : [ 'MyApp.ux.panel.upload.uploader.AbstractUploader' ],
 
 	config : {
 		queue : null,
@@ -18,7 +18,7 @@ Ext.define('Ecfa.ux.panel.upload.Manager', {
 		toAbortXhr : []
 	},
 
-	DEFAULT_UPLOADER_CLASS : 'Ecfa.ux.panel.upload.uploader.ExtJsUploader',
+	DEFAULT_UPLOADER_CLASS : 'MyApp.ux.panel.upload.uploader.ExtJsUploader',
 
 	constructor : function(config) {
 		this.mixins.observable.constructor.call(this);
@@ -31,9 +31,9 @@ Ext.define('Ecfa.ux.panel.upload.Manager', {
 			 * 
 			 * Fired when the upload completes.
 			 * 
-			 * @param {Ecfa.ux.panel.upload.Manager}
+			 * @param {MyApp.ux.panel.upload.Manager}
 			 *            manager
-			 * @param {Ecfa.ux.panel.upload.Queue}
+			 * @param {MyApp.ux.panel.upload.Queue}
 			 *            queue
 			 * @param {number}
 			 *            errorCount
@@ -45,9 +45,9 @@ Ext.define('Ecfa.ux.panel.upload.Manager', {
 			 * 
 			 * Fired after the upload has been aborted.
 			 * 
-			 * @param {Ecfa.ux.panel.upload.Manager}
+			 * @param {MyApp.ux.panel.upload.Manager}
 			 *            manager
-			 * @param {Ecfa.ux.panel.upload.Queue}
+			 * @param {MyApp.ux.panel.upload.Queue}
 			 *            queue
 			 */
 			'abortupload' : true,
@@ -57,9 +57,9 @@ Ext.define('Ecfa.ux.panel.upload.Manager', {
 			 * 
 			 * Fired after a single item has been uploaded successfully.
 			 * 
-			 * @param {Ecfa.ux.panel.upload.Manager}
+			 * @param {MyApp.ux.panel.upload.Manager}
 			 *            manager
-			 * @param {Ecfa.ux.panel.upload.Item}
+			 * @param {MyApp.ux.panel.upload.Item}
 			 *            item
 			 * @param {Object}
 			 *            info
@@ -71,9 +71,9 @@ Ext.define('Ecfa.ux.panel.upload.Manager', {
 			 * 
 			 * Fired after an error has occurred while uploading an item.
 			 * 
-			 * @param {Ecfa.ux.panel.upload.Manager}
+			 * @param {MyApp.ux.panel.upload.Manager}
 			 *            manager
-			 * @param {Ecfa.ux.panel.upload.Item}
+			 * @param {MyApp.ux.panel.upload.Item}
 			 *            item
 			 * @param {Object}
 			 *            info
@@ -83,7 +83,7 @@ Ext.define('Ecfa.ux.panel.upload.Manager', {
 
 		this.initConfig(config);
 
-		if (!(this.uploader instanceof Ecfa.ux.panel.upload.uploader.AbstractUploader)) {
+		if (!(this.uploader instanceof MyApp.ux.panel.upload.uploader.AbstractUploader)) {
 			var uploaderClass = this.DEFAULT_UPLOADER_CLASS;
 			if (Ext.isString(this.uploader)) {
 				uploaderClass = this.uploader;

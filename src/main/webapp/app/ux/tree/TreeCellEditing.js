@@ -1,7 +1,7 @@
 
 //http://www.sencha.com/forum/showthread.php?176031-Tree-rowEditing-or-cellEditing
 	
-Ext.define('Ecfa.ux.tree.TreeCellEditing', {
+Ext.define('MyApp.ux.tree.TreeCellEditing', {
 	alias : 'plugin.treecellediting',
 	extend : 'Ext.grid.plugin.CellEditing',
 

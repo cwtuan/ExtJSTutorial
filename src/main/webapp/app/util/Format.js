@@ -1,6 +1,6 @@
-﻿Ext.define('Ecfa.util.Format', {
+﻿Ext.define('MyApp.util.Format', {
 	singleton : true,
-	alternateClassName : [ 'Ecfa.Format' ],
+	alternateClassName : [ 'MyApp.Format' ],
 	usagePercentage : function(value) {
 		if (value && !isNaN(value)) {
 			// show 100% when larger than 100%, should only happened in some rare cases
@@ -115,14 +115,14 @@
 	
 	//US
 	currency : function(value){
-		var currency = Ecfa.Config.CURRENCY;
+		var currency = MyApp.Config.CURRENCY;
 		//console.log(currency);
-		if(currency==Ecfa.Const.Currency.USD){
+		if(currency==MyApp.Const.Currency.USD){
 			//console.log('USD');
 			//console.log('$' + this.floatRound(value, 2));
 			return '$' + this.floatRound(value, 2);
 		
-		}else if(currency==Ecfa.Const.Currency.NTD){
+		}else if(currency==MyApp.Const.Currency.NTD){
 			
 			return 'NTD' + this.floatRound(value, 0);
 			
