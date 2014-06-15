@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * A specialized panel intended for use as an application window. Windows are floated, {@link #resizable}, and
  * {@link #cfg-draggable} by default. Windows can be {@link #maximizable maximized} to fill the viewport, restored to
@@ -60,14 +77,80 @@ Ext.define('Ext.window.Window', {
      */
 
     /**
+     * @cfg {Boolean/Function} ghost
+     * Set to false to disable the ghost panel during dragging the window.
+     * Do note that you should not set this to true, by default it is a function.
+     */
+
+    /**
      * @cfg {String/Number/Ext.Component} defaultFocus
      * Specifies a Component to receive focus when this Window is focused.
      *
-     * This may be one of:
+     * If a String is provided, the Component will be resolved using the {@link #down} method which uses {@link Ext.ComponentQuery}.
+     * If the string begins with an alphanumeric value, it will first attempt to find the Component based on the {@link Ext.AbstractComponent#id} or {@link Ext.AbstractComponent#itemId}.
+     *
+     * An example of finding the Component with an id/itemId:
+     *
+     *     Ext.create('Ext.window.Window', {
+     *         autoShow     : true,
+     *         width        : 300,
+     *         title        : 'Login',
+     *         defaultFocus : 'username',
+     *         items        : [
+     *             {
+     *                 xtype      : 'textfield',
+     *                 fieldLabel : 'Username',
+     *                 itemId     : 'username',
+     *                 name       : 'username'
+     *             },
+     *             {
+     *                 xtype      : 'textfield',
+     *                 inputType  : 'password',
+     *                 fieldLabel : 'Password',
+     *                 itemId     : 'password',
+     *                 name       : 'password'
+     *             }
+     *         ]
+     *     });
+     *
+     * If a Number is provided, this will resolve an {@link Ext.button.Button} at that index. This is very useful if
+     * the window has buttons in the {@link #buttons} config and you want to provide default focus to one of them.
+     *
+     * An example of this would be:
+     *
+     *     Ext.create('Ext.window.Window', {
+     *         autoShow     : true,
+     *         width        : 300,
+     *         title        : 'Login',
+     *         defaultFocus : 1,
+     *         items        : [
+     *             {
+     *                 xtype      : 'textfield',
+     *                 fieldLabel : 'Username',
+     *                 name       : 'username'
+     *            },
+     *            {
+     *                 xtype      : 'textfield',
+     *                 inputType  : 'password',
+     *                 fieldLabel : 'Password',
+     *                 name       : 'password'
+     *             }
+     *         ],
+     *         buttons      : [
+     *             {
+     *                 text : 'Cancel'
+     *             },
+     *             {
+     *                 text : 'Login'
+     *             }
+     *         ]
+     *     });
+     *
+     * In summary, defaultFocus may be one of:
      *
      *   - The index of a footer Button.
      *   - The id or {@link Ext.AbstractComponent#itemId} of a descendant Component.
-     *   - A Component.
+     *   - A descendant {@link Ext.Component}.
      */
 
     /**
@@ -90,6 +173,11 @@ Ext.define('Ext.window.Window', {
      */
 
     /**
+     * @cfg {Boolean} [hideShadowOnDeactivate=false]
+     * True to hide this Window's shadow when another floating item in the same z-index stack is activated.
+     */
+
+    /**
     * @cfg {String} [baseCls='x-window']
     * The base CSS class to apply to this panel's element.
     */
@@ -107,20 +195,22 @@ Ext.define('Ext.window.Window', {
      * @cfg {Boolean} draggable
      * True to allow the window to be dragged by the header bar, false to disable dragging. Note that
      * by default the window will be centered in the viewport, so if dragging is disabled the window may need to be
-     * positioned programmatically after render (e.g., myWindow.setPosition(100, 100);).
+     * positioned programmatically after render (e.g., `myWindow.setPosition(100, 100);`).
      */
     draggable: true,
 
     /**
+     * @override
      * @cfg {Boolean} constrain
      * True to constrain the window within its containing element, false to allow it to fall outside of its containing
-     * element. By default the window will be rendered to document.body. To render and constrain the window within
+     * element. By default the window will be rendered to `document.body`. To render and constrain the window within
      * another element specify {@link #renderTo}. Optionally the header only can be constrained
      * using {@link #constrainHeader}.
      */
     constrain: false,
 
     /**
+     * @override
      * @cfg {Boolean} constrainHeader
      * True to constrain the window header within its containing element (allowing the window body to fall outside of
      * its containing element) or false to allow the header to fall outside its containing element.
@@ -129,9 +219,7 @@ Ext.define('Ext.window.Window', {
     constrainHeader: false,
 
     /**
-     * @cfg {Ext.util.Region/Ext.Element} constrainTo
-     * A {@link Ext.util.Region Region} (or an element from which a Region measurement will be read) which is used
-     * to constrain the window.
+     * @cfg simpleDrag @hide
      */
 
     /**
@@ -196,29 +284,29 @@ Ext.define('Ext.window.Window', {
     hidden: true,
 
     /**
-     * @cfg
+     * @cfg {Boolean}
      * @inheritdoc
      * Windows render to the body on first show.
      */
     autoRender: true,
 
     /**
-     * @cfg
+     * @cfg {String}
      * @inheritdoc
      * Windows hide using offsets in order to preserve the scroll positions of their descendants.
      */
     hideMode: 'offsets',
 
     /**
-     * @cfg
+     * @property {Boolean}
+     * A Window is always floating.
      * @private
+     * @readonly
      */
     floating: true,
 
-    ariaRole: 'alertdialog',
-
     itemCls: Ext.baseCSSPrefix + 'window-item',
-    
+
     initialAlphaNum: /^[a-z0-9]/,
 
     overlapHeader: true,
@@ -228,13 +316,20 @@ Ext.define('Ext.window.Window', {
     // Flag to Renderable to always look up the framing styles for this Component
     alwaysFramed: true,
 
+    // Buffer this so we don't recreate the same object
+    isRootCfg: {
+        isRoot: true
+    },
+
     /**
      * @property {Boolean} isWindow
      * `true` in this class to identify an object as an instantiated Window, or subclass thereof.
      */
     isWindow: true,
+    
+    ariaRole: 'dialog',
 
-    // private
+    // @private
     initComponent: function() {
         var me = this;
         // Explicitly set frame to false, since alwaysFramed is
@@ -289,19 +384,6 @@ Ext.define('Ext.window.Window', {
             me.addClsWithUI('plain');
         }
 
-        if (me.modal) {
-            me.ariaRole = 'dialog';
-        }
-
-        // clickToRaise
-        if (me.floating) {
-            me.on({
-                element: 'el',
-                mousedown: me.onMouseDown,
-                scope: me
-            });
-        }
-
         me.addStateEvents(['maximize', 'restore', 'resize', 'dragend']);
     },
 
@@ -315,17 +397,29 @@ Ext.define('Ext.window.Window', {
     },
 
     // State Management
-    // private
 
+    // @private
     getState: function() {
         var me = this,
             state = me.callParent() || {},
-            maximized = !!me.maximized;
+            maximized = !!me.maximized,
+            ghostBox = me.ghostBox,
+            pos;
+
 
         state.maximized = maximized;
+        if (maximized) {
+            pos = me.restorePos;
+        } else if (ghostBox) {
+            // If we're animating a show, it will be from offscreen, so
+            // grab the position from the final box
+            pos = [ghostBox.x, ghostBox.y];
+        } else {
+            pos = me.getPosition();
+        }
         Ext.apply(state, {
             size: maximized ? me.restoreSize : me.getSize(),
-            pos: maximized ? me.restorePos : me.getPosition()
+            pos: pos
         });
         return state;
     },
@@ -350,19 +444,7 @@ Ext.define('Ext.window.Window', {
         }
     },
 
-    // private
-    onMouseDown: function (e) {
-        var preventFocus;
-            
-        if (this.floating) {
-            if (Ext.fly(e.getTarget()).focusable()) {
-                preventFocus = true;
-            }
-            this.toFront(preventFocus);
-        }
-    },
-
-    // private
+    // @private
     onRender: function(ct, position) {
         var me = this;
         me.callParent(arguments);
@@ -377,9 +459,10 @@ Ext.define('Ext.window.Window', {
         }
     },
 
-    // private
+    // @private
     afterRender: function() {
         var me = this,
+            header = me.header,
             keyMap;
 
         me.callParent();
@@ -388,6 +471,9 @@ Ext.define('Ext.window.Window', {
         if (me.maximized) {
             me.maximized = false;
             me.maximize();
+            if (header) {
+                header.removeCls(header.indicateDragCls)
+            }
         }
 
         if (me.closable) {
@@ -401,53 +487,30 @@ Ext.define('Ext.window.Window', {
         }
     },
 
-    /**
-     * @private
-     * Override Component.initDraggable.
-     * Window uses the header element as the delegate.
-     */
+    // Override. Windows are always simple draggable, they do not use Ext.Panel.DDs
+    // The dd property in a Window is always a ComponentDragger
     initDraggable: function() {
-        var me = this,
-            ddConfig;
-
-        if (!me.header) {
-            me.updateHeader(true);
-        }
-
-        /*
-         * Check the header here again. If for whatever reason it wasn't created in
-         * updateHeader (we were configured with header: false) then we'll just ignore the rest since the
-         * header acts as the drag handle.
+        /**
+         * @property {Ext.util.ComponentDragger} dd
+         * If this Window is configured {@link #cfg-draggable}, this property will contain an instance of
+         * {@link Ext.util.ComponentDragger} (A subclass of {@link Ext.dd.DragTracker DragTracker}) which handles dragging
+         * the Window's DOM Element, and constraining according to the {@link #constrain} and {@link #constrainHeader} .
+         *
+         * This has implementations of `onBeforeStart`, `onDrag` and `onEnd` which perform the dragging action. If
+         * extra logic is needed at these points, use {@link Ext.Function#createInterceptor createInterceptor} or
+         * {@link Ext.Function#createSequence createSequence} to augment the existing implementations.
          */
-        if (me.header) {
-            ddConfig = Ext.applyIf({
-                el: me.el,
-                delegate: '#' + Ext.escapeId(me.header.id)
-            }, me.draggable);
+        this.initSimpleDraggable();
+    },
 
-            // Add extra configs if Window is specified to be constrained
-            if (me.constrain || me.constrainHeader) {
-                ddConfig.constrain = me.constrain;
-                ddConfig.constrainDelegate = me.constrainHeader;
-                ddConfig.constrainTo = me.constrainTo || me.container;
-            }
-
-            /**
-             * @property {Ext.util.ComponentDragger} dd
-             * If this Window is configured {@link #cfg-draggable}, this property will contain an instance of
-             * {@link Ext.util.ComponentDragger} (A subclass of {@link Ext.dd.DragTracker DragTracker}) which handles dragging
-             * the Window's DOM Element, and constraining according to the {@link #constrain} and {@link #constrainHeader} .
-             *
-             * This has implementations of `onBeforeStart`, `onDrag` and `onEnd` which perform the dragging action. If
-             * extra logic is needed at these points, use {@link Ext.Function#createInterceptor createInterceptor} or
-             * {@link Ext.Function#createSequence createSequence} to augment the existing implementations.
-             */
-            me.dd = new Ext.util.ComponentDragger(this, ddConfig);
-            me.relayEvents(me.dd, ['dragstart', 'drag', 'dragend']);
+    initResizable: function(){
+        this.callParent(arguments);
+        if (this.maximized) {
+            this.resizer.disable();
         }
     },
 
-    // private
+    // @private
     onEsc: function(k, e) {
         // Only process ESC if the FocusManager is not doing it
         if (!Ext.FocusManager || !Ext.FocusManager.enabled || Ext.FocusManager.focusedCmp === this) {
@@ -456,7 +519,7 @@ Ext.define('Ext.window.Window', {
         }
     },
 
-    // private
+    // @private
     beforeDestroy: function() {
         var me = this;
         if (me.rendered) {
@@ -527,7 +590,7 @@ Ext.define('Ext.window.Window', {
             // String is ID or CQ selector
             else if (Ext.isString(defaultComp)) {
                 selector = defaultComp;
-                
+
                 // Try id/itemId match if selector begins with alphanumeric
                 if (selector.match(me.initialAlphaNum)) {
                     result = me.down('#' + selector);
@@ -563,15 +626,6 @@ Ext.define('Ext.window.Window', {
         }
     },
 
-    beforeLayout: function () {
-        var shadow = this.el.shadow;
-
-        this.callParent();
-        if (shadow) {
-            shadow.hide();
-        }
-    },
-
     onShow: function() {
         var me = this;
 
@@ -586,7 +640,7 @@ Ext.define('Ext.window.Window', {
         }
    },
 
-    // private
+    // @private
     doClose: function() {
         var me = this;
 
@@ -602,7 +656,7 @@ Ext.define('Ext.window.Window', {
         }
     },
 
-    // private
+    // @private
     afterHide: function() {
         var me = this;
 
@@ -618,7 +672,7 @@ Ext.define('Ext.window.Window', {
         me.callParent(arguments);
     },
 
-    // private
+    // @private
     onWindowResize: function() {
         var me = this,
             sizeModel;
@@ -630,9 +684,9 @@ Ext.define('Ext.window.Window', {
             if (sizeModel.width.natural || sizeModel.height.natural) {
                 me.updateLayout();
             }
+            me.doConstrain();
         }
 
-        me.doConstrain();
     },
 
     /**
@@ -646,12 +700,20 @@ Ext.define('Ext.window.Window', {
         return this;
     },
 
-    afterCollapse: function() {
-        var me = this;
+    resumeHeaderLayout: function(changed) {
+        this.header.resumeLayouts(changed ? this.isRootCfg : null);
+    },
 
-        if (me.maximizable) {
-            me.tools.maximize.hide();
-            me.tools.restore.hide();
+    afterCollapse: function() {
+        var me = this,
+            header = me.header,
+            tools = me.tools;
+
+        if (header && me.maximizable) {
+            header.suspendLayouts();
+            tools.maximize.hide();
+            tools.restore.hide();
+            this.resumeHeaderLayout(true);
         }
         if (me.resizer) {
             me.resizer.disable();
@@ -660,12 +722,22 @@ Ext.define('Ext.window.Window', {
     },
 
     afterExpand: function() {
-        var me = this;
+        var me = this,
+            header = me.header,
+            tools = me.tools,
+            changed;
 
-        if (me.maximized) {
-            me.tools.restore.show();
-        } else if (me.maximizable) {
-            me.tools.maximize.show();
+
+        if (header) {
+            header.suspendLayouts();
+            if (me.maximized) {
+                tools.restore.show();
+                changed = true;
+            } else if (me.maximizable) {
+                tools.maximize.show();
+                changed = true;
+            }
+            this.resumeHeaderLayout(changed);
         }
         if (me.resizer) {
             me.resizer.enable();
@@ -676,39 +748,72 @@ Ext.define('Ext.window.Window', {
     /**
      * Fits the window within its current container and automatically replaces the {@link #maximizable 'maximize' tool
      * button} with the 'restore' tool button. Also see {@link #toggleMaximize}.
+     * @param {Boolean} animate `true` to animate this Window to full size.
      * @return {Ext.window.Window} this
      */
-    maximize: function() {
-        var me = this;
+    maximize: function(animate) {
+        var me = this,
+            header = me.header,
+            tools = me.tools,
+            width = me.width,
+            height = me.height,
+            restore, changed;
 
         if (!me.maximized) {
             me.expand(false);
             if (!me.hasSavedRestore) {
-                me.restoreSize = me.getSize();
+                restore = me.restoreSize = {
+                    width: Ext.isNumber(width) ? width : null,
+                    height: Ext.isNumber(height) ? height : null
+                };
+                
                 me.restorePos = me.getPosition(true);
             }
-            if (me.maximizable) {
-                me.tools.maximize.hide();
-                me.tools.restore.show();
+
+            // Manipulate visibility of header tools if there is a header
+            if (header) {
+                header.suspendLayouts();
+                if (tools.maximize) {
+                    tools.maximize.hide();
+                    changed = true;
+                }
+                if (tools.restore) {
+                    tools.restore.show();
+                    changed = true;
+                }
+                if (me.collapseTool) {
+                    me.collapseTool.hide();
+                    changed = true;
+                }
+                me.resumeHeaderLayout(changed);
             }
-            me.maximized = true;
+
             me.el.disableShadow();
 
             if (me.dd) {
                 me.dd.disable();
+                if (header) {
+                   header.removeCls(header.indicateDragCls)
+                }
             }
             if (me.resizer) {
                 me.resizer.disable();
             }
-            if (me.collapseTool) {
-                me.collapseTool.hide();
-            }
+
             me.el.addCls(Ext.baseCSSPrefix + 'window-maximized');
             me.container.addCls(Ext.baseCSSPrefix + 'window-maximized-ct');
 
             me.syncMonitorWindowResize();
-            me.fitContainer();
-            me.fireEvent('maximize', me);
+            me.fitContainer(animate = (animate || !!me.animateTarget) ? {
+                callback: function() {
+                    me.maximized = true;
+                    me.fireEvent('maximize', me);
+                }
+            } : null);
+            if (!animate) {
+                me.maximized = true;
+                me.fireEvent('maximize', me);
+            }
         }
         return me;
     },
@@ -718,42 +823,57 @@ Ext.define('Ext.window.Window', {
      * and also replaces the 'restore' tool button with the 'maximize' tool button. Also see {@link #toggleMaximize}.
      * @return {Ext.window.Window} this
      */
-    restore: function() {
+    restore: function(animate) {
         var me = this,
-            tools = me.tools;
+            tools = me.tools,
+            header = me.header,
+            newBox = me.restoreSize,
+            changed;
 
         if (me.maximized) {
-            delete me.hasSavedRestore;
+            me.hasSavedRestore = null;
             me.removeCls(Ext.baseCSSPrefix + 'window-maximized');
 
-            // Toggle tool visibility
-            if (tools.restore) {
-                tools.restore.hide();
+            // Manipulate visibility of header tools if there is a header
+            if (header) {
+                header.suspendLayouts();
+                if (tools.restore) {
+                    tools.restore.hide();
+                    changed = true;
+                }
+                if (tools.maximize) {
+                    tools.maximize.show();
+                    changed = true;
+                }
+                if (me.collapseTool) {
+                    me.collapseTool.show();
+                    changed = true;
+                }
+                me.resumeHeaderLayout(changed);
             }
-            if (tools.maximize) {
-                tools.maximize.show();
-            }
-            if (me.collapseTool) {
-                me.collapseTool.show();
-            }
-
-            me.maximized = false;
 
             // Restore the position/sizing
-            me.setPosition(me.restorePos);
-            me.setSize(me.restoreSize);
+            newBox.x = me.restorePos[0];
+            newBox.y = me.restorePos[1];
+            me.setBox(newBox, animate = (animate || !!me.animateTarget) ? {
+                callback: function() {
+                    me.el.enableShadow(true);
+                    me.maximized = false;
+                    me.fireEvent('restore', me);
+                }
+            } : null);
 
             // Unset old position/sizing
-            delete me.restorePos;
-            delete me.restoreSize;
-
-            me.el.enableShadow(true);
+            me.restorePos = me.restoreSize = null;
 
             // Allow users to drag and drop again
             if (me.dd) {
                 me.dd.enable();
+                if (header) {
+                    header.addCls(header.indicateDragCls)
+                }
             }
-            
+
             if (me.resizer) {
                 me.resizer.enable();
             }
@@ -761,8 +881,12 @@ Ext.define('Ext.window.Window', {
             me.container.removeCls(Ext.baseCSSPrefix + 'window-maximized-ct');
 
             me.syncMonitorWindowResize();
-            me.doConstrain();
-            me.fireEvent('restore', me);
+
+            if (!animate) {
+                me.el.enableShadow(true);
+                me.maximized = false;
+                me.fireEvent('restore', me);
+            }
         }
         return me;
     },
@@ -783,8 +907,9 @@ Ext.define('Ext.window.Window', {
         if (yes && !veto) {
             // we should be listening...
             if (!currentlyMonitoring) {
-                // but we aren't, so set it up
-                Ext.EventManager.onWindowResize(me.onWindowResize, me);
+                // but we aren't, so set it up.
+                // Delay so that we jump over any Viewport resize activity
+                Ext.EventManager.onWindowResize(me.onWindowResize, me, {delay: 1});
                 me._monitoringResize = true;
             }
         } else if (currentlyMonitoring) {
@@ -801,6 +926,12 @@ Ext.define('Ext.window.Window', {
      */
     toggleMaximize: function() {
         return this[this.maximized ? 'restore': 'maximize']();
+    },
+
+    createGhost: function() {
+        var ghost = this.callParent(arguments);
+        ghost.xtype = 'window';
+        return ghost;
     }
 
 });

@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * @docauthor Jason Johnston <jason@sencha.com>
  *
@@ -94,7 +111,7 @@ Ext.define('Ext.form.field.Base', {
      * @private
      */
     fieldSubTpl: [ // note: {id} here is really {inputId}, but {cmpId} is available
-        '<input id="{id}" type="{type}" {inputAttrTpl}',
+        '<input id="{id}" type="{type}" role="{role}" {inputAttrTpl}',
             ' size="1"', // allows inputs to fully respect CSS widths across all browsers
             '<tpl if="name"> name="{name}"</tpl>',
             '<tpl if="value"> value="{[Ext.util.Format.htmlEncode(values.value)]}"</tpl>',
@@ -104,7 +121,7 @@ Ext.define('Ext.form.field.Base', {
             '<tpl if="disabled"> disabled="disabled"</tpl>',
             '<tpl if="tabIdx"> tabIndex="{tabIdx}"</tpl>',
             '<tpl if="fieldStyle"> style="{fieldStyle}"</tpl>',
-        ' class="{fieldCls} {typeCls} {editableCls}" autocomplete="off"/>',
+        ' class="{fieldCls} {typeCls} {editableCls} {inputCls}" autocomplete="off"/>',
         {
             disableFormats: true
         }
@@ -184,7 +201,7 @@ Ext.define('Ext.form.field.Base', {
      * the field's value to be checked for changes. If a change is detected, the {@link #change change event} will be
      * fired, followed by validation if the {@link #validateOnChange} option is enabled.
      *
-     * Defaults to ['change', 'propertychange'] in Internet Explorer, and ['change', 'input', 'textInput', 'keyup',
+     * Defaults to ['change', 'propertychange', 'keyup'] in Internet Explorer, and ['change', 'input', 'textInput', 'keyup',
      * 'dragdrop'] in other browsers. This catches all the ways that field values can be changed in most supported
      * browsers; the only known exceptions at the time of writing are:
      *
@@ -199,7 +216,7 @@ Ext.define('Ext.form.field.Base', {
      * such a task automatically.
      */
     checkChangeEvents: Ext.isIE && (!document.documentMode || document.documentMode < 9) ?
-                        ['change', 'propertychange'] :
+                        ['change', 'propertychange', 'keyup'] :
                         ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
 
     /**
@@ -247,6 +264,11 @@ Ext.define('Ext.form.field.Base', {
     baseCls: Ext.baseCSSPrefix + 'field',
 
     maskOnDisable: false,
+    
+    // Instructs the layout to stretch the inputEl to 100% width when laying
+    // out under fixed conditions. Defaults to true for all fields except check/radio
+    // Doesn't seem worth it to introduce a whole new layout class just for this flag
+    stretchInputElFixed: true,
 
     // private
     initComponent : function() {
@@ -309,16 +331,12 @@ Ext.define('Ext.form.field.Base', {
         if (!me.name) {
             me.name = me.getInputId();
         }
-    },
-    
-    beforeRender: function(){
-        var me = this;
-            
-        me.callParent(arguments);
-        me.beforeLabelableRender(arguments);
+        // Add to protoEl before render
         if (me.readOnly) {
             me.addCls(me.readOnlyCls);
         }
+        
+        me.addCls(Ext.baseCSSPrefix + 'form-type-' + me.inputType);
     },
 
     /**
@@ -351,7 +369,9 @@ Ext.define('Ext.form.field.Base', {
             fieldCls   : me.fieldCls,
             fieldStyle : me.getFieldStyle(),
             tabIdx     : me.tabIndex,
-            typeCls    : Ext.baseCSSPrefix + 'form-' + (type === 'password' ? 'text' : type)
+            inputCls   : me.inputCls,
+            typeCls    : Ext.baseCSSPrefix + 'form-' + (type === 'password' ? 'text' : type),
+            role       : me.ariaRole
         }, me.subTplData);
 
         me.getInsertionRenderData(data, me.subTplInsertions);
@@ -359,18 +379,14 @@ Ext.define('Ext.form.field.Base', {
         return data;
     },
 
-    afterFirstLayout: function() {
-        this.callParent();
-        var el = this.inputEl;
-        if (el) {
-            el.selectable();
-        }
-    },
-
     applyRenderSelectors: function() {
         var me = this;
 
         me.callParent();
+
+        // This is added here rather than defined in Ext.form.Labelable since inputEl isn't related to Labelable.
+        // It's important to add inputEl to the childEls so it can be properly destroyed.
+        me.addChildEls('inputEl');
 
         /**
          * @property {Ext.Element} inputEl
@@ -413,15 +429,14 @@ Ext.define('Ext.form.field.Base', {
     },
 
     getFieldStyle: function() {
-        return 'width:100%;' + (Ext.isObject(this.fieldStyle) ? Ext.DomHelper.generateStyles(this.fieldStyle) : this.fieldStyle ||'');
+        var style = this.fieldStyle;
+        return Ext.isObject(style) ? Ext.DomHelper.generateStyles(style, null, true) : style || '';
     },
 
     // private
     onRender : function() {
-        var me = this;
-        me.callParent(arguments);
-        me.onLabelableRender();
-        me.renderActiveError();
+        this.callParent(arguments);
+        this.renderActiveError();
     },
 
     getFocusEl: function() {
@@ -432,24 +447,12 @@ Ext.define('Ext.form.field.Base', {
         return this.inputType === 'file';
     },
 
-    extractFileInput: function() {
-        var me = this,
-            fileInput = me.isFileUpload() ? me.inputEl.dom : null,
-            clone;
-        if (fileInput) {
-            clone = fileInput.cloneNode(true);
-            fileInput.parentNode.replaceChild(clone, fileInput);
-            me.inputEl = Ext.get(clone);
-        }
-        return fileInput;
-    },
-
     // private override to use getSubmitValue() as a convenience
     getSubmitData: function() {
         var me = this,
             data = null,
             val;
-        if (!me.disabled && me.submitValue && !me.isFileUpload()) {
+        if (!me.disabled && me.submitValue) {
             val = me.getSubmitValue();
             if (val !== null) {
                 data = {};
@@ -509,9 +512,7 @@ Ext.define('Ext.form.field.Base', {
      * @param {Object} value The value
      * @return {Object} The value to set
      */
-    transformRawValue: function(value) {
-        return value;
-    },
+    transformRawValue: Ext.identityFn,
 
     /**
      * Converts a mixed-type value to a raw representation suitable for displaying in the field. This allows controlling
@@ -545,10 +546,9 @@ Ext.define('Ext.form.field.Base', {
      *
      * @param {Object} rawValue
      * @return {Object} The converted value.
+     * @method
      */
-    rawToValue: function(rawValue) {
-        return rawValue;
-    },
+    rawToValue: Ext.identityFn,
 
     /**
      * Performs any necessary manipulation of a raw field value to prepare it for {@link #rawToValue conversion} and/or
@@ -557,10 +557,9 @@ Ext.define('Ext.form.field.Base', {
      *
      * @param {Object} value The unprocessed string value
      * @return {Object} The processed string value
+     * @method
      */
-    processRawValue: function(value) {
-        return value;
-    },
+    processRawValue: Ext.identityFn,
 
     /**
      * Returns the current data value of the field. The type of value returned is particular to the type of the
@@ -667,11 +666,6 @@ Ext.define('Ext.form.field.Base', {
             eLen   = events.length,
             event;
 
-        // standardise buffer across all browsers + OS-es for consistent event order.
-        // (the 10ms buffer for Editors fixes a weird FF/Win editor issue when changing OS window focus)
-        if (me.inEditor) {
-            me.onBlur = Ext.Function.createBuffered(me.onBlur, 10);
-        }
         if (inputEl) {
             me.mon(inputEl, Ext.EventManager.getKeyEvent(), me.fireKey,  me);
 
@@ -777,10 +771,13 @@ Ext.define('Ext.form.field.Base', {
     markInvalid : function(errors) {
         // Save the message and fire the 'invalid' event
         var me = this,
-            oldMsg = me.getActiveError();
+            oldMsg = me.getActiveError(),
+            active;
+            
         me.setActiveErrors(Ext.Array.from(errors));
-        if (oldMsg !== me.getActiveError()) {
-            me.updateLayout();
+        active = me.getActiveError();
+        if (oldMsg !== active) {
+            me.setError(active);
         }
     },
 
@@ -795,9 +792,33 @@ Ext.define('Ext.form.field.Base', {
         // Clear the message and fire the 'valid' event
         var me = this,
             hadError = me.hasActiveError();
+            
+        delete me.needsValidateOnEnable;
         me.unsetActiveError();
         if (hadError) {
-            me.updateLayout();
+            me.setError('');
+        }
+    },
+    
+    /**
+     * Set the current error state
+     * @private
+     * @param {String} error The error message to set
+     */
+    setError: function(active){
+        var me = this,
+            msgTarget = me.msgTarget,
+            prop;
+            
+        if (me.rendered) {
+            if (msgTarget == 'title' || msgTarget == 'qtip') {
+                if (me.rendered) {
+                    prop = msgTarget == 'qtip' ? 'data-errorqtip' : 'title';
+                }
+                me.getActionEl().dom.setAttribute(prop, active || '');
+            } else {
+                me.updateLayout();
+            }
         }
     },
 

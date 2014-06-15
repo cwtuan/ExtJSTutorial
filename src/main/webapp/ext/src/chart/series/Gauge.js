@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * @class Ext.chart.series.Gauge
  * 
@@ -9,7 +26,7 @@
  *
  *     @example
  *     var store = Ext.create('Ext.data.JsonStore', {
- *         fields: ['data'],
+ *         fields: ['value'],
  *         data: [
  *             { 'value':80 }
  *         ]
@@ -49,8 +66,6 @@
  * In this example we create a special Gauge axis to be used with the gauge visualization (describing half-circle markers), and also we're
  * setting a maximum, minimum and steps configuration options into the axis. The Gauge series configuration contains the store field to be bound to
  * the visual display and the color set to be used with the visualization.
- * 
- * @xtype gauge
  */
 Ext.define('Ext.chart.series.Gauge', {
 
@@ -154,14 +169,12 @@ Ext.define('Ext.chart.series.Gauge', {
         var me = this,
             store = me.chart.getChartStore(),
             data = store.data.items,
-            i, ln, rec;
-        //Add yFields to be used in Legend.js
+            label = me.label,
+            ln = data.length;
+          
         me.yField = [];
-        if (me.label.field) {
-            for (i = 0, ln = data.length; i < ln; i++) {
-                rec = data[i];
-                me.yField.push(rec.get(me.label.field));
-            }
+        if (label && label.field && ln > 0) {
+            me.yField.push(data[0].get(label.field));
         }
     },
 
@@ -273,10 +286,10 @@ Ext.define('Ext.chart.series.Gauge', {
             seriesLabelStyle = me.seriesLabelStyle,
             colorArrayStyle = me.colorArrayStyle,
             colorArrayLength = colorArrayStyle && colorArrayStyle.length || 0,
-            gutterX = chart.maxGutter[0],
-            gutterY = chart.maxGutter[1],
             cos = Math.cos,
             sin = Math.sin,
+            defaultStart = -180,
+            reverse = me.reverse,
             rendererAttributes, centerX, centerY, slice, slices, sprite, value,
             item, ln, record, i, j, startAngle, endAngle, middleAngle, sliceLength, path,
             p, spriteOptions, bbox, splitAngle, sliceA, sliceB;
@@ -310,34 +323,39 @@ Ext.define('Ext.chart.series.Gauge', {
             me.value = record.get(field);
         }
         
-        value = me.value;
+        value = reverse ? maximum - me.value : me.value;
         if (me.needle) {
             sliceA = {
                 series: me,
                 value: value,
-                startAngle: -180,
+                startAngle: defaultStart,
                 endAngle: 0,
                 rho: me.radius
             };
-            splitAngle = -180 * (1 - (value - minimum) / (maximum - minimum));
+            splitAngle = defaultStart * (1 - (value - minimum) / (maximum - minimum));
             slices.push(sliceA);
         } else {
-            splitAngle = -180 * (1 - (value - minimum) / (maximum - minimum));
+            splitAngle = defaultStart * (1 - (value - minimum) / (maximum - minimum));
             sliceA = {
                 series: me,
                 value: value,
-                startAngle: -180,
+                startAngle: defaultStart,
                 endAngle: splitAngle,
                 rho: me.radius
             };
             sliceB = {
                 series: me,
-                value: me.maximum - value,
+                value: maximum - value,
                 startAngle: splitAngle,
                 endAngle: 0,
                 rho: me.radius
             };
-            slices.push(sliceA, sliceB);
+            
+            if (reverse) {
+                slices.push(sliceB, sliceA);
+            } else {
+                slices.push(sliceA, sliceB);
+            }
         }
         
         //do pie slices after.
@@ -470,21 +488,13 @@ Ext.define('Ext.chart.series.Gauge', {
                              rho >= item.startRho && rho <= item.endRho);
     },
     
-    // @private shows all elements in the series.
-    showAll: function() {
-        if (!isNaN(this._index)) {
-            this.__excludes[this._index] = false;
-            this.drawSeries();
-        }
-    },
-    
     /**
      * Returns the color of the series (to be displayed as color for the series legend item).
      * @param item {Object} Info about the item; same format as returned by #getItemForPoint
      */
     getLegendColor: function(index) {
-        var me = this;
-        return me.colorArrayStyle[index % me.colorArrayStyle.length];
+        var colors = this.colorSet || this.colorArrayStyle;
+        return colors[index % colors.length];
     }
 });
 

@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * A {@link Ext.form.FieldContainer field container} which has a specialized layout for arranging
  * {@link Ext.form.field.Radio} controls into columns, and provides convenience {@link Ext.form.field.Field}
@@ -51,6 +68,10 @@ Ext.define('Ext.form.RadioGroup', {
     extend: 'Ext.form.CheckboxGroup',
     alias: 'widget.radiogroup',
 
+    requires: [
+        'Ext.form.field.Radio'
+    ],
+
     /**
      * @cfg {Ext.form.field.Radio[]/Object[]} items
      * An Array of {@link Ext.form.field.Radio Radio}s or Radio config objects to arrange in the group.
@@ -75,6 +96,8 @@ Ext.define('Ext.form.RadioGroup', {
 
     // private
     groupCls : Ext.baseCSSPrefix + 'form-radio-group',
+    
+    ariaRole: 'radiogroup',
 
     getBoxes: function(query) {
         return this.query('[isRadio]' + (query||''));
@@ -95,8 +118,35 @@ Ext.define('Ext.form.RadioGroup', {
     /**
      * Sets the value of the radio group. The radio with corresponding name and value will be set.
      * This method is simpler than {@link Ext.form.CheckboxGroup#setValue} because only 1 value is allowed
-     * for each name.
-     * 
+     * for each name. You can use the setValue method as:
+     *
+     *     var form = Ext.create('Ext.form.Panel', {
+     *         title       : 'RadioGroup Example',
+     *         width       : 300,
+     *         bodyPadding : 10,
+     *         renderTo    : Ext.getBody(),
+     *         items       : [
+     *             {
+     *                 xtype      : 'radiogroup',
+     *                 fieldLabel : 'Group',
+     *                 items      : [
+     *                     { boxLabel : 'Item 1', name : 'rb', inputValue : 1 },
+     *                     { boxLabel : 'Item 2', name : 'rb', inputValue : 2 }
+     *                 ]
+     *             }
+     *         ],
+     *         tbar        : [
+     *             {
+     *                 text    : 'setValue on RadioGroup',
+     *                 handler : function () {
+     *                     form.child('radiogroup').setValue({
+     *                         rb : 2
+     *                     });
+     *                 }
+     *             }
+     *         ]
+     *     });
+     *
      * @param {Object} value The map from names to values to be set.
      * @return {Ext.form.CheckboxGroup} this
      */

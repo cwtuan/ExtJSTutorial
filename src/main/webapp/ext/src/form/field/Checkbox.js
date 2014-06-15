@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * @docauthor Robert Dougan <rob@sencha.com>
  *
@@ -95,7 +112,10 @@ Ext.define('Ext.form.field.Checkbox', {
     requires: ['Ext.XTemplate', 'Ext.form.CheckboxManager' ],
 
     componentLayout: 'field',
-
+    
+    // inputEl should always retain the same size, never stretch
+    stretchInputElFixed: false,
+    
     childEls: [
         /**
          * @property {Ext.Element} boxLabelEl
@@ -107,32 +127,31 @@ Ext.define('Ext.form.field.Checkbox', {
 
     // note: {id} here is really {inputId}, but {cmpId} is available
     fieldSubTpl: [
-        '<tpl if="boxLabel && boxLabelAlign == \'before\'">',
-            '{beforeBoxLabelTpl}',
-            '<label id="{cmpId}-boxLabelEl" {boxLabelAttrTpl} class="{boxLabelCls} {boxLabelCls}-{boxLabelAlign}" for="{id}">',
-                '{beforeBoxLabelTextTpl}',
-                '{boxLabel}',
-                '{afterBoxLabelTextTpl}',
-            '</label>',
-            '{afterBoxLabelTpl}',
-        '</tpl>',
-        // Creates not an actual checkbox, but a button which is given aria role="checkbox" (If ARIA is required) and
-        // styled with a custom checkbox image. This allows greater control and consistency in
-        // styling, and using a button allows it to gain focus and handle keyboard nav properly.
-        '<input type="button" id="{id}" {inputAttrTpl}',
-            '<tpl if="tabIdx"> tabIndex="{tabIdx}"</tpl>',
-            '<tpl if="disabled"> disabled="disabled"</tpl>',
-            '<tpl if="fieldStyle"> style="{fieldStyle}"</tpl>',
-            ' class="{fieldCls} {typeCls}" autocomplete="off" hidefocus="true" />',
-        '<tpl if="boxLabel && boxLabelAlign == \'after\'">',
-            '{beforeBoxLabelTpl}',
-            '<label id="{cmpId}-boxLabelEl" {boxLabelAttrTpl} class="{boxLabelCls} {boxLabelCls}-{boxLabelAlign}" for="{id}">',
-                '{beforeBoxLabelTextTpl}',
-                '{boxLabel}',
-                '{afterBoxLabelTextTpl}',
-            '</label>',
-            '{afterBoxLabelTpl}',
-        '</tpl>',
+        '<div class="{wrapInnerCls} {noBoxLabelCls}" role="presentation">',
+            '<tpl if="labelAlignedBefore">',
+                '{beforeBoxLabelTpl}',
+                '<label id="{cmpId}-boxLabelEl" {boxLabelAttrTpl} class="{boxLabelCls} {boxLabelCls}-{boxLabelAlign}" for="{id}">',
+                    '{beforeBoxLabelTextTpl}',
+                    '{boxLabel}',
+                    '{afterBoxLabelTextTpl}',
+                '</label>',
+                '{afterBoxLabelTpl}',
+            '</tpl>',
+            '<input type="button" id="{id}" role="{role}" {inputAttrTpl}',
+                '<tpl if="tabIdx"> tabIndex="{tabIdx}"</tpl>',
+                '<tpl if="disabled"> disabled="disabled"</tpl>',
+                '<tpl if="fieldStyle"> style="{fieldStyle}"</tpl>',
+                ' class="{fieldCls} {typeCls} {inputCls} {childElCls} {afterLabelCls}" autocomplete="off" hidefocus="true" />',
+            '<tpl if="boxLabel && !labelAlignedBefore">',
+                '{beforeBoxLabelTpl}',
+                '<label id="{cmpId}-boxLabelEl" {boxLabelAttrTpl} class="{boxLabelCls} {boxLabelCls}-{boxLabelAlign}" for="{id}">',
+                    '{beforeBoxLabelTextTpl}',
+                    '{boxLabel}',
+                    '{afterBoxLabelTextTpl}',
+                '</label>',
+                '{afterBoxLabelTpl}',
+            '</tpl>',
+        '</div>',
         {
             disableFormats: true,
             compiled: true
@@ -191,22 +210,18 @@ Ext.define('Ext.form.field.Checkbox', {
     isCheckbox: true,
 
     /**
-     * @cfg {String} [focusCls='x-form-cb-focus']
+     * @cfg {String} [focusCls='x-form-checkbox-focus']
      * The CSS class to use when the checkbox receives focus
      */
-    focusCls: 'form-cb-focus',
+    focusCls: 'form-checkbox-focus',
 
     /**
      * @cfg {String} [fieldCls='x-form-field']
      * The default CSS class for the checkbox
      */
-
-    /**
-     * @cfg {String} [fieldBodyCls='x-form-cb-wrap']
-     * An extra CSS class to be applied to the body content element in addition to {@link #fieldBodyCls}.
-     * .
-     */
-    fieldBodyCls: Ext.baseCSSPrefix + 'form-cb-wrap',
+    
+    // private
+    extraFieldBodyCls: Ext.baseCSSPrefix + 'form-cb-wrap',
 
     /**
      * @cfg {Boolean} checked
@@ -216,7 +231,9 @@ Ext.define('Ext.form.field.Checkbox', {
 
     /**
      * @cfg {String} [checkedCls='x-form-cb-checked']
-     * The CSS class added to the component's main element when it is in the checked state.
+     * The CSS class(es) added to the component's main element when it is in the checked state.
+     * You can add your own class (checkedCls='myClass x-form-cb-checked') or replace the default 
+     * class altogether (checkedCls='myClass').
      */
     checkedCls: Ext.baseCSSPrefix + 'form-cb-checked',
 
@@ -238,6 +255,16 @@ Ext.define('Ext.form.field.Checkbox', {
      * and 'after'.
      */
     boxLabelAlign: 'after',
+
+    afterLabelCls: Ext.baseCSSPrefix + 'form-cb-after',
+
+    wrapInnerCls: Ext.baseCSSPrefix + 'form-cb-wrap-inner',
+
+    // This is to work around lack of min-width support in older IE browsers.
+    // If it's determined that there is no box label, apply the following class to the
+    // wrapper around the inputEl and all browsers will get width from its theme's CSS rule.
+    // See EXTJSIV-10302 and EXTJSIV-10977.
+    noBoxLabelCls: Ext.baseCSSPrefix + 'form-cb-wrap-inner-no-box-label',
 
     /**
      * @cfg {String} inputValue
@@ -271,13 +298,24 @@ Ext.define('Ext.form.field.Checkbox', {
     // private overrides
     checkChangeEvents: [],
     inputType: 'checkbox',
-
+    ariaRole: 'checkbox',
+    
     // private
     onRe: /^on$/i,
 
+    // the form-cb css class is for styling shared between checkbox and subclasses (radio)
+    inputCls: Ext.baseCSSPrefix + 'form-cb',
+
     initComponent: function() {
-        this.callParent(arguments);
-        this.getManager().add(this);
+        var me = this,
+            value = me.value;
+            
+        if (value !== undefined) {
+            me.checked = me.isChecked(value, me.inputValue);
+        }
+        
+        me.callParent(arguments);
+        me.getManager().add(me);
     },
 
     initValue: function() {
@@ -302,20 +340,26 @@ Ext.define('Ext.form.field.Checkbox', {
         if (me.isChecked(me.rawValue, me.inputValue)) {
             me.addCls(me.checkedCls);
         }
+
         return me.callParent();
     },
 
-    getFieldStyle: function() {
-        return Ext.isObject(this.fieldStyle) ? Ext.DomHelper.generateStyles(this.fieldStyle) : this.fieldStyle ||'';
-    },
-
     getSubTplData: function() {
-        var me = this;
+        var me = this,
+            boxLabel = me.boxLabel,
+            boxLabelAlign = me.boxLabelAlign,
+            labelAlignedBefore = boxLabel && boxLabelAlign === 'before';
+
         return Ext.apply(me.callParent(), {
-            disabled      : me.readOnly || me.disabled,
-            boxLabel      : me.boxLabel,
-            boxLabelCls   : me.boxLabelCls,
-            boxLabelAlign : me.boxLabelAlign
+            disabled: me.readOnly || me.disabled,
+            wrapInnerCls: me.wrapInnerCls,
+            boxLabel: boxLabel,
+            boxLabelCls: me.boxLabelCls,
+            boxLabelAlign: boxLabelAlign,
+            labelAlignedBefore: labelAlignedBefore,
+            afterLabelCls: labelAlignedBefore ? me.afterLabelCls : '',
+            noBoxLabelCls: !boxLabel ? me.noBoxLabelCls : '',
+            role: me.ariaRole
         });
     },
 
@@ -323,6 +367,19 @@ Ext.define('Ext.form.field.Checkbox', {
         var me = this;
         me.callParent();
         me.mon(me.inputEl, 'click', me.onBoxClick, me);
+    },
+    
+    /**
+     * Sets the {@link #boxLabel} for this checkbox.
+     * @param {String} boxLabel The new label
+     */
+    setBoxLabel: function(boxLabel){
+        var me = this;
+        
+        me.boxLabel = boxLabel;
+        if (me.rendered) {
+            me.boxLabelEl.update(boxLabel);
+        }
     },
 
     /**

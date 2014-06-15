@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * @class Ext.chart.series.Series
  *
@@ -9,9 +26,9 @@
  *
  * The series class supports listeners via the Observable syntax. Some of these listeners are:
  *
+ *  - `itemclick` When the user interacts with a marker.
  *  - `itemmouseup` When the user interacts with a marker.
  *  - `itemmousedown` When the user interacts with a marker.
- *  - `itemmousemove` When the user iteracts with a marker.
  *  - `afterrender` Will be triggered when the animation ends or when the series has been rendered completely.
  *
  * For example:
@@ -101,15 +118,11 @@ Ext.define('Ext.chart.series.Series', {
     // @private animating flag
     animating: false,
 
-    /**
-     * @cfg {Object} listeners
-     * An (optional) object with event callbacks. All event callbacks get the target *item* as first parameter. The callback functions are:
-     *
-     *  - itemmouseover
-     *  - itemmouseout
-     *  - itemmousedown
-     *  - itemmouseup
-     */
+    // @private default gutters
+    nullGutters: { lower: 0, upper: 0, verticalAxis: undefined },
+
+    // @private default padding
+    nullPadding: { left:0, right:0, width:0, bottom:0, top:0, height:0 },
 
     constructor: function(config) {
         var me = this;
@@ -126,11 +139,58 @@ Ext.define('Ext.chart.series.Series', {
 
         me.addEvents({
             scope: me,
+            
+            /**
+             * @event itemclick
+             * Fires when the user clicks on a marker.
+             * @param {Object} item Target item object. See {@link #getItemFromPoint} for
+             * description of object properties.
+             */
+            itemclick: true,
+            
+            /**
+             * @event itemdblclick
+             * Fires when the user double clicks on a marker.
+             * @param {Object} item Target item object. See {@link #getItemFromPoint} for
+             * description of object properties.
+             */
+            itemdblclick: true,
+            
+            /**
+             * @event itemmouseover
+             * Fires when the user hovers mouse cursor over a marker.
+             * @param {Object} item Target item object. See {@link #getItemFromPoint} for
+             * description of object properties.
+             */
             itemmouseover: true,
+            
+            /**
+             * @event itemmouseout
+             * Fires when the user moves mouse cursor out of marker.
+             * @param {Object} item Target item object. See {@link #getItemFromPoint} for
+             * description of object properties.
+             */
             itemmouseout: true,
+            
+            /**
+             * @event itemmousedown
+             * Fires when a marker receives mousedown event.
+             * @param {Object} item Target item object. See {@link #getItemFromPoint} for
+             * description of object properties.
+             */
             itemmousedown: true,
+            
+            /**
+             * @event itemmouseup
+             * Fires when a marker receives mouseup event.
+             * @param {Object} item Target item object. See {@link #getItemFromPoint} for
+             * description of object properties.
+             */
             itemmouseup: true,
+            
             mouseleave: true,
+            
+            // Seems that this event is not implemented anywhere?
             afterdraw: true,
 
             /**
@@ -156,6 +216,10 @@ Ext.define('Ext.chart.series.Series', {
         }
     },
     
+    initialize: Ext.emptyFn,
+    
+    onRedraw: Ext.emptyFn,
+    
     /**
      * Iterate over each of the records for this series. The default implementation simply iterates
      * through the entire data store, but individual series implementations can override this to
@@ -165,7 +229,7 @@ Ext.define('Ext.chart.series.Series', {
      */
     eachRecord: function(fn, scope) {
         var chart = this.chart;
-        (chart.substore || chart.store).each(fn, scope);
+        chart.getChartStore().each(fn, scope);
     },
 
     /**
@@ -174,7 +238,7 @@ Ext.define('Ext.chart.series.Series', {
      */
     getRecordCount: function() {
         var chart = this.chart,
-            store = chart.substore || chart.store;
+            store = chart.getChartStore();
         return store ? store.getCount() : 0;
     },
 
@@ -192,8 +256,7 @@ Ext.define('Ext.chart.series.Series', {
         var me = this,
             chart = me.chart,
             chartBBox = chart.chartBBox,
-            gutterX = noGutter ? 0 : chart.maxGutter[0],
-            gutterY = noGutter ? 0 : chart.maxGutter[1],
+            maxGutters = noGutter ? { left: 0, right: 0, bottom: 0, top: 0 } : chart.maxGutters,
             clipBox, bbox;
 
         clipBox = {
@@ -205,10 +268,10 @@ Ext.define('Ext.chart.series.Series', {
         me.clipBox = clipBox;
 
         bbox = {
-            x: (clipBox.x + gutterX) - (chart.zoom.x * chart.zoom.width),
-            y: (clipBox.y + gutterY) - (chart.zoom.y * chart.zoom.height),
-            width: (clipBox.width - (gutterX * 2)) * chart.zoom.width,
-            height: (clipBox.height - (gutterY * 2)) * chart.zoom.height
+            x: (clipBox.x + maxGutters.left) - (chart.zoom.x * chart.zoom.width),
+            y: (clipBox.y + maxGutters.bottom) - (chart.zoom.y * chart.zoom.height),
+            width: (clipBox.width - (maxGutters.left + maxGutters.right)) * chart.zoom.width,
+            height: (clipBox.height - (maxGutters.bottom + maxGutters.top)) * chart.zoom.height
         };
         me.bbox = bbox;
     },
@@ -222,19 +285,23 @@ Ext.define('Ext.chart.series.Series', {
         } else {
             me.animating = true;
             return sprite.animate(Ext.apply(Ext.applyIf(attr, me.chart.animate), {
-                listeners: {
-                    'afteranimate': function() {
-                        me.animating = false;
-                        me.fireEvent('afterrender');
-                    }
+                // use callback, don't overwrite listeners
+                callback: function() {
+                    me.animating = false;
+                    me.fireEvent('afterrender', me);
                 }
             }));
         }
     },
 
-    // @private return the gutter.
+    // @private return the gutters.
     getGutters: function() {
-        return [0, 0];
+        return this.nullGutters;
+    },
+
+    // @private return the gutters.
+    getPadding: function() {
+        return this.nullPadding;
     },
 
     // @private wrapper for the itemmouseover event.
@@ -396,7 +463,7 @@ Ext.define('Ext.chart.series.Series', {
                 return stroke;
             }
         }
-        return (me.colorArrayStyle)?me.colorArrayStyle[me.seriesIdx % me.colorArrayStyle.length]:'#000';
+        return (me.colorArrayStyle)?me.colorArrayStyle[me.themeIdx % me.colorArrayStyle.length]:'#000';
     },
 
     /**

@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * @class Ext.chart.axis.Category
  *
@@ -77,24 +94,37 @@ Ext.define('Ext.chart.axis.Category', {
 
     alias: 'axis.category',
 
+    // @private
+    isCategoryAxis: true,
+
     /* End Definitions */
 
-    /**
-     * A list of category names to display along this axis.
-     * @property {String} categoryNames
-     */
-    categoryNames: null,
+    // @private constrains to datapoints between minimum and maximum only
+    doConstrain: function() {
+        var me = this,
+            chart = me.chart,
+            store = chart.getChartStore(),
+            items = store.data.items,
+            series = chart.series.items,
+            seriesLength = series.length,
+            data = [], i
 
-    /**
-     * Indicates whether or not to calculate the number of categories (ticks and
-     * labels) when there is not enough room to display all labels on the axis.
-     * If set to true, the axis will determine the number of categories to plot.
-     * If not, all categories will be plotted.
-     *
-     * @property calculateCategoryCount
-     * @type Boolean
-     */
-    calculateCategoryCount: false,
+        for (i = 0; i < seriesLength; i++) {
+            if (series[i].type === 'bar' && series[i].stacked) {
+                // Do not constrain stacked bar chart.
+                return;
+            }
+        }
+
+        for (i = me.minimum; i < me.maximum; i++) {
+            data.push(items[i]);
+        }
+        
+        chart.setSubStore(new Ext.data.Store({
+            model: store.model,
+            data: data
+        }));
+    },
 
     // @private creates an array of labels to be used when rendering.
     setLabels: function() {
@@ -103,13 +133,21 @@ Ext.define('Ext.chart.axis.Category', {
             d, dLen, record,
             fields = this.fields,
             ln = fields.length,
+            labels,
+            name,
             i;
 
-        this.labels = [];
+        labels = this.labels = [];
         for (d = 0, dLen = data.length; d < dLen; d++) {
             record = data[d];
             for (i = 0; i < ln; i++) {
-                this.labels.push(record.get(fields[i]));
+                name = record.get(fields[i]);
+                //<debug>
+                if (Ext.Array.indexOf(labels, name) > -1) {
+                    Ext.log.warn('Duplicate category in axis, ' + name);
+                }
+                //</debug>
+                labels.push(name);
             }
         }
     },

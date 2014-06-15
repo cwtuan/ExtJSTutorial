@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * A menu item that contains a togglable checkbox by default, but that can also be a part of a radio group.
  *
@@ -81,19 +98,24 @@ Ext.define('Ext.menu.CheckItem', {
      * True to prevent the checked item from being toggled. Any submenu will still be accessible.
      */
     checkChangeDisabled: false,
+    
+    ariaRole: 'menuitemcheckbox',
 
-    afterRender: function() {
-        var me = this;
-        me.callParent();
-        me.checked = !me.checked;
-        me.setChecked(!me.checked, true);
-        if (me.checkChangeDisabled) {
-            me.disableCheckChange();
-        }
-    },
+    childEls: [
+        'itemEl', 'iconEl', 'textEl', 'checkEl'
+    ],
+    
+    showCheckbox: true,
+
+    isMenuCheckItem: true,
+
+    checkboxCls: Ext.baseCSSPrefix + 'menu-item-checkbox',
 
     initComponent: function() {
         var me = this;
+        
+        // coerce to bool straight away
+        me.checked = !!me.checked;
         me.addEvents(
             /**
              * @event beforecheckchange
@@ -117,29 +139,46 @@ Ext.define('Ext.menu.CheckItem', {
         Ext.menu.Manager.registerCheckable(me);
 
         if (me.group) {
-            if (!me.iconCls) {
-                me.iconCls = me.groupCls;
-            }
             if (me.initialConfig.hideOnClick !== false) {
                 me.hideOnClick = true;
             }
         }
     },
+    
+    beforeRender: function() {
+        var me = this;
 
+        me.callParent();
+        Ext.apply(me.renderData, {
+            checkboxCls: me.checkboxCls,
+            showCheckbox: me.showCheckbox
+        });
+    },
+    
+    afterRender: function() {
+        var me = this;
+        me.callParent();
+        me.checked = !me.checked;
+        me.setChecked(!me.checked, true);
+        if (me.checkChangeDisabled) {
+            me.disableCheckChange();
+        }
+    },
+    
     /**
      * Disables just the checkbox functionality of this menu Item. If this menu item has a submenu, that submenu
      * will still be accessible
      */
     disableCheckChange: function() {
         var me = this,
-            iconEl = me.iconEl;
+            checkEl = me.checkEl;
 
-        if (iconEl) {
-            iconEl.addCls(me.disabledCls);
+        if (checkEl) {
+            checkEl.addCls(me.disabledCls);
         }
         // In some cases the checkbox will disappear until repainted
         // Happens in everything except IE9 strict, see: EXTJSIV-6412
-        if (!(Ext.isIE9 && Ext.isStrict) && me.rendered) {
+        if (!(Ext.isIE10p || (Ext.isIE9 && Ext.isStrict)) && me.rendered) {
             me.el.repaint();
         }
         me.checkChangeDisabled = true;
@@ -150,10 +189,10 @@ Ext.define('Ext.menu.CheckItem', {
      */
     enableCheckChange: function() {
         var me = this,
-            iconEl = me.iconEl;
+            checkEl = me.checkEl;
             
-        if (iconEl) {
-            iconEl.removeCls(me.disabledCls);
+        if (checkEl) {
+            checkEl.removeCls(me.disabledCls);
         }
         me.checkChangeDisabled = false;
     },
@@ -177,15 +216,25 @@ Ext.define('Ext.menu.CheckItem', {
      * @param {Boolean} [suppressEvents=false] True to prevent firing the checkchange events.
      */
     setChecked: function(checked, suppressEvents) {
-        var me = this;
+        var me = this,
+            checkedCls = me.checkedCls,
+            uncheckedCls = me.uncheckedCls,
+            el = me.el;
+            
         if (me.checked !== checked && (suppressEvents || me.fireEvent('beforecheckchange', me, checked) !== false)) {
-            if (me.el) {
-                me.el[checked  ? 'addCls' : 'removeCls'](me.checkedCls)[!checked ? 'addCls' : 'removeCls'](me.uncheckedCls);
+            if (el) {
+                if (checked) {
+                    el.addCls(checkedCls);
+                    el.removeCls(uncheckedCls);
+                } else {
+                    el.addCls(uncheckedCls);
+                    el.removeCls(checkedCls);
+                }
             }
             me.checked = checked;
             Ext.menu.Manager.onCheckChange(me, checked);
             if (!suppressEvents) {
-                Ext.callback(me.checkHandler, me.scope, [me, checked]);
+                Ext.callback(me.checkHandler, me.scope || me, [me, checked]);
                 me.fireEvent('checkchange', me, checked);
             }
         }

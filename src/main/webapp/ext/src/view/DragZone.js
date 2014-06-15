@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * @private
  */
@@ -45,11 +62,10 @@ Ext.define('Ext.view.DragZone', {
     },
 
     init: function(id, sGroup, config) {
-        this.initTarget(id, sGroup, config);
-        this.view.mon(this.view, {
-            itemmousedown: this.onItemMouseDown,
-            scope: this
-        });
+        var me = this;
+        
+        me.initTarget(id, sGroup, config);
+        me.view.on('itemmousedown', me.onItemMouseDown, me);
     },
 
     onValidDrop: function(target, e, id) {
@@ -57,20 +73,16 @@ Ext.define('Ext.view.DragZone', {
         // focus the view that the node was dropped onto so that keynav will be enabled.
         target.el.focus();
     },
-    
+
     onItemMouseDown: function(view, record, item, index, e) {
         if (!this.isPreventDrag(e, record, item, index)) {
             // Since handleMouseDown prevents the default behavior of the event, which
             // is to focus the view, we focus the view now.  This ensures that the view
             // remains focused if the drag is cancelled, or if no drag occurs.
-            this.view.focus();
-            this.handleMouseDown(e);
-
-            // If we want to allow dragging of multi-selections, then veto the following handlers (which, in the absence of ctrlKey, would deselect)
-            // if the mousedowned record is selected
-            if (view.getSelectionModel().selectionMode == 'MULTI' && !e.ctrlKey && view.getSelectionModel().isSelected(record)) {
-                return false;
+            if (view.focusRow) {
+                view.focusRow(record);
             }
+            this.handleMouseDown(e);
         }
     },
 
@@ -101,13 +113,12 @@ Ext.define('Ext.view.DragZone', {
             data = me.dragData,
             view = data.view,
             selectionModel = view.getSelectionModel(),
-            record = view.getRecord(data.item),
-            e = data.event;
+            record = view.getRecord(data.item);
 
         // Update the selection to match what would have been selected if the user had
         // done a full click on the target node rather than starting a drag from it
         if (!selectionModel.isSelected(record)) {
-            selectionModel.select(record, true);
+            selectionModel.selectWithEvent(record, me.DDMInstance.mousedownEvent);
         }
         data.records = selectionModel.getSelection();
 

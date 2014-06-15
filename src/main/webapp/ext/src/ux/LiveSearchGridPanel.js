@@ -1,7 +1,5 @@
 /**
- * @class Ext.ux.LiveSearchGridPanel
- * @extends Ext.grid.Panel
- * <p>A GridPanel class with live search support.</p>
+ * A GridPanel class with live search support.
  * @author Nicolas Ferrero
  */
 Ext.define('Ext.ux.LiveSearchGridPanel', {
@@ -69,7 +67,7 @@ Ext.define('Ext.ux.LiveSearchGridPanel', {
                      change: {
                          fn: me.onTextFieldChange,
                          scope: this,
-                         buffer: 100
+                         buffer: 500
                      }
                  }
             }, {

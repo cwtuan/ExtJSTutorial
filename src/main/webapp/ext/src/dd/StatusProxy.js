@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * A specialized floating Component that supports a drop status icon, {@link Ext.Layer} styles
  * and auto-repair.  This is the default drag proxy used by all Ext.dd components.
@@ -11,9 +28,13 @@ Ext.define('Ext.dd.StatusProxy', {
     ],
 
     renderTpl: [
-        '<div class="' + Ext.baseCSSPrefix + 'dd-drop-icon"></div>' +
-        '<div id="{id}-ghost" class="' + Ext.baseCSSPrefix + 'dd-drag-ghost"></div>'
+        '<div class="' + Ext.baseCSSPrefix + 'dd-drop-icon" role="presentation"></div>' +
+        '<div id="{id}-ghost" class="' + Ext.baseCSSPrefix + 'dd-drag-ghost" role="presentation"></div>'
     ],
+    
+    repairCls: Ext.baseCSSPrefix + 'dd-drag-repair',
+    
+    ariaRole: 'presentation',
 
     /**
      * Creates new StatusProxy.
@@ -146,7 +167,7 @@ Ext.define('Ext.dd.StatusProxy', {
         me.callback = callback;
         me.scope = scope;
         if (xy && me.animRepair !== false) {
-            me.el.addCls(Ext.baseCSSPrefix + 'dd-drag-repair');
+            me.el.addCls(me.repairCls);
             me.el.hideUnders(true);
             me.anim = me.el.animate({
                 duration: me.repairDuration || 500,
@@ -169,7 +190,7 @@ Ext.define('Ext.dd.StatusProxy', {
         var me = this;
     
         me.hide(true);
-        me.el.removeCls(Ext.baseCSSPrefix + 'dd-drag-repair');
+        me.el.removeCls(me.repairCls);
         if (typeof me.callback == "function") {
             me.callback.call(me.scope || me);
         }

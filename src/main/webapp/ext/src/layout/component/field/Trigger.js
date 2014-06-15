@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * Layout class for {@link Ext.form.field.Trigger} fields. Adjusts the input field size to accommodate
  * the trigger button(s).
@@ -15,6 +32,13 @@ Ext.define('Ext.layout.component.field.Trigger', {
 
     type: 'triggerfield',
 
+    // Private. Forces the width to be set into the DOM when a configured width (See Component layout's beginLayoutCycle).
+    // This is needed because the 100% width in the input element needs a width to be 100% of.
+    setWidthInDom: true,
+
+    // Private. Cached extra width values containing width of all a trigger field's "furniture" round the actual input element
+    borderWidths: {},
+
     beginLayout: function(ownerContext) {
         var me = this,
             owner = me.owner,
@@ -31,6 +55,15 @@ Ext.define('Ext.layout.component.field.Trigger', {
             me.updateEditState();
         }
     },
+    
+    beginLayoutCycle: function(ownerContext){
+        this.callParent(arguments);
+        
+        // Clear width, in case a previous layout cycle set an explicit width.
+        if (ownerContext.widthModel.shrinkWrap && !this.owner.inputWidth) {
+            ownerContext.inputContext.el.setStyle('width', '');
+        }    
+    },
 
     beginLayoutFixed: function (ownerContext, width, suffix) {
         var me = this,
@@ -43,14 +76,12 @@ Ext.define('Ext.layout.component.field.Trigger', {
 
         owner.inputCell.setStyle('width', '100%');
         if(ieInputWidthAdjustment) {
-            // adjust for IE 6/7 strict content-box model
-            // RTL: This might have to be padding-left unless the senses of the padding styles switch when in RTL mode.
-            owner.inputCell.setStyle('padding-right', ieInputWidthAdjustment + 'px');
+            me.adjustIEInputPadding(ownerContext);
             if(suffix === 'px') {
                 if (owner.inputWidth) {
-                    inputWidth = owner.inputWidth - owner.getTriggerWidth();
+                    inputWidth = owner.inputWidth - me.getExtraWidth(ownerContext);
                 } else {
-                    inputWidth = width - ieInputWidthAdjustment - owner.getTriggerWidth();
+                    inputWidth = width - ieInputWidthAdjustment - me.getExtraWidth(ownerContext);
                 }
                 inputWidth += 'px';
             }
@@ -65,18 +96,43 @@ Ext.define('Ext.layout.component.field.Trigger', {
         triggerWrap.setStyle('table-layout', 'fixed');
     },
 
+    adjustIEInputPadding: function(ownerContext) {
+        // adjust for IE 6/7 strict content-box model
+        this.owner.inputCell.setStyle('padding-right', this.ieInputWidthAdjustment + 'px');
+    },
+
+    /**
+     * @private
+     * Returns the width of the "extras" around the input field. This includes the total width
+     * of all the triggers in the field and any outer bordering.
+     * 
+     * This measurement is used when explicitly sizing the contained input field to a smaller inner
+     * width while keeping the outer component width the same. This extra width is subtracted from the
+     * total component width to calculate the new width for the input field.
+     */
+    getExtraWidth: function(ownerContext) {
+        var me = this,
+            owner = me.owner,
+            borderWidths = me.borderWidths,
+            ui = owner.ui + owner.triggerEl.getCount();
+
+        if (!(ui in borderWidths)) {
+            borderWidths[ui] = ownerContext.triggerWrap.getBorderInfo().width
+        }
+        return borderWidths[ui] + owner.getTriggerWidth();
+    },
+
     beginLayoutShrinkWrap: function (ownerContext) {
         var owner = ownerContext.target,
             emptyString = '',
             inputWidth = owner.inputWidth,
-            triggerWrap = owner.triggerWrap,
-            ieInputWidthAdjustment = this.ieInputWidthAdjustment || 0;
+            triggerWrap = owner.triggerWrap;
 
         this.callParent(arguments);
 
         if (inputWidth) {
             triggerWrap.setStyle('width', inputWidth + 'px');
-            inputWidth = (inputWidth - owner.getTriggerWidth()) + 'px';
+            inputWidth = (inputWidth - this.getExtraWidth(ownerContext)) + 'px';
             owner.inputEl.setStyle('width', inputWidth);
             owner.inputCell.setStyle('width', inputWidth);
         } else {
@@ -96,6 +152,22 @@ Ext.define('Ext.layout.component.field.Trigger', {
         // Find the width that contains the whole text value
         value = (inputEl.dom.value || (owner.hasFocus ? '' : owner.emptyText) || '') + owner.growAppend;
         return inputEl.getTextWidth(value);
+    },
+    
+    publishOwnerWidth: function(ownerContext, width) {
+        var owner = this.owner;
+        this.callParent(arguments);
+        if (!owner.grow && !owner.inputWidth) {
+            width -= this.getExtraWidth(ownerContext);
+            if (owner.labelAlign != 'top') {
+                width -= owner.getLabelWidth();
+            }
+            ownerContext.inputContext.setWidth(width);
+        }    
+    },
+
+    publishInnerHeight: function(ownerContext, height) {
+        ownerContext.inputContext.setHeight(height - this.measureLabelErrorHeight(ownerContext));
     },
 
     measureContentWidth: function (ownerContext) {
@@ -120,6 +192,8 @@ Ext.define('Ext.layout.component.field.Trigger', {
             // Now that we've set the inputContext, we need to recalculate the width
             inputContext.domBlock(me, 'width');
             width = NaN;
+        } else if (!owner.inputWidth) {
+            width -= me.getExtraWidth(ownerContext);
         }
         return width;
     },

@@ -18,7 +18,7 @@ Ext.define('MyApp.view.MainToolbar', {
 		// me.selectable = false;
 		me.callParent(arguments);
 
-		Ext.util.History.init();
+//		Ext.util.History.init();
 
 		// FIXME select view when loading
 		// var token = window.location.hash.substring(1); //////////////

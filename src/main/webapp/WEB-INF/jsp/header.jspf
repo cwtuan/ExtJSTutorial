@@ -11,5 +11,6 @@
 <link rel="icon" href="css/images/favicon.ico" type="image/x-icon">
 
 
-<link type="text/css" rel="stylesheet" href="ext/resources/css/ext-all.css" />
-<link type="text/css" rel="stylesheet" href="css/override.css" />
+<!-- <link type="text/css" rel="stylesheet" href="ext/resources/css/ext-all.css" /> -->
+<link rel="stylesheet" href="bootstrap.css">
+<!-- <link type="text/css" rel="stylesheet" href="css/override.css" /> -->

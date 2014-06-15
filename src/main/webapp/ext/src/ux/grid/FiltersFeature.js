@@ -99,6 +99,7 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
         'Ext.ux.grid.menu.RangeMenu',
         'Ext.ux.grid.filter.BooleanFilter',
         'Ext.ux.grid.filter.DateFilter',
+        'Ext.ux.grid.filter.DateTimeFilter',
         'Ext.ux.grid.filter.ListFilter',
         'Ext.ux.grid.filter.NumericFilter',
         'Ext.ux.grid.filter.StringFilter'
@@ -108,7 +109,7 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
      * @cfg {Boolean} autoReload
      * Defaults to true, reloading the datasource when a filter change happens.
      * Set this to false to prevent the datastore from being reloaded if there
-     * are changes to the filters.  See <code>{@link #updateBuffer}</code>.
+     * are changes to the filters.  See `{@link #updateBuffer}`.
      */
     autoReload : true,
     /**
@@ -127,7 +128,7 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
     /**
      * @cfg {String} filterCls
      * The css class to be applied to column headers with active filters.
-     * Defaults to <tt>'ux-filterd-column'</tt>.
+     * Defaults to `'ux-filterd-column'`
      */
     filterCls : 'ux-filtered-column',
     /**
@@ -138,13 +139,13 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
     local : false,
     /**
      * @cfg {String} menuFilterText
-     * defaults to <tt>'Filters'</tt>.
+     * defaults to `'Filters'`.
      */
     menuFilterText : 'Filters',
     /**
      * @cfg {String} paramPrefix
      * The url parameter prefix for the filters.
-     * Defaults to <tt>'filter'</tt>.
+     * Defaults to `'filter'`.
      */
     paramPrefix : 'filter',
     /**
@@ -166,13 +167,11 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
     // doesn't handle grid body events
     hasFeatureEvent: false,
 
-
     /** @private */
     constructor : function (config) {
         var me = this;
 
-        config = config || {};
-        Ext.apply(me, config);
+        me.callParent(arguments);
 
         me.deferredUpdate = Ext.create('Ext.util.DelayedTask', me.reload, me);
 
@@ -181,11 +180,10 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
         me.filterConfigs = config.filters;
     },
 
-    attachEvents: function() {
+    init: function(grid) {
         var me = this,
             view = me.view,
-            headerCt = view.headerCt,
-            grid = me.getGridPanel();
+            headerCt = view.headerCt;
 
         me.bindStore(view.getStore(), true);
 
@@ -203,6 +201,7 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
         // Add event and filters shortcut on grid panel
         grid.filters = me;
         grid.addEvents('filterupdate');
+        me.createFilters();
     },
 
     createFiltersCollection: function () {
@@ -252,14 +251,13 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
         });
 
         // Then we merge on filters from the columns in the grid. The columns' filters take precedence.
-        Ext.Array.each(grid.columns, function (column) {
+        Ext.Array.each(grid.columnManager.getColumns(), function (column) {
             if (column.filterable === false) {
                 filters.removeAtKey(column.dataIndex);
             } else {
                 add(column.dataIndex, column.filter, column.filterable);
             }
         });
-        
 
         me.removeAll();
         if (filters.items) {
@@ -283,9 +281,11 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
             filter = filters[i];
             if (filter) {
                 FilterClass = me.getFilterClass(filter.type);
-                filter = filter.menu ? filter : new FilterClass(filter);
+                filter = filter.menu ? filter : new FilterClass(Ext.apply({
+                    grid: me.grid
+                }, filter));
                 me.filters.add(filter);
-                Ext.util.Observable.capture(filter, this.onStateChange, this);
+                Ext.util.Observable.capture(filter, me.onStateChange, me);
             }
         }
     },
@@ -296,8 +296,26 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
      */
     onMenuCreate: function(headerCt, menu) {
         var me = this;
-        me.createFilters();
-        menu.on('beforeshow', me.onMenuBeforeShow, me);
+
+        // If the menu is ever destroyed, the filters need recreating because
+        // the filters' menu structures will be destroyed.
+        if (me.filtersNeedReCreating) {
+            me.createFilters();
+            me.filtersNeedReCreating = false;
+        }
+        menu.on({
+            beforeshow: me.onMenuBeforeShow,
+            destroy: me.onMenuDestroy,
+            scope: me
+        });
+    },
+
+    // The filters at first have to be created at init time so that state can be restored if the grid subsequently
+    // fires a beforestaterestore event.
+    // However after that, they may need recreating if the column menu is ever destroyed (due to column movement) because
+    // that tears down the whole filter item and submenu structure.
+    onMenuDestroy: function() {
+        this.filtersNeedReCreating = true;
     },
 
     /**
@@ -324,10 +342,9 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
                 menuItem.setDisabled(filter.disabled === true);
             }
             menuItem.setVisible(!!filter);
-            this.sep.setVisible(!!filter);
+            me.sep.setVisible(!!filter);
         }
     },
-
 
     createMenuItem: function(menu) {
         var me = this;
@@ -345,7 +362,8 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
     },
 
     getGridPanel: function() {
-        return this.view.up('gridpanel');
+        // This reference is injected in TableView.initFeatures
+        return this.grid;
     },
 
     /**
@@ -416,7 +434,6 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
             this.filters.clear();
         }
     },
-
 
     /**
      * Changes the data store bound to this view and refreshes it.
@@ -500,9 +517,19 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
      * @param {Object} options
      */
     onBeforeLoad : function (store, options) {
+        var params;
+            
         options.params = options.params || {};
         this.cleanParams(options.params);
-        var params = this.buildQuery(this.getFilterData());
+        params = this.buildQuery(this.getFilterData());
+        
+        // Memory proxy
+        if (store.getProxy().isSynchronous && this.hasActiveFilter()) {
+            options.filters = [new Ext.util.Filter({
+                filterFn: this.getRecordFilter()
+            })];
+        }
+        
         Ext.apply(options.params, params);
     },
 
@@ -512,7 +539,9 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
      * @param {Object} store
      */
     onLoad : function (store) {
-        store.filterBy(this.getRecordFilter());
+        if (this.filters.length) {
+            store.filterBy(this.getRecordFilter());
+        }
     },
 
     /**
@@ -549,7 +578,7 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
         } else {
             me.deferredUpdate.cancel();
             if (store.buffered) {
-                store.pageMap.clear();
+                store.data.clear();
             }
             store.loadPage(1);
         }
@@ -561,12 +590,23 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
      * @private
      */
     getRecordFilter : function () {
-        var f = [], len, i;
+        var f = [], len, i,
+            lockingPartner = this.lockingPartner;
+
         this.filters.each(function (filter) {
             if (filter.active) {
                 f.push(filter);
             }
         });
+
+        // Be sure to check the active filters on a locking partner as well.
+        if (lockingPartner) {
+            lockingPartner.filters.each(function (filter) {
+                if (filter.active) {
+                    f.push(filter);
+                }
+            });
+        }
 
         len = f.length;
         return function (record) {
@@ -578,6 +618,17 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
             return true;
         };
     },
+    
+    hasActiveFilter: function(){
+        var result = false;
+        this.filters.each(function (filter) {
+            if (filter.active) {
+                result = true;
+                return false;
+            }
+        });
+        return result;
+    },
 
     /**
      * Adds a filter to the collection and observes it for state change.
@@ -586,7 +637,7 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
      */
     addFilter : function (config) {
         var me = this,
-            columns = me.getGridPanel().columns,
+            columns = me.getGridPanel().columnManager.getColumns(),
             i, columnsLength, column, filtersLength, filter;
 
         
@@ -648,24 +699,38 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
         });
     },
 
+    getFilterItems: function () {
+        var me = this;
+
+        // If there's a locked grid then we must get the filter items for each grid.
+        if (me.lockingPartner) {
+            return me.filters.items.concat(me.lockingPartner.filters.items);
+        }
+
+        return me.filters.items;
+    },
+
     /**
      * Returns an Array of the currently active filters.
      * @return {Array} filters Array of the currently active filters.
      */
     getFilterData : function () {
-        var filters = [], i, len;
+        var items = this.getFilterItems(),
+            filters = [],
+            n, nlen, item, d, i, len;
 
-        this.filters.each(function (f) {
-            if (f.active) {
-                var d = [].concat(f.serialize());
+        for (n = 0, nlen = items.length; n < nlen; n++) {
+            item = items[n];
+            if (item.active) {
+                d = [].concat(item.serialize());
                 for (i = 0, len = d.length; i < len; i++) {
                     filters.push({
-                        field: f.dataIndex,
+                        field: item.dataIndex,
                         data: d[i]
                     });
                 }
             }
-        });
+        }
         return filters;
     },
 

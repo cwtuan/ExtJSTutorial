@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * A menu containing a Ext.picker.Color Component.
  *
@@ -18,20 +35,16 @@
  *     });
  *
  *     Ext.create('Ext.menu.Menu', {
- *         width: 100,
- *         height: 90,
- *         floating: false,  // usually you want this set to True (default)
- *         renderTo: Ext.getBody(),  // usually rendered by it's containing component
  *         items: [{
- *             text: 'choose a color',
+ *             text: 'Choose a color',
  *             menu: colorPicker
  *         },{
  *             iconCls: 'add16',
- *             text: 'icon item'
+ *             text: 'Icon item'
  *         },{
- *             text: 'regular item'
+ *             text: 'Regular item'
  *         }]
- *     });
+ *     }).showAt([5, 5]);
  */
  Ext.define('Ext.menu.ColorPicker', {
      extend: 'Ext.menu.Menu',
@@ -44,7 +57,7 @@
 
     /**
      * @cfg {Boolean} hideOnClick
-     * False to continue showing the menu after a date is selected.
+     * False to continue showing the menu after a color is selected.
      */
     hideOnClick : true,
 
@@ -78,8 +91,10 @@
         Ext.apply(me, {
             plain: true,
             showSeparator: false,
+            bodyPadding: 0,
             items: Ext.applyIf({
                 cls: Ext.baseCSSPrefix + 'menu-color-item',
+                margin: 0,
                 id: me.pickerId,
                 xtype: 'colorpicker'
             }, cfg)

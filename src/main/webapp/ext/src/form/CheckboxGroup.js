@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * A {@link Ext.form.FieldContainer field container} which has a specialized layout for arranging
  * {@link Ext.form.field.Checkbox} controls into columns, and provides convenience
@@ -50,7 +67,11 @@ Ext.define('Ext.form.CheckboxGroup', {
         field: 'Ext.form.field.Field'
     },
     alias: 'widget.checkboxgroup',
-    requires: ['Ext.layout.container.CheckboxGroup', 'Ext.form.field.Base'],
+    requires: [
+        'Ext.layout.container.CheckboxGroup',
+        'Ext.form.field.Checkbox',
+        'Ext.form.field.Base'
+    ],
 
     /**
      * @cfg {String} name
@@ -108,14 +129,15 @@ Ext.define('Ext.form.CheckboxGroup', {
     // private
     groupCls : Ext.baseCSSPrefix + 'form-check-group',
 
-    /**
-     * @cfg {String} [fieldBodyCls='x-form-checkboxgroup-body']
-     * An extra CSS class to be applied to the body content element in addition to {@link #baseBodyCls}.
-     */
-    fieldBodyCls: Ext.baseCSSPrefix + 'form-checkboxgroup-body',
+    // private
+    extraFieldBodyCls: Ext.baseCSSPrefix + 'form-checkboxgroup-body',
 
     // private
     layout: 'checkboxgroup',
+
+    componentCls: Ext.baseCSSPrefix + 'form-checkboxgroup',
+    
+    ariaRole: 'group',
 
     initComponent: function() {
         var me = this;
@@ -143,18 +165,34 @@ Ext.define('Ext.form.CheckboxGroup', {
      * @param {Object} field
      * @protected
      */
-    onFieldAdded: function(field) {
-        var me = this;
-        if (field.isCheckbox) {
-            me.mon(field, 'change', me.checkChange, me);
+    onAdd: function(item) {
+        var me = this,
+            items,
+            len, i;
+
+        if (item.isCheckbox) {
+            me.mon(item, 'change', me.checkChange, me);
+        } else if (item.isContainer) {
+            items = item.items.items;
+            for (i = 0, len = items.length; i < len; i++) {
+                me.onAdd(items[i]);
+            }
         }
         me.callParent(arguments);
     },
 
-    onFieldRemoved: function(field) {
-        var me = this;
-        if (field.isCheckbox) {
-            me.mun(field, 'change', me.checkChange, me);
+    onRemove: function(item) {
+        var me = this,
+            items,
+            len, i;
+
+        if (item.isCheckbox) {
+            me.mun(item, 'change', me.checkChange, me);
+        } else if (item.isContainer) {
+            items = item.items.items;
+            for (i = 0, len = items.length; i < len; i++) {
+                me.onRemove(items[i]);
+            }
         }
         me.callParent(arguments);
     },
@@ -418,7 +456,7 @@ Ext.define('Ext.form.CheckboxGroup', {
         } else {
             errors = me.getErrors();
             isValid = Ext.isEmpty(errors);
-            wasValid = !me.hasActiveError();
+            wasValid = me.wasValid;
             if (isValid) {
                 me.unsetActiveError();
             } else {
@@ -426,6 +464,7 @@ Ext.define('Ext.form.CheckboxGroup', {
             }
         }
         if (isValid !== wasValid) {
+            me.wasValid = isValid;
             me.fireEvent('validitychange', me, isValid);
             me.updateLayout();
         }
@@ -435,7 +474,7 @@ Ext.define('Ext.form.CheckboxGroup', {
 
 }, function() {
 
-    this.borrow(Ext.form.field.Base, ['markInvalid', 'clearInvalid']);
+    this.borrow(Ext.form.field.Base, ['markInvalid', 'clearInvalid', 'setError']);
 
 });
 

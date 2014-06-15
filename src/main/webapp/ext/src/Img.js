@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * Simple helper class for easily creating image components. This renders an image tag to
  * the DOM with the configured src.
@@ -33,6 +50,8 @@ Ext.define('Ext.Img', {
 
     autoEl: 'img',
 
+    baseCls: Ext.baseCSSPrefix + 'img',
+
     /**
      * @cfg {String} src
      * The image src.
@@ -46,34 +65,79 @@ Ext.define('Ext.Img', {
     alt: '',
 
     /**
+     * @cfg {String} title
+     * Specifies addtional information about the image.
+     */
+    title: '',
+
+    /**
      * @cfg {String} imgCls
      * Optional CSS classes to add to the img element.
      */
     imgCls: '',
 
+    /**
+     * @cfg {Number/String} glyph
+     * A numeric unicode character code to serve as the image.  If this option is used
+     * The image will be rendered using a div with innerHTML set to the html entity
+     * for the given character code.  The default font-family for glyphs can be set
+     * globally using {@link Ext#setGlyphFontFamily Ext.setGlyphFontFamily()}. Alternatively,
+     * this config option accepts a string with the charCode and font-family separated by
+     * the `@` symbol. For example '65@My Font Family'.
+     */
+
+    ariaRole: 'img',
+
+    initComponent: function() {
+        if (this.glyph) {
+            this.autoEl = 'div';
+        }
+        this.callParent();
+    },
+
     getElConfig: function() {
         var me = this,
+            autoEl = me.autoEl,
             config = me.callParent(),
-            img;
+            glyphFontFamily = Ext._glyphFontFamily,
+            glyph = me.glyph,
+            img, glyphParts;
 
         // It is sometimes helpful (like in a panel header icon) to have the img wrapped
         // by a div. If our autoEl is not 'img' then we just add an img child to the el.
-        if (me.autoEl == 'img') {
+        if (autoEl === 'img' || (Ext.isObject(autoEl) && autoEl.tag === 'img')) {
             img = config;
+        } else if (me.glyph) {
+            if (typeof glyph === 'string') {
+                glyphParts = glyph.split('@');
+                glyph = glyphParts[0];
+                glyphFontFamily = glyphParts[1];
+            }
+            config.html = '&#' + glyph + ';';
+            if (glyphFontFamily) {
+                config.style = 'font-family:' + glyphFontFamily;
+            }
         } else {
             config.cn = [img = {
                 tag: 'img',
+                role: me.ariaRole,
                 id: me.id + '-img'
             }];
         }
 
-        if (me.imgCls) {
-            img.cls = (img.cls ? img.cls + ' ' : '') + me.imgCls;
+        if (img) {
+            if (me.imgCls) {
+                img.cls = (img.cls ? img.cls + ' ' : '') + me.imgCls;
+            }
+
+            img.src = me.src || Ext.BLANK_IMAGE_URL;
         }
 
-        img.src = me.src || Ext.BLANK_IMAGE_URL;
         if (me.alt) {
-            img.alt = me.alt;
+            (img || config).alt = me.alt;
+        }
+        if (me.title) {
+            (img || config).title = me.title;
         }
 
         return config;
@@ -81,12 +145,19 @@ Ext.define('Ext.Img', {
 
     onRender: function () {
         var me = this,
+            autoEl = me.autoEl,
             el;
 
         me.callParent(arguments);
 
         el = me.el;
-        me.imgEl = (me.autoEl == 'img') ? el : el.getById(me.id + '-img');
+        
+        if (autoEl === 'img' || (Ext.isObject(autoEl) && autoEl.tag === 'img')) {
+            me.imgEl = el;
+        }
+        else {
+            me.imgEl = el.getById(me.id + '-img');
+        }
     },
 
     onDestroy: function () {
@@ -107,6 +178,27 @@ Ext.define('Ext.Img', {
 
         if (imgEl) {
             imgEl.dom.src = src || Ext.BLANK_IMAGE_URL;
+        }
+    },
+
+    setGlyph: function(glyph) {
+        var me = this,
+            glyphFontFamily = Ext._glyphFontFamily,
+            glyphParts, dom;
+
+        if (glyph != me.glyph) {
+            if (typeof glyph === 'string') {
+                glyphParts = glyph.split('@');
+                glyph = glyphParts[0];
+                glyphFontFamily = glyphParts[1];
+            }
+
+            dom = me.el.dom;
+
+            dom.innerHTML = '&#' + glyph + ';';
+            if (glyphFontFamily) {
+                dom.style = 'font-family:' + glyphFontFamily;
+            }
         }
     }
 });

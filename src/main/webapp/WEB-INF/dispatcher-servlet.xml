@@ -59,7 +59,10 @@
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:resources mapping="/app/**" location="/app/" />
-	<mvc:resources mapping="/bootstrap.js" location="/bootstrap.js" />
 	<mvc:resources mapping="/all-classes.js" location="/all-classes.js" />
+	<mvc:resources mapping="/bootstrap.js" location="/bootstrap.js" />
+	<mvc:resources mapping="/bootstrap.css" location="/bootstrap.css" />
+	<mvc:resources mapping="/app.js" location="/app.js" />
+
 
 </beans> 

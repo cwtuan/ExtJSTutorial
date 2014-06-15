@@ -1,3 +1,20 @@
+/*
+This file is part of Ext JS 4.2
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
+*/
 /**
  * @private
  * A month picker component. This class is used by the {@link Ext.picker.Date Date picker} class
@@ -8,7 +25,7 @@ Ext.define('Ext.picker.Month', {
     requires: [
         'Ext.XTemplate', 
         'Ext.util.ClickRepeater', 
-        'Ext.Date', 
+        'Ext.Date',
         'Ext.button.Button'
     ],
     alias: 'widget.monthpicker',
@@ -22,29 +39,41 @@ Ext.define('Ext.picker.Month', {
         '<div id="{id}-bodyEl" class="{baseCls}-body">',
           '<div id="{id}-monthEl" class="{baseCls}-months">',
               '<tpl for="months">',
-                  '<div class="{parent.baseCls}-item {parent.baseCls}-month"><a style="{parent.monthStyle}" href="#" hidefocus="on">{.}</a></div>',
+                  '<div class="{parent.baseCls}-item {parent.baseCls}-month">',
+                      // the href attribute is required for the :hover selector to work in IE6/7/quirks
+                      '<a style="{parent.monthStyle}" role="button" hidefocus="on" class="{parent.baseCls}-item-inner" href="#">{.}</a>',
+                  '</div>',
               '</tpl>',
           '</div>',
           '<div id="{id}-yearEl" class="{baseCls}-years">',
               '<div class="{baseCls}-yearnav">',
-                  '<button id="{id}-prevEl" class="{baseCls}-yearnav-prev"></button>',
-                  '<button id="{id}-nextEl" class="{baseCls}-yearnav-next"></button>',
+                  '<div class="{baseCls}-yearnav-button-ct">',
+                      // the href attribute is required for the :hover selector to work in IE6/7/quirks
+                      '<a id="{id}-prevEl" class="{baseCls}-yearnav-button {baseCls}-yearnav-prev" href="#" hidefocus="on" role="button"></a>',
+                  '</div>',
+                  '<div class="{baseCls}-yearnav-button-ct">',
+                      // the href attribute is required for the :hover selector to work in IE6/7/quirks
+                      '<a id="{id}-nextEl" class="{baseCls}-yearnav-button {baseCls}-yearnav-next" href="#" hidefocus="on" role="button"></a>',
+                  '</div>',
               '</div>',
               '<tpl for="years">',
-                  '<div class="{parent.baseCls}-item {parent.baseCls}-year"><a href="#" hidefocus="on">{.}</a></div>',
+                  '<div class="{parent.baseCls}-item {parent.baseCls}-year">',
+                      // the href attribute is required for the :hover selector to work in IE6/7/quirks
+                      '<a hidefocus="on" class="{parent.baseCls}-item-inner" role="button" href="#">{.}</a>',
+                  '</div>',
               '</tpl>',
           '</div>',
           '<div class="' + Ext.baseCSSPrefix + 'clear"></div>',
-        '</div>',
-        '<tpl if="showButtons">',
-            '<div id="{id}-buttonsEl" class="{baseCls}-buttons">{%',
-                'var me=values.$comp, okBtn=me.okBtn, cancelBtn=me.cancelBtn;',
-                'okBtn.ownerLayout = cancelBtn.ownerLayout = me.componentLayout;',
-                'okBtn.ownerCt = cancelBtn.ownerCt = me;',
-                'Ext.DomHelper.generateMarkup(okBtn.getRenderTree(), out);',
-                'Ext.DomHelper.generateMarkup(cancelBtn.getRenderTree(), out);',
-            '%}</div>',
-        '</tpl>'
+          '<tpl if="showButtons">',
+              '<div id="{id}-buttonsEl" class="{baseCls}-buttons">{%',
+                  'var me=values.$comp, okBtn=me.okBtn, cancelBtn=me.cancelBtn;',
+                  'okBtn.ownerLayout = cancelBtn.ownerLayout = me.componentLayout;',
+                  'okBtn.ownerCt = cancelBtn.ownerCt = me;',
+                  'Ext.DomHelper.generateMarkup(okBtn.getRenderTree(), out);',
+                  'Ext.DomHelper.generateMarkup(cancelBtn.getRenderTree(), out);',
+              '%}</div>',
+          '</tpl>',
+        '</div>'
     ],
 
     //<locale>
@@ -80,20 +109,19 @@ Ext.define('Ext.picker.Month', {
      * @cfg {Date/Number[]} value The default value to set. See {@link #setValue}
      */
     
-    
-    width: 178,
     measureWidth: 35,
     measureMaxHeight: 20,
 
     // used when attached to date picker which isnt showing buttons
     smallCls: Ext.baseCSSPrefix + 'monthpicker-small',
 
-    // private
+    // @private
     totalYears: 10,
     yearOffset: 5, // 10 years in total, 2 per row
     monthOffset: 6, // 12 months, 2 per row
 
-    // private, inherit docs
+    // @private
+    // @inheritdoc
     initComponent: function(){
         var me = this;
 
@@ -176,7 +204,8 @@ Ext.define('Ext.picker.Month', {
         this.callParent();
     },
 
-    // private, inherit docs
+    // @private
+    // @inheritdoc
     beforeRender: function(){
         var me = this,
             i = 0,
@@ -185,6 +214,10 @@ Ext.define('Ext.picker.Month', {
             monthLen = me.monthOffset,
             margin = me.monthMargin,
             style = '';
+
+        if (me.padding && !me.width) {
+            me.cacheWidth();
+        }
 
         me.callParent();
 
@@ -204,7 +237,21 @@ Ext.define('Ext.picker.Month', {
         });
     },
 
-    // private, inherit docs
+    cacheWidth: function() {
+        var me = this,
+            padding = me.parseBox(me.padding),
+            widthEl = Ext.getBody().createChild({
+                cls: me.baseCls + ' ' + me.borderBoxCls,
+                style: 'position:absolute;top:-1000px;left:-1000px;',
+                html: '&nbsp;' // required for opera 11.64 to measure a width
+            });
+
+        me.self.prototype.width = widthEl.getWidth() + padding.left + padding.right;
+        widthEl.remove();
+    },
+
+    // @private
+    // @inheritdoc
     afterRender: function(){
         var me = this,
             body = me.bodyEl,
@@ -368,7 +415,7 @@ Ext.define('Ext.picker.Month', {
                 year = yearNumbers[y];
                 el.dom.innerHTML = year;
                 if (year == value) {
-                    el.dom.className = cls;
+                    el.addCls(cls);
                 }
             }
             if (month !== null) {
@@ -485,7 +532,8 @@ Ext.define('Ext.picker.Month', {
         }
     },
 
-    // private, inherit docs
+    // @private
+    // @inheritdoc
     beforeDestroy: function(){
         var me = this;
         me.years = me.months = null;

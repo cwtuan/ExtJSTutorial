@@ -44,7 +44,7 @@ public class SessionController {
 		// }
 	}
 
-	@RequestMapping("/")
+	@RequestMapping("/index")
 	public ModelAndView indexPage(HttpSession session) {
 
 		return new ModelAndView("index");
