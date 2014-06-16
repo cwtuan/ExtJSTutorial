@@ -3,7 +3,7 @@ Ext.define('MyApp.view.project.UserGrid', {
 	alias : 'widget.projectUserGrid',
 	project : null,
 	requires : [ 'MyApp.view.project.action.DeleteUserAction', 'MyApp.view.project.action.EditUserAction',
-			'MyApp.view.project.action.AddUserAction' ],
+			'MyApp.view.project.action.AddUserAction', 'MyApp.store.project.User' ],
 	title : Locale.getMsg('view.project.user.members'),
 	icon : 'css/images/user_16x16.png',
 	selType : 'checkboxmodel',
@@ -65,7 +65,7 @@ Ext.define('MyApp.view.project.UserGrid', {
 			},
 			create : function(userData) {
 				// console.log('create User', userData);
-				 me.store.add(userData);
+				me.store.add(userData);
 			},
 			update : function(userData) {
 				console.log('update', userData);

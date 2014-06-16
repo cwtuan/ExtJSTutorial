@@ -20,10 +20,13 @@ Ext.define('MyApp.view.Viewport', {
 			'MyApp.ux.toolbar.NotifyBar', 'MyApp.ux.IFrame', 'MyApp.ux.grid.column.ComponentColumn',
 
 			// views
-			'MyApp.view.project.ProjectView',
+			'MyApp.view.MainToolbar', 'MyApp.view.project.ProjectView',
 
 			// win
-			'MyApp.view.about.OpenSourceLicenseWin'
+			'MyApp.view.about.OpenSourceLicenseWin',
+
+			// layout
+			'Ext.layout.container.Card', 'Ext.layout.container.Border'
 
 	],
 	id : 'viewport',
