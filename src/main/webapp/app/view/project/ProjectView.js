@@ -17,9 +17,9 @@ Ext.define('MyApp.view.project.ProjectView', {
 			// margin : '0 5 0 0',
 			split : true,
 			collapsible : true,
-			animCollapse : true,
+			animCollapse : true
 		}, {
-			xtype : 'projectUserGrid',
+			xtype : 'userGrid',
 			region : 'center',
 			flex : .5
 		} ];

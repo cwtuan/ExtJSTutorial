@@ -1,8 +1,8 @@
 
 /*
-var records = Ext.getCmp('projectUserGrid-1027').store.getRange();
-var record = Ext.getCmp('projectUserGrid-1027').store.first();
-var baseUrl = Ext.getCmp('projectUserGrid-1027').store.getBaseUrl(); // baseUrl = rest/projects/p2/users
+var records = Ext.getCmp('userGrid-1027').store.getRange();
+var record = Ext.getCmp('userGrid-1027').store.first();
+var baseUrl = Ext.getCmp('userGrid-1027').store.getBaseUrl(); // baseUrl = rest/projects/p2/users
 
 Delete users:
 MyApp.Restful.request({method:'DELETE', records:records} );

@@ -1,8 +1,8 @@
 Ext.define('MyApp.controller.Project', {
 	extend : 'Ext.app.Controller',
 	refs : [ {
-		ref : 'projectUserGrid',
-		selector : 'projectUserGrid'
+		ref : 'userGrid',
+		selector : 'userGrid'
 	} ],
 	init : function() {
 		var me = this;
@@ -10,7 +10,7 @@ Ext.define('MyApp.controller.Project', {
 			'projectGrid' : {
 
 				select : function(grid, record) {
-					me.getProjectUserGrid().load(record);
+					me.getUserGrid().load(record);
 				}
 			// ,cellclick : function(grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 			// if (cellIndex != 0) {

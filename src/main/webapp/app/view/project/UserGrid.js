@@ -1,6 +1,6 @@
 Ext.define('MyApp.view.project.UserGrid', {
 	extend : 'Ext.grid.Panel',
-	alias : 'widget.projectUserGrid',
+	alias : 'widget.userGrid',
 	project : null,
 	requires : [ 'MyApp.view.project.action.DeleteUserAction', 'MyApp.view.project.action.EditUserAction',
 			'MyApp.view.project.action.AddUserAction', 'MyApp.store.project.User' ],
@@ -9,9 +9,6 @@ Ext.define('MyApp.view.project.UserGrid', {
 	selType : 'checkboxmodel',
 	selModel : {
 		mode : 'MULTI'
-	},
-	viewConfig : {
-		preserveSelectionOnRefresh : false
 	},
 	initComponent : function() {
 		var me = this;
