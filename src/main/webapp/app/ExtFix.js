@@ -3,16 +3,6 @@ Ext.define('MyApp.ExtFix', {
 	singleton : true,
 	init : function(config) {
 
-		// when display large messages, window height is not correct
-		Ext.define('Ext.fix.window.MessageBox', {
-			override : 'Ext.window.MessageBox',
-			confirm : function() {
-				var me = this;
-				me.callOverridden(arguments);
-				me.doAutoSize();
-			}
-		});
-
 		// i18n for RowEditor
 		if (Ext.grid.RowEditor) {
 			Ext.apply(Ext.grid.RowEditor.prototype, {
