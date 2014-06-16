@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -97,13 +98,15 @@ public class ProjectController {
 	public RestTask getUsers(@PathVariable String id) throws Exception {
 		try {
 			// TODO service may thorw exception with ErrorKey
-//			throw new AppException(ErrorKey.FORBIDDEN);
+			// throw new AppException(ErrorKey.FORBIDDEN);
+			Random generator = new Random();
 
-			 List<UserModel> users = new ArrayList<UserModel>();
-			 users.add(new UserModel("tony", Role.ADMIN));
-			 users.add(new UserModel("alice", Role.MEMBER));
-			 users.add(new UserModel("tom", Role.MEMBER));
-			 return new RestTask(users);
+			List<UserModel> users = new ArrayList<UserModel>();
+			for (int i = 0; i < 1 + generator.nextInt(5); i++) {
+				users.add(new UserModel("user" + generator.nextInt(999999999), Role.ADMIN));
+			}
+
+			return new RestTask(users);
 		} catch (Exception e) {
 			return new RestTask(null, e);
 		}
@@ -125,9 +128,9 @@ public class ProjectController {
 	public RestTask updateUser(@RequestBody UserModel user) {
 		try {
 			// TODO service may thorw exception without ErrorKey
-			throw new Exception("whatever");
-			// System.out.println("Updating a user:" + user);
-			// return new RestTask(user);
+			// throw new Exception("whatever");
+			System.out.println("Updating a user:" + user);
+			return new RestTask(user);
 		} catch (Exception e) {
 			return new RestTask(user, e);
 		}

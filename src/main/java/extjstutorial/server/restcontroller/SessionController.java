@@ -64,16 +64,16 @@ public class SessionController {
 			@RequestParam(required = false) String redirectPage,
 			HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (isLogined(session)) {
-			return new ModelAndView("index");
-		} else {
-			if (redirectPage == null) {
-				map.put("redirectPage", "./");
-			} else {
-				map.put("redirectPage", redirectPage);
-			}
+//		if (isLogined(session)) {
+//			return new ModelAndView("index");
+//		} else {
+//			if (redirectPage == null) {
+//				map.put("redirectPage", "./");
+//			} else {
+//				map.put("redirectPage", redirectPage);
+//			}
 			return new ModelAndView("signin", "map", map);
-		}
+//		}
 	}
 
 	private boolean isLogined(HttpSession session) {
