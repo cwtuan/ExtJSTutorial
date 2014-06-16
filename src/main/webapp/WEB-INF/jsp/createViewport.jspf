@@ -2,13 +2,9 @@
 
 <script type="text/javascript">
 	Ext.onReady(function() {
-		MyApp.event.App.on({
-			created : function() {
-				// var loadMask = new Ext.LoadMask(Ext.getBody());
-				// loadMask.show();
-				Ext.create('MyApp.view.Viewport');
-				// loadMask.hide();
-				}
-		});
+
+		console.info('onReady');
+		Ext.create('MyApp.view.Viewport');
+
 	});
 </script>

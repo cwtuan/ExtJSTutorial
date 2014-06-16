@@ -9,5 +9,5 @@ Ext.application({
 
     extend: 'MyApp.Application',
     
-    autoCreateViewport: true
+    autoCreateViewport: false
 });

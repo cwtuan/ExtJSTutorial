@@ -1,14 +1,11 @@
 Ext.define('MyApp.Application', {
-    name: 'MyApp',
-    extend: 'Ext.app.Application',
-	requires : [
-	// loadjs_dev "requires" is for localhost/dev.
-	// App.js "requires" is for localhost/ (product mode)
-	'MyApp.Const', 'MyApp.event.App', 'MyApp.Config', 'MyApp.ExtFix', 'MyApp.ExtOverride', 'MyApp.ExtSetting', 'MyApp.util.Restful', 'MyApp.locale.Converter',
-			'MyApp.ux.proxy.NestedRest', 'MyApp.reader.RestTaskGrid', 'Ext.util.Cookies'],
+	name : 'MyApp',
+	extend : 'Ext.app.Application',
+	requires : [ 'MyApp.Const', 'MyApp.Config', 'MyApp.ExtFix', 'MyApp.ExtOverride', 'MyApp.ExtSetting', 'MyApp.util.Restful',
+			'MyApp.locale.Converter', 'MyApp.ux.proxy.NestedRest', 'MyApp.reader.RestTaskGrid', 'Ext.util.Cookies' ],
 
 	views : [ 'Viewport' ],
-	controllers : [ 'Enhance', 'Project'],
+	controllers : [ 'Enhance', 'Project' ],
 	autoCreateViewport : false,
 	onReady : function(fn) {
 		this.readyFn = fn;
@@ -16,9 +13,17 @@ Ext.define('MyApp.Application', {
 	},
 	launch : function() {
 		var me = this;
-		console.info('Ext.application launch');
-//		MyApp.event.App.fireEvent('created');
+
+		console.info('i18n for ExtJS');
+		loadJS("ext/locale/ext-lang-" + Locale.getLanguage() + ".js");
+
+		console.info('init: ExtFix ExtOverride and ExtSetting');
+		MyApp.ExtFix.init(MyApp.Config);
+
+		MyApp.ExtOverride.init(MyApp.Config);
+
+		MyApp.ExtSetting.init(MyApp.Config);
+
 	}
-    
-    
+
 });
