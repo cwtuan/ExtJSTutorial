@@ -12,9 +12,8 @@
 + change theme
     修改webapp\bootstrap.css
     
-+ doc: 
-    A. make/buildExtJS.bat
-    B. loadjs_dev的requires、和ExtExtting等，統一寫在My.Application
++ make/buildExtJS.bat
++ loadjs_dev的requires、和ExtExtting等，統一寫在My.Application
 
 + Don't  make autoCreateViewport: true
     createViewport, singin等jsp移除MyApp.event.App.on
