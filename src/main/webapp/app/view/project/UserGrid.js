@@ -2,14 +2,14 @@ Ext.define('MyApp.view.project.UserGrid', {
 	extend : 'Ext.grid.Panel',
 	alias : 'widget.userGrid',
 	project : null,
-	requires : [ 'MyApp.view.project.action.DeleteUserAction', 'MyApp.view.project.action.EditUserAction',
-			'MyApp.view.project.action.AddUserAction', 'MyApp.store.project.User' ],
+	requires : [ 'MyApp.view.project.action.DeleteUserAction', 'MyApp.view.project.action.EditUserAction', 'MyApp.view.project.action.AddUserAction' ],
 	title : Locale.getMsg('view.project.user.members'),
 	icon : 'css/images/user_16x16.png',
 	selType : 'checkboxmodel',
 	selModel : {
 		mode : 'MULTI'
 	},
+	// store: 'project.User',
 	initComponent : function() {
 		var me = this;
 

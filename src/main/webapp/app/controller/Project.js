@@ -1,5 +1,6 @@
 Ext.define('MyApp.controller.Project', {
 	extend : 'Ext.app.Controller',
+	stores : [ 'MyApp.store.project.User', 'MyApp.store.project.Project' ],
 	refs : [ {
 		ref : 'userGrid',
 		selector : 'userGrid'

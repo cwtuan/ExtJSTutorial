@@ -2,7 +2,6 @@ Ext.define('MyApp.view.project.ProjectGrid', {
 	extend : 'Ext.grid.Panel',
 	alias : 'widget.projectGrid',
 	title : Locale.getMsg('view.project.projects'),
-	requires : [ 'MyApp.store.project.Project' ],
 	icon : 'css/images/clapperboard_16x16.png',
 	viewConfig : {
 		getRowClass : function(record, index) {
