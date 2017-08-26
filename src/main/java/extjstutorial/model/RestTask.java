@@ -1,5 +1,7 @@
 package extjstutorial.model;
 
+
+
 import java.io.Serializable;
 
 public class RestTask implements Serializable {
